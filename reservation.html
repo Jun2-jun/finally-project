@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>병원 예약하기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background-color: #f0f4f8;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    input[readonly] {
+      background-color: #f9f9f9;
+      color: #555;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #3498db;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .info-box {
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>병원 예약하기</h2>
+    <form method="POST" action="/submit_reservation">
+      <div class="info-box">
+        <label for="hospital">병원 이름</label>
+        <input type="text" id="hospital" name="hospital" value="{{ hospital_name }}" readonly>
+
+        <label for="address">병원 주소</label>
+        <input type="text" id="address" name="address" value="{{ hospital_address }}" readonly>
+      </div>
+
+      <div class="info-box">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="홍길동" required>
+
+        <label for="phone">연락처</label>
+        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
+
+        <label for="message">요청 사항</label>
+        <textarea id="message" name="message" rows="4" placeholder="특이사항을 입력해주세요."></textarea>
+      </div>
+
+      <button type="submit">예약 신청하기</button>
+    </form>
+  </div>
+</body>
+</html>
