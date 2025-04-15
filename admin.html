@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    /* 사이드 영역 감지용 */
+    .side-hover-area {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 100%;
+      z-index: 10;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: -200px; /* 숨겨진 상태 */
+      width: 200px;
+      height: 100%;
+      background-color: #34495e;
+      color: white;
+      padding-top: 80px; /* header 높이보다 약간 여유 있게 */
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+      transition: left 0.3s ease;
+      z-index: 20;
+    }
+
+    /* 마우스를 좌측에 올리면 nav 슬라이드 */
+    .side-hover-area:hover + nav,
+    nav:hover {
+      left: 0;
+    }
+
+    nav a {
+      display: block;
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      background-color: #2c3e50;
+    }
+
+    main {
+      margin-left: 0;
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 40px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>관리자 페이지</h1>
+  </header>
+
+  <div class="side-hover-area"></div> <!-- 마우스 감지용 공간 -->
+  
+  <nav>
+    <a href="#members">회원 목록</a>
+    <a href="#reservations">예약 관리</a>
+    <a href="#notice">공지사항 관리</a>
+    <a href="#qna">QnA 관리</a>
+  </nav>
+
+  <main>
+    <section id="members">
+      <h2>회원 목록</h2>
+      <p>여기에 회원 목록이 표시됩니다.</p>
+    </section>
+
+    <section id="reservations">
+      <h2>예약 관리</h2>
+      <p>여기에 예약 정보가 표시됩니다.</p>
+    </section>
+
+    <section id="notice">
+      <h2>공지사항 관리</h2>
+      <p>공지사항 작성 및 관리 영역입니다.</p>
+    </section>
+
+    <section id="qna">
+      <h2>QnA 관리</h2>
+      <p>QnA 질문과 답변을 관리합니다.</p>
+    </section>
+  </main>
+
+</body>
+</html>
