@@ -11,7 +11,6 @@
       background-color: #f7f9fb;
     }
 
-    /* 상단 검색바 */
     .search-bar {
       position: sticky;
       top: 0;
@@ -52,7 +51,6 @@
       background-color: #2c80b4;
     }
 
-    /* 지도와 결과 목록 */
     .map_wrap {
       display: flex;
       flex-wrap: wrap;
@@ -147,148 +145,165 @@
 
 <!-- 검색 바 -->
 <div class="search-bar">
-    <form onsubmit="searchPlaces(); return false;">
-      동네 및 병원을 입력하세요
-      <input type="text" id="keyword" value="병원" placeholder="예: 내과, 피부과, 치과...">
-      <button type="submit">검색</button>
-    </form>
+  <form onsubmit="searchPlaces(); return false;">
+    동네 및 병원을 입력하세요
+    <input type="text" id="keyword" value="병원" placeholder="예: 내과, 피부과, 치과...">
+    <button type="submit">검색</button>
+  </form>
+</div>
+
+<!-- 지도와 목록 -->
+<div class="map_wrap">
+  <div id="map"></div>
+  <div id="menu_wrap">
+    <ul id="placesList"></ul>
+    <div id="pagination"></div>
   </div>
-  
-  <!-- 지도와 목록 -->
-  <div class="map_wrap">
-    <div id="map"></div>
-    <div id="menu_wrap">
-      <ul id="placesList"></ul>
-      <div id="pagination"></div>
-    </div>
-  </div>
-  
-  <!-- 카카오 지도 API -->
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6be88c9794d7e1f9095b709637776b77&libraries=services"></script>
-  <script>
-    let map;
-    let markers = [];
-    let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-  
-    const mapContainer = document.getElementById('map');
-  
-    function initMap(lat, lng) {
-      const mapOption = {
-        center: new kakao.maps.LatLng(lat, lng),
-        level: 5
-      };
-      map = new kakao.maps.Map(mapContainer, mapOption);
+</div>
+
+<!-- 카카오 지도 API -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6be88c9794d7e1f9095b709637776b77&libraries=services"></script>
+<script>
+  let map;
+  let markers = [];
+  let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+  const mapContainer = document.getElementById('map');
+
+  function initMap(lat, lng) {
+    const mapOption = {
+      center: new kakao.maps.LatLng(lat, lng),
+      level: 5
+    };
+    map = new kakao.maps.Map(mapContainer, mapOption);
+  }
+
+  function searchPlaces() {
+    const keyword = document.getElementById('keyword').value.trim();
+    if (!keyword) {
+      alert('검색어를 입력해주세요.');
+      return;
     }
-  
-    function searchPlaces() {
-      const keyword = document.getElementById('keyword').value.trim();
-      if (!keyword) {
-        alert('검색어를 입력해주세요.');
-        return;
-      }
-  
-      const ps = new kakao.maps.services.Places();
-      ps.keywordSearch(keyword, placesSearchCB, {
-        location: map.getCenter()
-      });
-    }
-  
-    function placesSearchCB(data, status, pagination) {
-      if (status === kakao.maps.services.Status.OK) {
-        displayPlaces(data);
-        displayPagination(pagination);
-      } else {
-        alert('검색 결과가 없습니다.');
-      }
-    }
-  
-    function displayPlaces(places) {
-      const listEl = document.getElementById('placesList');
-      listEl.innerHTML = '';
-      removeMarkers();
-  
-      const bounds = new kakao.maps.LatLngBounds();
-  
-      places.forEach((place, index) => {
-        const position = new kakao.maps.LatLng(place.y, place.x);
-  
-        const marker = new kakao.maps.Marker({
-          position,
-          map
-        });
-  
-        kakao.maps.event.addListener(marker, 'click', () => {
-          const content = `<div style="padding:5px;font-size:14px;">
-            <a href="${place.place_url}" target="_blank" style="text-decoration:none;color:#3498db;">${place.place_name}</a>
-          </div>`;
-          infowindow.setContent(content);
-          infowindow.open(map, marker);
-        });
-  
-        markers.push(marker);
-        bounds.extend(position);
-  
-        const itemEl = document.createElement('li');
-  
-        itemEl.innerHTML = `
-          <strong>${place.place_name}</strong><br>
-          <span>${place.road_address_name || place.address_name}</span><br>
-          <span style="color:green">${place.phone}</span><br>
-          <button class="reserve-btn" style="margin-top:8px;padding:6px 12px;border:none;border-radius:12px;background-color:#3498db;color:white;cursor:pointer;">
-            예약
-          </button>
-        `;
-  
-        // 병원 항목 클릭 시 지도 이동 & 마커 표시
-        itemEl.onclick = () => {
-          map.setCenter(position);
-          infowindow.setContent(`<div style="padding:5px;"><a href="${place.place_url}" target="_blank" style="text-decoration:none;color:#3498db;">${place.place_name}</a></div>`);
-          infowindow.open(map, marker);
-        };
-  
-        // 예약 버튼 클릭 시 reservation.html 이동
-        const reserveBtn = itemEl.querySelector('.reserve-btn');
-        reserveBtn.addEventListener('click', (e) => {
-          e.stopPropagation();  // 부모 li 클릭 이벤트 방지
-          window.location.href = '/reservation';
-        });
-  
-        listEl.appendChild(itemEl);
-      });
-  
-      map.setBounds(bounds);
-      map.setLevel(map.getLevel() - 1);
-    }
-  
-    function removeMarkers() {
-      markers.forEach(m => m.setMap(null));
-      markers = [];
-    }
-  
-    function displayPagination(pagination) {
-      const paginationEl = document.getElementById('pagination');
-      paginationEl.innerHTML = '';
-      for (let i = 1; i <= pagination.last; i++) {
-        const a = document.createElement('a');
-        a.href = '#';
-        a.innerText = i;
-        if (i === pagination.current) a.className = 'on';
-        else a.onclick = () => pagination.gotoPage(i);
-        paginationEl.appendChild(a);
-      }
-    }
-  
-    // 현재 위치 기반 지도 초기화
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      initMap(lat, lng);
-      document.getElementById('keyword').value = '병원';
-      searchPlaces();
-    }, function () {
-      initMap(37.5665, 126.9780); // 서울 기본 위치
-      searchPlaces();
+
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(keyword, placesSearchCB, {
+      location: map.getCenter()
     });
-  </script>
-  </body>
+  }
+
+  function placesSearchCB(data, status, pagination) {
+    if (status === kakao.maps.services.Status.OK) {
+      displayPlaces(data);
+      displayPagination(pagination);
+    } else {
+      alert('검색 결과가 없습니다.');
+    }
+  }
+
+  function displayPlaces(places) {
+    const listEl = document.getElementById('placesList');
+    listEl.innerHTML = '';
+    removeMarkers();
+
+    const bounds = new kakao.maps.LatLngBounds();
+
+    places.forEach((place, index) => {
+      const position = new kakao.maps.LatLng(place.y, place.x);
+
+      const marker = new kakao.maps.Marker({
+        position,
+        map
+      });
+
+      kakao.maps.event.addListener(marker, 'click', () => {
+        const content = `<div style="padding:5px;font-size:14px;">
+          <a href="${place.place_url}" target="_blank" style="text-decoration:none;color:#3498db;">${place.place_name}</a>
+        </div>`;
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+      });
+
+      markers.push(marker);
+      bounds.extend(position);
+
+      const itemEl = document.createElement('li');
+
+      itemEl.innerHTML = `
+        <strong>${place.place_name}</strong><br>
+        <span>${place.road_address_name || place.address_name}</span><br>
+        <span style="color:green">${place.phone}</span><br>
+        <button class="reserve-btn" style="margin-top:8px;padding:6px 12px;border:none;border-radius:12px;background-color:#3498db;color:white;cursor:pointer;">
+          예약
+        </button>
+      `;
+
+      itemEl.onclick = () => {
+        map.setCenter(position);
+        infowindow.setContent(`<div style="padding:5px;"><a href="${place.place_url}" target="_blank" style="text-decoration:none;color:#3498db;">${place.place_name}</a></div>`);
+        infowindow.open(map, marker);
+      };
+
+      // ✅ 예약 버튼 클릭 시 POST 방식으로 hospital 정보 전달
+      const reserveBtn = itemEl.querySelector('.reserve-btn');
+      reserveBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/reservation';
+
+        const nameInput = document.createElement('input');
+        nameInput.type = 'hidden';
+        nameInput.name = 'hospital_name';
+        nameInput.value = place.place_name;
+
+        const addressInput = document.createElement('input');
+        addressInput.type = 'hidden';
+        addressInput.name = 'hospital_address';
+        addressInput.value = place.road_address_name || place.address_name;
+
+        form.appendChild(nameInput);
+        form.appendChild(addressInput);
+
+        document.body.appendChild(form);
+        form.submit();
+      });
+
+      listEl.appendChild(itemEl);
+    });
+
+    map.setBounds(bounds);
+    map.setLevel(map.getLevel() - 1);
+  }
+
+  function removeMarkers() {
+    markers.forEach(m => m.setMap(null));
+    markers = [];
+  }
+
+  function displayPagination(pagination) {
+    const paginationEl = document.getElementById('pagination');
+    paginationEl.innerHTML = '';
+    for (let i = 1; i <= pagination.last; i++) {
+      const a = document.createElement('a');
+      a.href = '#';
+      a.innerText = i;
+      if (i === pagination.current) a.className = 'on';
+      else a.onclick = () => pagination.gotoPage(i);
+      paginationEl.appendChild(a);
+    }
+  }
+
+  navigator.geolocation.getCurrentPosition(function (position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    initMap(lat, lng);
+    document.getElementById('keyword').value = '병원';
+    searchPlaces();
+  }, function () {
+    initMap(37.5665, 126.9780);
+    searchPlaces();
+  });
+</script>
+</body>
 </html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>예약 완료</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background-color: #f0f4f8;
+      color: #2c3e50;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background-color: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #3498db;
+      margin-bottom: 30px;
+    }
+
+    .details {
+      text-align: left;
+      margin-top: 30px;
+    }
+
+    .detail-item {
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .detail-item strong {
+      display: block;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+
+    .detail-item span {
+      font-size: 16px;
+      color: #2c3e50;
+    }
+
+    .btn-group {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #3498db;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #2980b9;
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    form {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 예약이 완료되었습니다! 🎉</h1>
+
+    <div class="details">
+      <div class="detail-item">
+        <strong>병원 이름</strong>
+        <span>{{ hospital }}</span>
+      </div>
+      <div class="detail-item">
+        <strong>병원 주소</strong>
+        <span>{{ address }}</span>
+      </div>
+      <div class="detail-item">
+        <strong>예약자 이름</strong>
+        <span>{{ name }}</span>
+      </div>
+      <div class="detail-item">
+        <strong>연락처</strong>
+        <span>{{ phone }}</span>
+      </div>
+      <div class="detail-item">
+        <strong>요청 사항</strong>
+        <span>{{ message or "없음" }}</span>
+      </div>
+      <div class="detail-item">
+        <strong>이메일</strong>
+        <span>{{ email }}</span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <a href="/" class="btn">
+        <i data-lucide="home"></i> 홈으로
+      </a>
+      <a href="/find" class="btn">
+        <i data-lucide="calendar-plus"></i> 다시 예약
+      </a>
+      <a href="/my_reservations" class="btn">
+        <i data-lucide="clipboard-list"></i> 예약 내역
+      </a>
+      <form method="POST" action="/send_email">
+        <input type="hidden" name="hospital" value="{{ hospital }}">
+        <input type="hidden" name="address" value="{{ address }}">
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="phone" value="{{ phone }}">
+        <input type="hidden" name="message" value="{{ message }}">
+        <button type="submit" class="btn">
+          <i data-lucide="mail"></i> 이메일 전송
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
