@@ -19,7 +19,7 @@
       <div class="col-md-2 sidebar"> <!-- 현재 3에서 2로 조정 -->
         <div class="user-block d-flex flex-column align-items-center text-center mb-4">
           <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
-          <div class="user-name">{{ user_name or "오승준" }}</div>
+          <div class="user-name">{{ user_name or "USER" }}</div>
           <div class="user-email">{{ user_email or "test01@naver.com" }}</div>
 
           <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
@@ -39,16 +39,19 @@
       <div class="col-md-10 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h4>Home</h4>
-          <div class="text-end">
-            <p class="mb-0 small">Today's Date</p>
-            <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
+          <div class="d-flex align-items-center gap-2">
+            <div class="text-end">
+              <p class="mb-0 small">Today's Date</p>
+              <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
+            </div>
+            <img src="{{ url_for('static', filename='/img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
           </div>
         </div>
 
         <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/b3.jpg') left center / cover no-repeat; border-radius: 12px;">
-          <h5 class="fw-bold">Welcome!</h5>
-          <h3 class="fw-bold">{{ user_name or 'Test Patient' }}</h3>
-          <p>Haven't any idea about doctors? no problem let's jump to <strong>"All Doctors"</strong> or <strong>"Sessions"</strong>. Track your appointment history and find the expected arrival time of your consultant.</p>
+          <h5 class="fw-bold">안녕하세요</h5>
+          <h3 class="fw-bold">{{ user_name or 'Test Name' }}</h3>
+          <p>의사에 대해 잘 모르시겠다고요? 걱정하지 마세요! '전체 의사' 또는 '진료 세션'으로 이동해보세요. 예약 내역을 확인하고, 상담 예정 시간도 쉽게 확인할 수 있습니다.</p>
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Search Doctor and we will find the session available">
             <button class="btn btn-primary">Search</button>
