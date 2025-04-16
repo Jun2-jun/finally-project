@@ -69,17 +69,17 @@ def submit_reservation():
                            message=message,
                            email=email)
 
-mail = Mail(app)
 
 # Flask-Mail 설정
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # 예시로 Gmail SMTP 서버 사용
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USERNAME'] = 'doctorfutures2.0.0@gmail.com'  # 보내는 이메일 주소
-app.config['MAIL_PASSWORD'] = 'regd fery zlyu tbyg'  # 앱 비밀번호(2차인증)
+app.config['MAIL_PASSWORD'] = 'ohbu uulg lugu yxyl'  # 앱 비밀번호(2차인증)
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_DEFAULT_SENDER'] = 'doctorfutures2.0.0@gmail.com'  # 기본 보낸 사람
 
+mail = Mail(app)
 
 @app.route("/send_email", methods=["POST"])
 def send_email():

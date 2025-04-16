@@ -95,3 +95,13 @@ def dashboard_info():
         'users': users_count,
         'reservations': reservations_count
     })
+
+@api_bp.route('/test', methods=['GET'])
+def get_test():
+    name = request.args.get("name")
+    age = request.args.get("age")
+    res = {
+        "name": name,
+        "age":age
+    }
+    return jsonify(res)
