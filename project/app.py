@@ -1,17 +1,17 @@
-from flask import Flask, render_template, redirect, url_for, session
+from flask import Flask, render_template, redirect, url_for, session, request, flash
 from modules.connection import mysql, init_db
 from routes.auth import auth_bp
-from routes.reservation import reserve_bp
 from datetime import datetime
-
-
-
+from routes.reserve import reserve_bp
+from routes.api import api_bp
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 init_db(app)
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(reserve_bp, url_prefix="/api")
+app.register_blueprint(api_bp)
 
 @app.route('/')
 def home():
@@ -25,10 +25,6 @@ def login():
 def register():
     return render_template("register.html")
 
-@app.route('/reserve')
-def reserve():
-    return render_template("reserve.html")
-
 @app.route('/dashboard')
 def dashboard():
     return render_template("dashboard.html", now=datetime.now())
@@ -41,8 +37,67 @@ def find():
 def admin():
     return render_template("admin.html")
 
+@app.route('/reserve', methods=['GET', 'POST'])
+def reserve():
+    if request.method == 'POST':
+        hospital_name = request.form.get('hospital_name', '')
+        hospital_address = request.form.get('hospital_address', '')
+        return render_template("reserve.html", hospital_name=hospital_name, hospital_address=hospital_address)
+    else:
+        return render_template("reserve.html", hospital_name='', hospital_address='')
+
+app.route('/submit_reservation', methods=['POST'])
+def submit_reservation():
+    hospital = request.form.get('hospital')
+    address = request.form.get('address')
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+    message = request.form.get('message')
+    email = request.form.get('email')
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # 예시로 Gmail SMTP 서버 사용
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'doctorfutures2.0.0@gmail.com'  # 보내는 이메일 주소
+app.config['MAIL_PASSWORD'] = 'ohbu uulg lugu yxyl'  # 앱 비밀번호(2차인증)
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_DEFAULT_SENDER'] = 'doctorfutures2.0.0@gmail.com'  # 기본 보낸 사람
 
 
+
+app.route("/send_email", methods=["POST"])
+def send_email():
+    hospital = request.form["hospital"]
+    address = request.form["address"]
+    name = request.form["name"]
+    phone = request.form["phone"]
+    message = request.form["message"]
+    email = request.form.get("email", None)
+
+    if email:
+        print('가능')
+        subject = f"병원 예약 확인 - {hospital}"
+        body = f"""
+        안녕하세요, {name}님!
+
+        아래와 같이 병원 예약이 완료되었습니다:
+
+        ▷ 병원: {hospital}
+        ▷ 주소: {address}
+        ▷ 이름: {name}
+        ▷ 연락처: {phone}
+        ▷ 요청 사항: {message or "없음"}
+
+        감사합니다!
+        """
+
+        msg = Message(subject=subject, recipients=[email])
+        msg.body = body
+
+    else:
+        print('불가능')
+
+    return render_template("find.html")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

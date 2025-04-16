@@ -26,25 +26,18 @@
   </div>
 </div>
 
-<!-- 카카오 지도 API -->
+<!-- 카카오 지도 API + 병원 예약 로직 -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6be88c9794d7e1f9095b709637776b77&libraries=services"></script>
-<script>
-// --- JavaScript 코드 동일 ---
-</script>
-
 <script>
   let map;
   let markers = [];
   let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
-  const mapContainer = document.getElementById('map');
-
   function initMap(lat, lng) {
-    const mapOption = {
+    map = new kakao.maps.Map(document.getElementById('map'), {
       center: new kakao.maps.LatLng(lat, lng),
       level: 5
-    };
-    map = new kakao.maps.Map(mapContainer, mapOption);
+    });
   }
 
   function searchPlaces() {
@@ -55,9 +48,7 @@
     }
 
     const ps = new kakao.maps.services.Places();
-    ps.keywordSearch(keyword, placesSearchCB, {
-      location: map.getCenter()
-    });
+    ps.keywordSearch(keyword, placesSearchCB, { location: map.getCenter() });
   }
 
   function placesSearchCB(data, status, pagination) {
@@ -76,19 +67,12 @@
 
     const bounds = new kakao.maps.LatLngBounds();
 
-    places.forEach((place, index) => {
+    places.forEach((place) => {
       const position = new kakao.maps.LatLng(place.y, place.x);
-
-      const marker = new kakao.maps.Marker({
-        position,
-        map
-      });
+      const marker = new kakao.maps.Marker({ position, map });
 
       kakao.maps.event.addListener(marker, 'click', () => {
-        const content = `<div style="padding:5px;font-size:14px;">
-          <a href="${place.place_url}" target="_blank" style="text-decoration:none;color:#3498db;">${place.place_name}</a>
-        </div>`;
-        infowindow.setContent(content);
+        infowindow.setContent(`<div style="padding:5px;"><a href="${place.place_url}" target="_blank">${place.place_name}</a></div>`);
         infowindow.open(map, marker);
       });
 
@@ -96,7 +80,6 @@
       bounds.extend(position);
 
       const itemEl = document.createElement('li');
-
       itemEl.innerHTML = `
         <strong>${place.place_name}</strong><br>
         <span>${place.road_address_name || place.address_name}</span><br>
@@ -106,7 +89,7 @@
 
       itemEl.onclick = () => {
         map.setCenter(position);
-        infowindow.setContent(`<div style="padding:5px;"><a href="${place.place_url}" target="_blank" style="text-decoration:none;color:#3498db;">${place.place_name}</a></div>`);
+        infowindow.setContent(`<div style="padding:5px;"><a href="${place.place_url}" target="_blank">${place.place_name}</a></div>`);
         infowindow.open(map, marker);
       };
 
@@ -115,7 +98,7 @@
         e.stopPropagation();
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/reservation';
+        form.action = '/reserve'; // ✅ 수정된 부분
 
         const nameInput = document.createElement('input');
         nameInput.type = 'hidden';
@@ -129,6 +112,7 @@
 
         form.appendChild(nameInput);
         form.appendChild(addressInput);
+
         document.body.appendChild(form);
         form.submit();
       });
@@ -141,7 +125,7 @@
   }
 
   function removeMarkers() {
-    markers.forEach(m => m.setMap(null));
+    markers.forEach(marker => marker.setMap(null));
     markers = [];
   }
 
@@ -158,16 +142,16 @@
     }
   }
 
-  navigator.geolocation.getCurrentPosition(function (position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    initMap(lat, lng);
-    document.getElementById('keyword').value = '병원';
-    searchPlaces();
-  }, function () {
-    initMap(37.5665, 126.9780);
-    searchPlaces();
-  });
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      initMap(pos.coords.latitude, pos.coords.longitude);
+      searchPlaces();
+    },
+    () => {
+      initMap(37.5665, 126.9780);
+      searchPlaces();
+    }
+  );
 </script>
 </body>
 </html>

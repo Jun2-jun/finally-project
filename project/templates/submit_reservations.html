@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>예약 완료</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/submit_reservation.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 예약이 완료되었습니다! 🎉</h1>
+
+    <div class="details">
+      <div class="detail-item"><strong>병원 이름</strong><span>{{ hospital }}</span></div>
+      <div class="detail-item"><strong>병원 주소</strong><span>{{ address }}</span></div>
+      <div class="detail-item"><strong>예약자 이름</strong><span>{{ name }}</span></div>
+      <div class="detail-item"><strong>연락처</strong><span>{{ phone }}</span></div>
+      <div class="detail-item"><strong>요청 사항</strong><span>{{ message or "없음" }}</span></div>
+      <div class="detail-item"><strong>이메일</strong><span>{{ email }}</span></div>
+    </div>
+
+    <div class="btn-group">
+      <a href="/" class="btn"><i data-lucide="home"></i> 홈으로</a>
+      <a href="/find" class="btn"><i data-lucide="calendar-plus"></i> 다시 예약</a>
+      <a href="/my_reservations" class="btn"><i data-lucide="clipboard-list"></i> 예약 내역</a>
+      <form method="POST" action="/send_email">
+        <input type="hidden" name="hospital" value="{{ hospital }}">
+        <input type="hidden" name="address" value="{{ address }}">
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="phone" value="{{ phone }}">
+        <input type="hidden" name="message" value="{{ message }}">
+        <input type="hidden" name="email" value="{{ email }}">
+        <button type="submit" class="btn"><i data-lucide="mail"></i> 이메일 전송</button>
+      </form>
+    </div>
+  </div>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>
