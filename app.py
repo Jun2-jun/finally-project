@@ -5,6 +5,7 @@ from routes.auth import auth_bp
 from routes.reservation import reserve_bp
 
 app = Flask(__name__)
+app.secret_key = 'yougayoung123'
 init_db(app)
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -55,6 +56,8 @@ def submit_reservation():
     message = request.form.get('message')
     email = request.form.get('email')
 
+
+    # 예약 완료 후 예약 정보 페이지 보여줌 (이메일 전송은 아님)
     return render_template('submit_reservation.html',
                            hospital=hospital,
                            address=address,
@@ -67,11 +70,11 @@ def submit_reservation():
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # 예시로 Gmail SMTP 서버 사용
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'yougayoung114a@gmail.com'  # 보내는 이메일 주소
-app.config['MAIL_PASSWORD'] = '-'  # 이메일 계정 비밀번호
+app.config['MAIL_PASSWORD'] = 'ddqk qpcy oeyu wglp'  # 앱 비밀번호(2차인증)
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_DEFAULT_SENDER'] = 'yougayoung114a@gmail.com'  # 기본 보낸 사람
-app.secret_key = '`-`'
+
 
 mail = Mail(app)
 
@@ -82,37 +85,38 @@ def send_email():
     name = request.form["name"]
     phone = request.form["phone"]
     message = request.form["message"]
-    
-    # 이메일은 선택 사항이므로 get()을 사용하여 값이 없으면 None으로 처리
-    email = request.form.get("email", None)  # 이메일 입력이 없을 경우 기본값 None
+    email = request.form.get("email", None)
 
-    # 이메일이 없으면 이메일 전송을 생략할 수 있음
     if email:
-        # 이메일 내용 작성
+        print('가능')
         subject = f"병원 예약 확인 - {hospital}"
         body = f"""
-        예약 정보:
-        병원: {hospital}
-        주소: {address}
-        이름: {name}
-        연락처: {phone}
-        요청 사항: {message}
-        이메일: {email}
+        안녕하세요, {name}님!
+
+        아래와 같이 병원 예약이 완료되었습니다:
+
+        ▷ 병원: {hospital}
+        ▷ 주소: {address}
+        ▷ 이름: {name}
+        ▷ 연락처: {phone}
+        ▷ 요청 사항: {message or "없음"}
+
+        감사합니다!
         """
-        
-        # 이메일 전송
-        msg = Message(subject=subject, recipients=[email])  # 예약한 사람에게 이메일 전송
+
+        msg = Message(subject=subject, recipients=[email])
         msg.body = body
-        
+
         try:
             mail.send(msg)
-            flash('예약이 완료되었습니다. 이메일이 전송되었습니다!', 'success')  # 성공 알림
+            flash('이메일이 성공적으로 전송되었습니다.', 'success')
         except Exception as e:
-            flash(f'이메일 전송 중 오류가 발생했습니다: {e}', 'danger')  # 오류 알림
+            flash(f'이메일 전송 실패: {e}', 'danger')
     else:
-        flash('이메일이 입력되지 않았습니다.', 'warning')  # 이메일 입력 없을 때 경고
+        print('불가능')
+        flash('이메일 주소가 입력되지 않았습니다.', 'warning')
 
-    return render_template("find.html")  # 이메일 전송 후 홈으로 리디렉션
+    return render_template("find.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
