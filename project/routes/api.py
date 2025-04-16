@@ -90,12 +90,47 @@ def dashboard_info():
     cur.execute("SELECT COUNT(*) FROM reservations")
     reservations_count = cur.fetchone()[0]
 
+    cur.execute("SELECT COUNT(*) FROM reservations WHERE DATE(schedule_date) = CURDATE()")
+    today_sessions = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM reservations WHERE schedule_date >= NOW() - INTERVAL 1 DAY")
+    new_bookings = cur.fetchone()[0]
+
     cur.close()
     return jsonify({
         'users': users_count,
-        'reservations': reservations_count
+        'reservations': reservations_count,
+        'new_bookings': new_bookings,
+        'today_sessions': today_sessions
     })
 
+# 7. 예약 리스트 - 대시보드 표시용
+@api_bp.route('/upcoming-reservations', methods=['GET'])
+def upcoming_reservations():
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT id, name, hospital, schedule_date
+        FROM reservations
+        ORDER BY schedule_date ASC
+        LIMIT 5
+    """)
+    rows = cur.fetchall()
+    cur.close()
+
+    results = [
+        {
+            'id': row[0],
+            'session_title': row[1],  # 예약자명
+            'doctor': row[2],         # 병원명
+            'datetime': row[3].strftime('%Y-%m-%d %H:%M')
+        }
+        for row in rows
+    ]
+
+    return jsonify(results)
+
+
+# 그냥 테스트
 @api_bp.route('/test', methods=['GET'])
 def get_test():
     name = request.args.get("name")
