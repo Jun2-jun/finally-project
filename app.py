@@ -67,11 +67,11 @@ def submit_reservation():
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # 예시로 Gmail SMTP 서버 사용
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'yougayoung114a@gmail.com'  # 보내는 이메일 주소
-app.config['MAIL_PASSWORD'] = 'yougayoung123'  # 이메일 계정 비밀번호
+app.config['MAIL_PASSWORD'] = '-'  # 이메일 계정 비밀번호
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_DEFAULT_SENDER'] = 'yougayoung114a@gmail.com'  # 기본 보낸 사람
-app.secret_key = 'yougayoung123'
+app.secret_key = '`-`'
 
 mail = Mail(app)
 
