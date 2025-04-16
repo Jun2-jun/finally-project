@@ -1,5 +1,6 @@
 from flask import Blueprint, request, render_template
-from modules.db import mysql
+from modules.connection import mysql
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -24,4 +25,4 @@ def register_post():
     cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, password))
     mysql.connection.commit()
     cur.close()
-    return "✅ 회원가입 완료! <a href='/login'>로그인하기</a>"
+    return "회원가입 완료! <a href='/login'>로그인하기</a>"

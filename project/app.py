@@ -1,7 +1,11 @@
-from flask import Flask, render_template
-from modules.db import init_db
+from flask import Flask, render_template, redirect, url_for, session
+from modules.connection import mysql, init_db
 from routes.auth import auth_bp
 from routes.reservation import reserve_bp
+from datetime import datetime
+
+
+
 
 app = Flask(__name__)
 init_db(app)
@@ -11,7 +15,7 @@ app.register_blueprint(reserve_bp, url_prefix="/api")
 
 @app.route('/')
 def home():
-    return render_template("home.html")
+    return render_template("index.html")
 
 @app.route('/login')
 def login():
@@ -25,5 +29,11 @@ def register():
 def reserve():
     return render_template("reserve.html")
 
+@app.route('/dashboard')
+def dashboard():
+    return render_template("dashboard.html", now=datetime.now())
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+

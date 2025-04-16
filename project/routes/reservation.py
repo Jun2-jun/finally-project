@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from modules.db import mysql
+from modules.connection import mysql
 
 reserve_bp = Blueprint('reserve', __name__)
 
@@ -18,4 +18,4 @@ def make_reservation():
     mysql.connection.commit()
     cur.close()
 
-    return "✅ 예약 완료! <a href='/'>홈으로</a>"
+    return "예약 완료! <a href='/'>홈으로</a>"

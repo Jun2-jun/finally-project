@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - eDoc</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
+  <script>
+    function logout() {
+      alert("로그아웃 되었습니다.");
+      window.location.href = "/login";
+    }
+  </script>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+            <!-- Sidebar -->
+      <div class="col-md-3 sidebar">
+        <div class="user-block d-flex flex-column align-items-center text-center mb-5">
+          <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
+          <div class="user-name">{{ user_name or "Test Patient" }}</div>
+          <div class="user-email">{{ user_email or "patient@edoc.com" }}</div>
+
+          <!-- ✅ 추가된 My Page 버튼 -->
+          <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
+
+          <!-- 기존 로그아웃 버튼 -->
+          <button onclick="logout()" class="btn btn-outline-primary btn-sm w-75">Log out</button>
+        </div>
+
+        <ul class="nav flex-column">
+          <li class="nav-item"><a href="#" class="nav-link active"><img src="{{ url_for('static', filename='img/icons/home.svg') }}" class="icon"> Home</a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><img src="{{ url_for('static', filename='img/icons/doctors.svg') }}" class="icon"> All Doctors</a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> Scheduled Sessions</a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> My Bookings</a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><img src="{{ url_for('static', filename='img/icons/settings.svg') }}" class="icon"> Settings</a></li>
+        </ul>
+      </div>
+
+      <!-- Main Body -->
+      <div class="col-md-9 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4>Home</h4>
+          <div class="text-end">
+            <p class="mb-0 small">Today's Date</p>
+            <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
+          </div>
+        </div>
+
+        <div class="banner-wrapper p-4 mb-4">
+          <h5 class="fw-bold">Welcome!</h5>
+          <h3 class="fw-bold">{{ user_name or 'Test Patient' }}</h3>
+          <p>Haven't any idea about doctors? no problem let's jump to <strong>"All Doctors"</strong> or <strong>"Sessions"</strong>. Track your appointment history and find the expected arrival time of your consultant.</p>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search Doctor and we will find the session available">
+            <button class="btn btn-primary">Search</button>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-3"><div class="status-box">1<br><small>All Doctors</small></div></div>
+          <div class="col-md-3"><div class="status-box">2<br><small>All Patients</small></div></div>
+          <div class="col-md-3"><div class="status-box">1<br><small>NewBooking</small></div></div>
+          <div class="col-md-3"><div class="status-box">0<br><small>Today Sessions</small></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header fw-bold">Your Upcoming Booking</div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Appoint. Number</th>
+                  <th>Session Title</th>
+                  <th>Doctor</th>
+                  <th>Scheduled Date & Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Test Session</td>
+                  <td>Test Doctor</td>
+                  <td>2050-01-01 18:00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
