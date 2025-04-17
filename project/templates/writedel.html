@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+</head>
+<body>
+    <h1>게시물 목록</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li style="color: red;">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <ul>
+        {% for post in posts %}
+            <li>
+                {{ post.title }}
+                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post" style="display:inline;">
+                    <button type="submit">삭제</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
