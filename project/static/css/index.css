@@ -17,7 +17,6 @@ html, body {
     max-height: 100vh;
     height: 100vh;
 
-
 }
 table{
     width: 100%;
@@ -81,7 +80,9 @@ table{
 .footer-hashen{
     position: absolute;
     bottom: 0;
-    left: 45%;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 13px;
     animation: transitionIn-Y-over 0.5s;
 }
+

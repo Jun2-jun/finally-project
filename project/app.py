@@ -24,11 +24,11 @@ def home():
 
 @app.route('/login')
 def login():
-    return render_template("login.html")
+    return render_template("login.html", now=datetime.now())
 
 @app.route('/register')
 def register():
-    return render_template("register.html")
+    return render_template("register.html", now=datetime.now())
 
 @app.route('/dashboard')
 def dashboard():
@@ -36,11 +36,23 @@ def dashboard():
 
 @app.route('/find')
 def find():
-    return render_template("find.html")
+    return render_template("find.html", now=datetime.now())
+
+@app.route('/mypage')
+def mypage():
+    return render_template("mypage.html", now=datetime.now())
 
 @app.route('/admin')
 def admin():
-    return render_template("admin.html")
+    return render_template("admin.html", now=datetime.now())
+
+@app.route('/qna')
+def qna():
+    return render_template("qna.html", now=datetime.now())
+
+@app.route('/notice')
+def notice():
+    return render_template("notice.html", now=datetime.now())
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():

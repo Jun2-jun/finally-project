@@ -28,8 +28,8 @@
         <ul class="nav flex-column">
           <li class="nav-item"><a href="/dashboard" class="nav-link"><img src="{{ url_for('static', filename='img/icons/home.svg') }}" class="icon"> Home</a></li>
           <li class="nav-item"><a href="/find" class="nav-link active"><img src="{{ url_for('static', filename='img/icons/doctors.svg') }}" class="icon"> reservations</a></li>
-          <li class="nav-item"><a href="#" class="nav-link"><img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> Notice</a></li>
-          <li class="nav-item"><a href="#" class="nav-link"><img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> Q&A</a></li>
+          <li class="nav-item"><a href="/notice" class="nav-link"><img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> Notice</a></li>
+          <li class="nav-item"><a href="/qna" class="nav-link"><img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> Q&A</a></li>
           <li class="nav-item"><a href="#" class="nav-link"><img src="{{ url_for('static', filename='img/icons/settings.svg') }}" class="icon"> 비대면 진료</a></li>
         </ul>
       </div>
@@ -50,7 +50,7 @@
 
         <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/b8.jpg') left center / cover no-repeat; border-radius: 12px;">
           <h5 class="fw-bold">안녕하세요</h5>
-          <h3 class="fw-bold">{{ user_name or 'Test Name' }}</h3>
+          <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
           <p>병원 예약페이지 입니다. 병원을 검색해주세요!</p>
           <div class="input-group">
             <input type="text" class="form-control" placeholder="동네 및 병원을 입력하세요">

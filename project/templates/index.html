@@ -51,16 +51,26 @@
         <tr>
           <td colspan="3">
             <center>
-              <button class="login-btn btn-primary btn"
-                      onclick="redirectToLogin()"
-                      style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
-                Make Appointment
-              </button>
+              <div style="display: flex; justify-content: center; gap: 30px;">
+                <!-- 왼쪽 버튼도 동일한 클래스와 스타일로 -->
+                <button class="login-btn btn-primary btn"
+                        onclick="location.href='#'"
+                        style="padding: 10px 25px;">
+                  앱 다운로드
+                </button>
+              
+                <!-- 기존 오른쪽 버튼 -->
+                <button class="login-btn btn-primary btn"
+                        onclick="redirectToLogin()"
+                        style="padding: 10px 25px;">
+                  웹 예약하기
+                </button>
+              </div>
             </center>
           </td>
         </tr>
       </table>
-      <p class="sub-text2 footer-hashen">A Web Solution by Hashen.</p>
+      <p class="sub-text2 footer-hashen">SK Shieldus Rookies</p>
     </center>
   </div>
 
