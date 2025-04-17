@@ -37,7 +37,7 @@
       <!-- Main Body -->
       <div class="col-md-10 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4>Reservations</h4>
+          <h4>예약하기</h4>
           <div class="d-flex align-items-center gap-2">
             <div class="text-end">
               <p class="mb-0 small">Today's Date</p>
@@ -52,17 +52,9 @@
           <h5 class="fw-bold">안녕하세요</h5>
           <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
           <p>병원 예약페이지 입니다. 병원을 검색해주세요!</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="동네 및 병원을 입력하세요">
-            <button class="btn btn-primary">Search</button>
-          </div>
-        </div>
-
-        <!-- 검색 바 -->
-        <div class="search-bar mb-3">
-          <form onsubmit="searchPlaces(); return false;">
-            <input type="text" id="keyword" value="병원" placeholder="동네 및 병원을 입력하세요">
-            <button type="submit">검색</button>
+          <form class="input-group mb-3" onsubmit="searchPlaces(); return false;">
+            <input type="text" id="keyword" value="내과" class="form-control" placeholder="동네 및 병원을 입력하세요">
+            <button class="btn btn-primary" type="submit">검색</button>
           </form>
         </div>
 

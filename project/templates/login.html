@@ -11,7 +11,9 @@
 <body>
   <div class="container">
     <div class="login-form">
-      <h2 class="header-text">환영합니다!</h2>
+      <h2 class="header-text">
+        <a href="{{ url_for('home') }}" class="home-link">Dr.Future</a>
+      </h2>
       <p class="sub-text">로그인하고 편리한 서비스를 이용해보세요</p>
 
       <form action="{{ url_for('auth.login_post') }}" method="POST">
@@ -25,7 +27,8 @@
       </form>
 
       <p class="register-link sub-text">
-        Don't have an account? <a href="{{ url_for('register') }}" class="hover-link1">Sign Up</a>
+        Don't have an account? <a href="{{ url_for('register') }}" class="hover-link1"> Sign Up</a>
+        
       </p>
     </div>
   </div>
