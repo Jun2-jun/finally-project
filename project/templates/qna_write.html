@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자주 묻는 질문</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/qna_write.css') }}">
+</head>
+<body>
+    <h2>자주 묻는 질문</h2>
+    <form method="POST" action="/qna/qna_write" id="content-form" enctype="multipart/form-data">
+        <label for="title">제목</label>
+        <input type="text" name="title" id="title" placeholder="제목을 입력하세요" required>
+
+        <label for="comment">내용</label>
+        <div class="editor-container">
+            <div class="toolbar">
+                <!-- 툴바 버튼 생략: 동일하게 유지 -->
+            </div>
+            <div class="editor" id="editor" contenteditable="true">내용을 입력하세요</div>
+            <textarea name="comment" id="comment" style="display: none;"></textarea>
+        </div>
+
+        <!-- 이미지 업로드 및 미리보기 관련 DOM 생략: 동일하게 유지 -->
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <a href="{{ url_for('qna') }}" class="del-button" style="text-align: center; text-decoration: none;">목록으로 돌아가기</a>
+            <button type="submit" class="write-button">등록</button>
+        </div>
+    </form>
+
+    <div class="alerts" id="alerts-container"></div>
+
+    <!-- 스크립트 포함 -->
+    <script src="{{ url_for('static', filename='js/qna_editor.js') }}"></script>
+</body>
+</html>

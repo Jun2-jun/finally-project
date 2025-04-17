@@ -6,6 +6,8 @@ from routes.reserve import reserve_bp
 from routes.api import api_bp
 from flask_mail import Mail, Message
 from routes.submit_reservation import submit_bp
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'yougayoung123'
@@ -48,7 +50,11 @@ def admin():
 
 @app.route('/qna')
 def qna():
-    return render_template("qna.html", now=datetime.now())
+    return render_template("qna.html",  now=datetime.now())
+
+@app.route('/qna/write')
+def qna_write():
+    return render_template('qna_write.html') 
 
 @app.route('/notice')
 def notice():
@@ -67,7 +73,7 @@ def reserve():
     else:
         return render_template("reserve.html", hospital_name='', hospital_address='')
 
-app.route('/submit_reservation', methods=['POST'])
+@app.route('/submit_reservation', methods=['POST'])
 def submit_reservation():
     hospital = request.form.get('hospital')
     address = request.form.get('address')
@@ -136,6 +142,7 @@ def send_email():
         print('불가능: 이메일 주소 없음.')
 
     return render_template("find.html")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

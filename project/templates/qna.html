@@ -35,22 +35,61 @@
         </ul>
       </div>
 
-      <!-- Main Body -->
-      <div class="col-md-10 p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4>Q&A</h4>
-          <div class="d-flex align-items-center gap-2">
-            <div class="text-end">
-              <p class="mb-0 small">Today's Date</p>
-              <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
-            </div>
-            <img src="{{ url_for('static', filename='/img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
-          </div>
-        </div>
+<!-- Main Body -->
+<div class="col-md-10 p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Q&A</h4>
+    <div class="d-flex align-items-center gap-2">
+      <div class="text-end">
+        <p class="mb-0 small">Today's Date</p>
+        <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
+      </div>
+      <img src="{{ url_for('static', filename='/img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
+    </div>
+  </div>
 
+  <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/b8.jpg') left center / cover no-repeat; border-radius: 12px;">
+    <h5 class="fw-bold">안녕하세요</h5>
+    <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
+    <p>Q&A 게시판입니다!</p>
+  </div>
 
-        <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/b8.jpg') left center / cover no-repeat; border-radius: 12px;">
-          <h5 class="fw-bold">안녕하세요</h5>
-          <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
-          <p>Q&A 게시판입니다!</p>
-        </div>
+  <!-- Q&A 테이블 -->
+  <div class="qna-wrapper">
+    <table class="table table-bordered text-center align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>No</th>
+          <th>제목</th>
+          <th>카테고리</th>
+          <th>작성 시간</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if posts %}
+        {% for post in posts %}
+        <tr onclick="location.href='/qna/post/{{ post.id }}'" style="cursor:pointer;">
+          <td>{{ post.no }}</td>
+          <td>
+            <a href="{{ url_for('qna_post_detail', post_id=post.id) }}" style="text-decoration: none; color: inherit;">
+              {{ post.title }}
+            </a>
+          </td>
+          <td>{{ post.category }}</td>
+          <td>{{ post.created_at }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="4" class="text-muted py-4">질문이 없습니다.</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+    <div class="text-end mt-3">
+      <a href="{{ url_for('qna_write') }}" class="btn btn-primary">글쓰기</a>
+    </div>
+  </div>
+</div>
+
