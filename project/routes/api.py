@@ -10,8 +10,17 @@ CORS(api_bp)
 def get_users():
     cur = mysql.connection.cursor()
     cur.execute("SELECT id, username, email FROM users")
-    users = cur.fetchall()
+    rows = cur.fetchall()
     cur.close()
+
+    users = []
+    for row in rows:
+        users.append({
+            "id": row[0],
+            "username": row[1],
+            "email": row[2]
+        })
+
     return jsonify(users)
 
 # 2. 예약 목록 - admin 페이지용
@@ -19,8 +28,22 @@ def get_users():
 def get_reservations():
     cur = mysql.connection.cursor()
     cur.execute("SELECT id, name, phone, hospital, address, message, email FROM reservations")
-    reservations = cur.fetchall()
+    rows = cur.fetchall()
     cur.close()
+
+    reservations = [
+        {
+            "id": row[0],
+            "name": row[1],
+            "phone": row[2],
+            "hospital": row[3],
+            "address": row[4],
+            "message": row[5],
+            "email": row[6],
+        }
+        for row in rows
+    ]
+
     return jsonify(reservations)
 
 # 3. 병원 예약 생성 - reserve, submit_reserve.html POST용
