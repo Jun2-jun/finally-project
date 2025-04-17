@@ -86,13 +86,13 @@ body {
   }
 
   .home-link {
-    text-decoration: none;
-    color: inherit;
-    font-weight: bold;
-  }
-  
-  .home-link:hover {
-    text-decoration: underline;
-    color: #007bff; /* 혹은 원하는 색상 */
-  }
+  text-decoration: none;
+  color: inherit;
+  font-weight: bold;
+}
+
+.home-link:hover {
+  text-decoration: underline;
+  color: #007bff; /* 혹은 원하는 색상 */
+}
   
