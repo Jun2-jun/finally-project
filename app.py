@@ -1,19 +1,26 @@
-from flask import Flask, render_template, request, redirect, flash
-from flask_mail import Mail, Message
-from modules.db import init_db
+from flask import Flask, render_template, redirect, url_for, session, request, flash
+from modules.connection import mysql, init_db
 from routes.auth import auth_bp
-from routes.reservation import reserve_bp
+from datetime import datetime
+# from routes.reserve import reserve_bp
+from routes.api import api_bp
+from flask_mail import Mail, Message
+from routes.submit_reservation import submit_bp
 
 app = Flask(__name__)
 app.secret_key = 'yougayoung123'
 init_db(app)
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
-app.register_blueprint(reserve_bp, url_prefix="/api")
+# app.register_blueprint(reserve_bp, url_prefix="/api")
+app.register_blueprint(api_bp)
+app.register_blueprint(submit_bp)
+
+
 
 @app.route('/')
 def home():
-    return render_template("home.html")
+    return render_template("index.html")
 
 @app.route('/login')
 def login():
@@ -23,31 +30,28 @@ def login():
 def register():
     return render_template("register.html")
 
-@app.route('/reserve')
-def reserve():
-    return render_template("reserve.html")
-
-@app.route('/admin')
-def admin():
-    return render_template("admin.html")
+@app.route('/dashboard')
+def dashboard():
+    return render_template("dashboard.html", now=datetime.now())
 
 @app.route('/find')
 def find():
     return render_template("find.html")
 
-@app.route('/reservation', methods=['GET', 'POST'])
-def reservation():
+@app.route('/admin')
+def admin():
+    return render_template("admin.html")
+
+@app.route('/reserve', methods=['GET', 'POST'])
+def reserve():
     if request.method == 'POST':
         hospital_name = request.form.get('hospital_name', '')
         hospital_address = request.form.get('hospital_address', '')
-    else:  # 혹시 사용자가 직접 주소로 접근할 경우 대비
-        hospital_name = ''
-        hospital_address = ''
-    return render_template('reservation.html', hospital_name=hospital_name, hospital_address=hospital_address)
+        return render_template("reserve.html", hospital_name=hospital_name, hospital_address=hospital_address)
+    else:
+        return render_template("reserve.html", hospital_name='', hospital_address='')
 
-from flask import request, render_template
-
-@app.route('/submit_reservation', methods=['POST'])
+app.route('/submit_reservation', methods=['POST'])
 def submit_reservation():
     hospital = request.form.get('hospital')
     address = request.form.get('address')
@@ -55,7 +59,6 @@ def submit_reservation():
     phone = request.form.get('phone')
     message = request.form.get('message')
     email = request.form.get('email')
-
 
     # 예약 완료 후 예약 정보 페이지 보여줌 (이메일 전송은 아님)
     return render_template('submit_reservation.html',
@@ -66,15 +69,15 @@ def submit_reservation():
                            message=message,
                            email=email)
 
+
 # Flask-Mail 설정
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # 예시로 Gmail SMTP 서버 사용
-app.config['MAIL_PORT'] = 465
+app.config['MAIL_PORT'] = 587
 app.config['MAIL_USERNAME'] = 'doctorfutures2.0.0@gmail.com'  # 보내는 이메일 주소
 app.config['MAIL_PASSWORD'] = 'ohbu uulg lugu yxyl'  # 앱 비밀번호(2차인증)
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_DEFAULT_SENDER'] = 'doctorfutures2.0.0@gmail.com'  # 기본 보낸 사람
-
 
 mail = Mail(app)
 
@@ -109,14 +112,15 @@ def send_email():
 
         try:
             mail.send(msg)
-            flash('이메일이 성공적으로 전송되었습니다.', 'success')
+            print("이메일 전송 완료")
         except Exception as e:
-            flash(f'이메일 전송 실패: {e}', 'danger')
+            print("이메일 전송 실패:", e)
+
     else:
-        print('불가능')
-        flash('이메일 주소가 입력되지 않았습니다.', 'warning')
+        print('불가능: 이메일 주소 없음.')
 
     return render_template("find.html")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
