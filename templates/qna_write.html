@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>닥터퓨쳐 - Q&A 글쓰기</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/qna_write.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script>
+    function logout() {
+      alert("로그아웃 되었습니다.");
+      window.location.href = "/login";
+    }
+  </script>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- 사이드바 -->
+      <div class="col-md-2 sidebar">
+        <div class="user-block d-flex flex-column align-items-center text-center mb-4">
+          <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
+          <div class="user-name">{{ user_name or "USER" }}</div>
+          <div class="user-email">{{ user_email or "test01@naver.com" }}</div>
+          <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
+          <button onclick="logout()" class="btn btn-outline-primary btn-sm w-75">Log out</button>
+        </div>
+
+        <ul class="nav flex-column">
+          <li class="nav-item"><a href="/dashboard" class="nav-link"><img src="{{ url_for('static', filename='img/icons/home.svg') }}" class="icon"> Home</a></li>
+          <li class="nav-item"><a href="/find" class="nav-link"><img src="{{ url_for('static', filename='img/icons/doctors.svg') }}" class="icon"> reservations</a></li>
+          <li class="nav-item"><a href="/notice" class="nav-link"><img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> Notice</a></li>
+          <li class="nav-item"><a href="/qna" class="nav-link active"><img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> Q&A</a></li>
+          <li class="nav-item"><a href="/ai" class="nav-link"><img src="{{ url_for('static', filename='img/icons/settings.svg') }}" class="icon"> AI 챗봇 & 비대면 진료 </a></li>
+        </ul>
+      </div>
+
+      <!-- 본문 -->
+      <div class="col-md-10 p-4">
+        <!-- 상단 날짜 및 이름 배너 -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4>Q&A</h4>
+          <div class="d-flex align-items-center gap-2">
+            <div class="text-end">
+              <p class="mb-0 small">Today's Date</p>
+              <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
+            </div>
+            <img src="{{ url_for('static', filename='img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
+          </div>
+        </div>
+
+        <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/table.jpg') left center / cover no-repeat; border-radius: 12px;">
+          <h5 class="fw-bold">안녕하세요</h5>
+          <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
+          <p>Q&A 게시판입니다!</p>
+        </div>
+
+       <!-- 기존 카드 안의 form 내용만 수정 -->
+  <div class="card p-4">
+    <h5>글쓰기</h5>
+    <form method="POST" action="/qna/qna_write" id="content-form" enctype="multipart/form-data">
+      
+      <!-- 제목 -->
+      <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="제목을 입력하세요" required>
+      </div>
+    </form>
+    {% include 'editor/editor.html' %}
+  </div>
+  
+
+  <!-- 에디터 관련 JS -->
+  <script src="{{ url_for('static', filename='js/qna_editor.js') }}"></script>
+</body>
+</html>

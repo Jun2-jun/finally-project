@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>닥터퓨쳐 - 병원 예약하기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 외부 CSS 연결 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reserve.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>병원 예약하기</h2>
+    <form method="POST" action="/submit_reservation">
+      <div class="info-box">
+        <label for="hospital">병원 이름</label>
+        <input type="text" id="hospital" name="hospital" value="{{ hospital_name }}" readonly>
+
+        <label for="address">병원 주소</label>
+        <input type="text" id="address" name="address" value="{{ hospital_address }}" readonly>
+      </div>
+
+      <div class="info-box">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="홍길동" required>
+
+        <label for="phone">연락처</label>
+        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
+
+        <label for="message">요청 사항</label>
+        <textarea id="message" name="message" rows="4" placeholder="특이사항을 입력해주세요."></textarea>
+        
+        <!-- 이메일 입력 필드 (선택사항) -->
+        <label for="email">이메일 (선택)</label>
+        <input type="email" id="email" name="email" placeholder="example@example.com">
+      </div>
+
+      <button type="submit">예약 신청하기</button>
+    </form>
+  </div>
+</body>
+</html>

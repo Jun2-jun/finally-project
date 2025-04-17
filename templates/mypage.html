@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Page - 닥터퓨쳐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
+</head>
+<body>
+  <div class="mypage-container">
+    <div class="card">
+      <h2 class="header-text">마이페이지</h2>
+      <p class="sub-text">반갑습니다, {{ user_name or 'USER' }}님!</p>
+
+      <div class="info-group">
+        <label>Name:</label>
+        <span>{{ user_name or 'USER' }}</span>
+      </div>
+      <div class="info-group">
+        <label>Email:</label>
+        <span>{{ user_email or 'Test01@naver.com' }}</span>
+      </div>
+      <div class="info-group">
+        <label>Joined:</label>
+        <span>{{ join_date or '2025-01-01' }}</span>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-outline">Edit Info</button>
+        <button class="btn-primary">Change Password</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
