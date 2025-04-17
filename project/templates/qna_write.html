@@ -22,9 +22,10 @@
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            border: 2px solid #2cce57;
+            border: 2px solid #3498db;
             border-radius: 5px;
             font-size: 16px;
+            box-sizing: border-box;
         }
         input[type="text"]::placeholder {
             color: #a9a9a9;
@@ -40,7 +41,7 @@
             background-color: #f3f3f3;
             padding: 10px;
             border-radius: 5px 5px 0 0;
-            border: 2px solid #2cce57;
+            border: 2px solid #3498db;
             border-bottom: none;
             display: flex;
             flex-wrap: wrap;
@@ -58,8 +59,8 @@
             background-color: #e9e9e9;
         }
         .toolbar button.active {
-            background-color: #c1ffd2;
-            border-color: #2cce57;
+            background-color: #5abdff;
+            border-color: #3498db;
         }
         .separator {
             width: 1px;
@@ -67,31 +68,32 @@
             margin: 0 5px;
         }
         .editor {
-            min-height: 300px;
+            min-height: 400px;
             padding: 10px;
-            border: 2px solid #2cce57;
+            border: 2px solid #3498db;
             border-radius: 0 0 5px 5px;
             font-size: 16px;
             outline: none;
             overflow-y: auto;
+            box-sizing: border-box;
         }
         .write-button {
-            margin-top: 20px;
+            margin-top: 5px;
             margin-right: 10px;
-            padding: 10px 20px;
-            background-color: #2cce57;
+            padding: 8px 16px;
+            background-color: #5abdff;
             color: white;
-            border: 2px solid #0e8d3e;
+            border: 2px solid #3498db;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
         }
         .write-button:hover {
-            background-color: #0e8d3e;
+            background-color: #3498db;
         }
         .del-button {
-            margin-top: 20px;
-            padding: 10px 20px;
+            margin-top: 5px;
+            padding: 8px 16px;
             background-color: #e53434;
             color: white;
             border: 2px solid #941717;
@@ -129,7 +131,7 @@
             transition: opacity 0.3s;
         }
         .alert-success {
-            background-color: #2cce57;
+            background-color: #3498db;
         }
         .alert-error {
             background-color: #e53434;
@@ -202,7 +204,7 @@
         }
         .tab-button.active {
             opacity: 1;
-            border-bottom: 2px solid #2cce57;
+            border-bottom: 2px solid #3498db;
         }
         .tab-content {
             display: none;
@@ -218,7 +220,7 @@
             cursor: pointer;
         }
         .file-upload-area:hover {
-            border-color: #2cce57;
+            border-color: #3498db;
         }
         #file-upload {
             display: none;
@@ -232,7 +234,7 @@
         }
         .insert-button {
             padding: 10px 20px;
-            background-color: #2cce57;
+            background-color: #3498db;
             color: white;
             border: none;
             border-radius: 5px;
@@ -296,7 +298,7 @@
 </head>
 <body>
     <h2>자주 묻는 질문</h2>
-    <form method="POST" action="/qna/qnawrite" id="content-form" enctype="multipart/form-data">
+    <form method="POST" action="/qna/qna_write" id="content-form" enctype="multipart/form-data">
         <label for="title">제목</label>
         <input type="text" name="title" id="title" placeholder="제목을 입력하세요" required>
 
@@ -351,6 +353,10 @@
             <div class="editor" id="editor" contenteditable="true">내용을 입력하세요</div>
             <textarea name="comment" id="comment" style="display: none;"></textarea>
         </div>
+        <div id="uploaded-preview-container" style="margin-top: 20px;">
+            <p id="upload-count-text" style="font-size: 16px; font-weight: bold; margin: 10px 0;">업로드된 이미지: 0 / 5</p>
+            <ul id="uploaded-files"></ul>
+        </div>
 
         <!-- 이미지 파일을 저장하기 위한 히든 입력 필드 -->
         <div id="image-uploads-container" style="display: none;"></div>
@@ -358,6 +364,7 @@
         <!-- 파일 업로드 input (모달 내부에서 사용) -->
         <div class="image-modal" id="image-modal">
             <div class="image-modal-content">
+                <div id="image-alert" style="display: none; background-color: #e53434; color: white; padding: 10px; border-radius: 5px; margin-bottom: 10px;"></div>
                 <div class="modal-header">
                     <h3>이미지 삽입</h3>
                     <span class="modal-close" id="close-modal">&times;</span>
@@ -385,18 +392,13 @@
             </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-            <button type="button" class="del-button">삭제</button>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <a href="{{ url_for('qna') }}" class="del-button" style="text-align: center; text-decoration: none;">목록으로 돌아가기</a>
             <button type="submit" class="write-button">등록</button>
         </div>
+        
     </form>
-
-    <!-- 업로드된 이미지 파일명 리스트 영역 -->
-    <div id="uploaded-preview-container">
-        <h4>업로드된 이미지</h4>
-        <p id="upload-count-text">업로드된 이미지: 0 / 5</p>
-        <ul id="uploaded-files"></ul>
-    </div>
+    
 
     <div class="alerts" id="alerts-container"></div>
 
@@ -554,9 +556,14 @@
             document.getElementById('image').addEventListener('click', function () {
                 imageModal.style.display = 'flex';
 
-                //이미지 삽입창을 열 때 미리보기 초기화
+                // 업로드 미리보기 초기화
                 uploadPreview.src = '';
                 uploadPreview.style.display = 'none';
+                uploadPreview.removeAttribute('data-image-id');
+                uploadPreview.removeAttribute('data-file');
+                insertUpload.disabled = true;
+
+                // 기타 초기화
                 uploadPreview.removeAttribute('width');
                 uploadPreview.removeAttribute('height');
             });
@@ -635,11 +642,15 @@
                 // 업로드된 파일 갯수 제한 (최대 5)
                 const currentFileCount = document.querySelectorAll('#uploaded-files li').length;
                 if (currentFileCount >= 5) {
-                    showAlert('error', '이미지는 최대 5개까지만 업로드할 수 있습니다.');
+                    const alertBox = document.getElementById('image-alert');
+                    alertBox.textContent = '이미지는 최대 5개까지만 업로드할 수 있습니다.';
+                    alertBox.style.display = 'block';
                     return;
                 }
-                
+
                 if (file && file.type.match('image.*')) {
+                    const imageId = 'img-' + (++imageCounter);
+
                     const reader = new FileReader();
                     
                     reader.onload = function(e) {
@@ -653,7 +664,6 @@
                     reader.readAsDataURL(file);
                     
                     // 히든 input 생성 및 파일 저장
-                    const imageId = 'img-' + (++imageCounter);
                     const fileInput = document.createElement('input');
                     fileInput.type = 'file';
                     fileInput.name = 'image-' + imageId;
@@ -662,7 +672,6 @@
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(file);
                     fileInput.files = dataTransfer.files;
-                    
                     imageUploadsContainer.appendChild(fileInput);
                     
                     // 파일명 리스트에 항목 추가
@@ -679,11 +688,44 @@
                     removeBtn.className = 'remove-file-btn';
                     removeBtn.innerHTML = '&times;';
                     removeBtn.addEventListener('click', function () {
-                        listItem.remove();       // 리스트 항목 제거
-                        fileInput.remove();      // 히든 input 제거
-                        updateUploadCount();     // 개수 업데이트
+                        listItem.remove();
+                        fileInput.remove();
+                        updateUploadCount();
+
+                        // 현재 삭제하려는 이미지 ID
+                        const previewImageId = uploadPreview.getAttribute('data-image-id');
+                        const deletedImageId = imageId;
+
+                        // 1. 에디터 내부에 삽입된 이미지 제거
+                        const editorImages = editor.querySelectorAll(`img[data-image-id="${deletedImageId}"]`);
+                        editorImages.forEach(img => {
+                            const wrapper = img.closest('.image-wrapper');
+                            if (wrapper) {
+                                wrapper.remove();
+                            }
+                        });
+
+                        // 2. 이미지 미리보기에 해당 이미지가 있을 경우 제거
+                        if (previewImageId === deletedImageId) {
+                            uploadPreview.src = '';
+                            uploadPreview.style.display = 'none';
+                            uploadPreview.removeAttribute('data-image-id');
+                            uploadPreview.removeAttribute('data-file');
+                            uploadPreview.removeAttribute('width');
+                            uploadPreview.removeAttribute('height');
+                            insertUpload.disabled = true;
+                        }
+
+                        // 3. URL 입력창 초기화 (탭 전환 시 영향 방지)
+                        imageUrl.value = '';
+                        urlPreview.src = '';
+                        urlPreview.style.display = 'none';
+
+                        // 4. 알림
                         showAlert('success', '업로드된 파일이 삭제되었습니다.');
                     });
+
+
                     
                     listItem.appendChild(fileNameSpan);
                     listItem.appendChild(removeBtn);
@@ -757,15 +799,26 @@
                     e.stopPropagation();
                     wrapper.remove();
 
-                    //이미지 ID로 파일 리스트와 input 제거
+                    // 이미지 ID로 파일 리스트와 input 제거
                     if (imageId) {
                         const fileListItem = document.querySelector(`#uploaded-files li[data-image-id="${imageId}"]`);
                         const fileInput = document.querySelector(`#image-uploads-container input[data-image-id="${imageId}"]`);
                         if (fileListItem) fileListItem.remove();
                         if (fileInput) fileInput.remove();
                         updateUploadCount();
+                        
+                        // 이미지 미리보기에 현재 삭제하려는 이미지가 표시되어 있다면 제거
+                        const previewImageId = uploadPreview.getAttribute('data-image-id');
+                        if (previewImageId === imageId) {
+                            uploadPreview.src = '';
+                            uploadPreview.style.display = 'none';
+                            uploadPreview.removeAttribute('data-image-id');
+                            uploadPreview.removeAttribute('data-file');
+                            insertUpload.disabled = true;
+                        }
                     }
-
+                    
+                    resetImageInputs();
                     showAlert('success', '이미지가 삭제되었습니다.');
                 });
 
@@ -795,12 +848,16 @@
                 imageUrl.value = '';
                 uploadPreview.src = '';
                 uploadPreview.style.display = 'none';
+                uploadPreview.removeAttribute('data-image-id');
+                uploadPreview.removeAttribute('data-file');
                 uploadPreview.removeAttribute('width');
                 uploadPreview.removeAttribute('height');
                 urlPreview.src = '';
                 urlPreview.style.display = 'none';
                 insertUpload.disabled = true;
+                document.getElementById('image-alert').style.display = 'none';
             }
+
         });
 
         
