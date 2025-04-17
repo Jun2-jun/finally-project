@@ -54,6 +54,10 @@ def qna():
 def notice():
     return render_template("notice.html", now=datetime.now())
 
+@app.route('/ai')
+def ai():
+    return render_template("ai.html", now=datetime.now())
+
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
     if request.method == 'POST':
