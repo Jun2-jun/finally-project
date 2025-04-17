@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, session, request, f
 from modules.connection import mysql, init_db
 from routes.auth import auth_bp
 from datetime import datetime
-from routes.reserve import reserve_bp
+# from routes.reserve import reserve_bp
 from routes.api import api_bp
 from flask_mail import Mail, Message
 from routes.submit_reservation import submit_bp
@@ -12,7 +12,7 @@ app.secret_key = 'yougayoung123'
 init_db(app)
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
-app.register_blueprint(reserve_bp, url_prefix="/api")
+# app.register_blueprint(reserve_bp, url_prefix="/api")
 app.register_blueprint(api_bp)
 app.register_blueprint(submit_bp)
 
