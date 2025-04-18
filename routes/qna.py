@@ -22,7 +22,8 @@ def qna_write():
             "title": title,
             "content": comment,
             "category": "기타",
-            "created_at": created_at.strftime("%Y-%m-%d %H:%M")
+            "created_at": created_at.strftime("%Y-%m-%d %H:%M"),
+            "views": 0  # 조회수 초기화
         })
 
         return redirect(url_for("qna.qna_list"))
