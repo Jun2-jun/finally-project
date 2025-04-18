@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, request, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS
+from datetime import datetime
 
 # Flask 앱 초기화
 app = Flask(__name__)
@@ -76,7 +77,7 @@ def api_register():
     mysql.connection.commit()
     cur.close()
     return jsonify({'status': 'success', 'message': '회원가입 완료'}), 201
-    
+
 # 5. 로그인 처리 API - login.html용
 @api_bp.route('/login', methods=['POST'])
 def api_login():
@@ -142,6 +143,56 @@ def upcoming_reservations():
     ]
 
     return jsonify(results)
+
+# 8. 공지사항 notice.html
+notices = []
+next_notice_id = 1
+
+# 공지사항 전체 목록 조회
+@api_bp.route('/notices', methods=['GET'])
+
+def get_notices():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id, title, comment, created_at, views FROM notice ORDER BY created_at DESC")
+    notice = cur.fetchall()
+    cur.close()
+    return jsonify(notice)
+
+# 공지사항 상세 조회
+@api_bp.route('/notices/<int:post_id>', methods=['GET'])
+def get_notice_detail(post_id):
+    from flask_mysqldb import MySQL
+    from MySQLdb.cursors import DictCursor
+    
+    cur = mysql.connection.cursor(cursorclass=DictCursor)
+    cur.execute("SELECT id, title, comment, created_at, views FROM notice WHERE id = %s", (post_id,))
+    row = cur.fetchone()
+    
+    if not row:
+        return jsonify({"error": "Notice not found"}), 404
+    
+    print("API 응답 데이터:", row)
+    return jsonify(row)
+
+# 공지사항 작성
+@api_bp.route('/notices', methods=['POST'])
+def create_notice():
+    data = request.get_json()
+    title = data.get('title')
+    comment = data.get('comment')
+
+    if not title or not comment:
+        return jsonify({'status': 'fail', 'message': '제목과 내용을 입력해주세요.'}), 400
+
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        INSERT INTO notice (title, comment)
+        VALUES (%s, %s)
+    """, (title, comment))
+    mysql.connection.commit()
+    cur.close()
+
+    return jsonify({'status': 'success', 'message': '공지사항이 등록되었습니다.'}), 201
 
 # 테스트 API
 @api_bp.route('/test', methods=['GET'])
