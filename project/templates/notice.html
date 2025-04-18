@@ -92,5 +92,15 @@
     <a href="/notice/notice_write" class="btn btn-primary btn-lg" style="position: fixed; bottom: 30px; right: 30px; z-index: 999;">
         공지사항 작성
     </a>
+
+    <script>
+        window.onpageshow = function(event) {
+            // 브라우저 뒤로가기 캐시에서 로드되었을 경우
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+    </script>
+    
 </body>
 </html>

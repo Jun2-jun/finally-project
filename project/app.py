@@ -78,14 +78,14 @@ def notice_write():
         comment = request.form.get('comment')
 
         image_urls = []
-        files = request.files.getlist("images")
-        for file in files:
+        for file in request.files.getlist('images'):
             if file and file.filename != '':
                 filename = secure_filename(file.filename)
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(filepath)
-                image_urls.append('/' + filepath.replace('\\', '/'))
+                image_urls.append('/static/uploads/' + filename)
 
+        # 반복문 바깥에서 게시글 생성 및 저장
         post = {
             'id': next_notice_id,
             'no': next_notice_id,
@@ -93,8 +93,7 @@ def notice_write():
             'title': title,
             'comment': comment,
             'created_at': datetime.now().strftime('%Y-%m-%d %H:%M'),
-            'images': image_urls,
-            'views': 0
+            'images': image_urls
         }
 
         notices.insert(0, post)
@@ -102,6 +101,13 @@ def notice_write():
         return redirect(url_for('notice'))
 
     return render_template("notice_write.html")
+
+@app.route('/notice/delete/<int:post_id>', methods=['POST'])
+def delete_notice(post_id):
+    global notices
+    notices = [post for post in notices if post['id'] != post_id]
+    return redirect(url_for('notice'))
+
 
 
 
@@ -161,13 +167,14 @@ def qna_delbutton():
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
     file = request.files.get('image')
-    if file and file.filename != '':
+    if file and file.filename:
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
-        url = url_for('static', filename='uploads/' + filename)
+        url = url_for('static', filename='uploads/' + filename)  # ⭐ 여기를 꼭 이렇게 반환해야 브라우저에서 접근 가능
         return {'success': True, 'url': url}
     return {'success': False}, 400
+
 
 
 if __name__ == '__main__':
