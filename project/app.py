@@ -62,13 +62,24 @@ def notice():
     return render_template("notice.html", posts=filtered_notices,
                            start_date=start_date, end_date=end_date, query=query)
 
+from flask import make_response  # 👈 맨 위 import에 추가
+
 @app.route('/notice/post/<int:post_id>')
 def notice_post_detail(post_id):
     post = next((p for p in notices if p['id'] == post_id), None)
     if not post:
         return "게시글을 찾을 수 없습니다.", 404
+
+    # 조회수 증가
     post['views'] = post.get('views', 0) + 1
-    return render_template("notice_detail.html", post=post)
+
+    # 응답 생성 후 캐시 방지 헤더 추가
+    response = make_response(render_template("notice_detail.html", post=post))
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
 
 @app.route('/notice/notice_write', methods=['GET', 'POST'])
 def notice_write():
@@ -102,14 +113,11 @@ def notice_write():
 
     return render_template("notice_write.html")
 
-@app.route('/notice/delete/<int:post_id>', methods=['POST'])
-def delete_notice(post_id):
+@app.route('/notice/notice_delbutton/<int:post_id>', methods=['POST'])
+def notice_delbutton(post_id):
     global notices
     notices = [post for post in notices if post['id'] != post_id]
     return redirect(url_for('notice'))
-
-
-
 
 @app.route('/qna')
 def qna():

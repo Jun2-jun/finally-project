@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ post.title }}</title>
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         body {
             margin: 30px;
@@ -134,16 +137,24 @@
         {% endif %}
 
 
-
-
-    </div>
-
     <div class="button-area">
-        <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" style="margin-right: 10px;">
+        <form method="POST" action="{{ url_for('notice_delbutton', post_id=post.id) }}" style="margin-right: 10px;">
             <button type="submit" class="delete-button">삭제</button>
         </form>
-        <a href="{{ url_for('notice') }}" class="back-button">목록으로 돌아가기</a>
+        <a href="#" onclick="goBackToNotice()" class="back-button">목록으로 돌아가기</a>
     </div>
-
+    <script>
+        function goBackToNotice() {
+            location.replace("{{ url_for('notice') }}");
+        }
+    
+        // 이전 페이지 캐시 방지: 뒤로가기 시 조회수 갱신
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+                location.reload();
+            }
+        });
+    </script>
+        
 </body>
 </html>

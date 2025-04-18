@@ -95,8 +95,8 @@
 
     <script>
         window.onpageshow = function(event) {
-            // 브라우저 뒤로가기 캐시에서 로드되었을 경우
-            if (event.persisted) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // 캐시된 페이지가 뒤로가기 등으로 복원됐을 때 강제로 새로고침
                 window.location.reload();
             }
         };
