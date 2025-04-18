@@ -49,3 +49,21 @@ tbody tr:hover {
     background-color: #f0f0f0;
     cursor: pointer;
 }
+
+.editor-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .editor-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .upload-count {
+    font-size: 14px;
+    color: #777;
+    margin: 0;
+  }

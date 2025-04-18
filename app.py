@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, session, request, flash
+from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash
 from modules.connection import mysql, init_db
 from routes.auth import auth_bp
 from datetime import datetime
@@ -8,6 +8,9 @@ from flask_mail import Mail, Message
 from routes.submit_reservation import submit_bp
 import os
 from werkzeug.utils import secure_filename
+from routes.qna import qna_bp
+
+
 
 app = Flask(__name__)
 app.secret_key = 'yougayoung123'
@@ -17,7 +20,7 @@ app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(reserve_bp, url_prefix="/api")
 app.register_blueprint(api_bp)
 app.register_blueprint(submit_bp)
-
+app.register_blueprint(qna_bp)
 
 
 @app.route('/')
@@ -48,13 +51,6 @@ def mypage():
 def admin():
     return render_template("admin.html", now=datetime.now())
 
-@app.route('/qna')
-def qna():
-    return render_template("qna.html",  now=datetime.now())
-
-@app.route('/qna/write')
-def qna_write():
-    return render_template('qna_write.html', now=datetime.now()) 
 
 @app.route('/notice')
 def notice():
