@@ -1,18 +1,13 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Flask
+from flask_mysqldb import MySQL
 from modules.connection import mysql
 from flask_cors import CORS
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 CORS(api_bp)
+mysql = MySQL()
 
 # 1. 사용자 목록 - admin 페이지용
-# @api_bp.route('/users', methods=['GET'])
-# def get_users():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT id, username, email FROM users")
-#     users = cur.fetchall()
-#     cur.close()
-#     return jsonify(users)
 @api_bp.route('/users', methods=['GET'])
 def get_users():
     cur = mysql.connection.cursor()
@@ -31,13 +26,6 @@ def get_users():
     return jsonify(users)
 
 # 2. 예약 목록 - admin 페이지용
-# @api_bp.route('/reservations', methods=['GET'])
-# def get_reservations():
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT id, name, phone, hospital, address, message, email FROM reservations")
-#     reservations = cur.fetchall()
-#     cur.close()
-#     return jsonify(reservations)
 @api_bp.route('/reservations', methods=['GET'])
 def get_reservations():
     cur = mysql.connection.cursor()
@@ -60,13 +48,10 @@ def get_reservations():
 
     return jsonify(reservations)
 
-
 # 3. 병원 예약 생성 - reserve, submit_reserve.html POST용
 @api_bp.route('/reserve', methods=['POST'])
 def create_reservation():
-    print("1")
     data = request.get_json()
-    print('0')
     name = data.get('name')
     phone = data.get('phone')
     hospital = data.get('hospital')
@@ -180,3 +165,20 @@ def get_test():
         "age":age
     }
     return jsonify(res)
+
+
+def init_db(app):
+    app.config['MYSQL_HOST'] = 'localhost'
+    app.config['MYSQL_USER'] = 'root'
+    app.config['MYSQL_PASSWORD'] = 'yourpassword'
+    app.config['MYSQL_DB'] = 'hospital_app'
+    mysql.init_app(app)
+
+api_bp = Blueprint('api', __name__, url_prefix='/api')
+CORS(api_bp)
+
+if __name__ == '__main__':
+    app = Flask(__name__)
+    init_db(app)  # ✅ 여기서 DB 초기화
+    app.register_blueprint(api_bp)
+    app.run(debug=True, port=5001)
