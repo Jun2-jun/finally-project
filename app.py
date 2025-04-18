@@ -9,6 +9,7 @@ from routes.submit_reservation import submit_bp
 import os
 from werkzeug.utils import secure_filename
 from routes.qna import qna_bp
+from routes.notice import notice_bp
 
 
 
@@ -21,7 +22,7 @@ app.register_blueprint(reserve_bp, url_prefix="/api")
 app.register_blueprint(api_bp)
 app.register_blueprint(submit_bp)
 app.register_blueprint(qna_bp)
-
+app.register_blueprint(notice_bp)
 
 @app.route('/')
 def home():
