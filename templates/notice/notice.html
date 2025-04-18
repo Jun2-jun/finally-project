@@ -73,7 +73,7 @@
               <tr onclick="location.href='/notice/post/{{ post.id }}'" class="clickable-row">
                 <td>{{ post.no }}</td>
                 <td>
-                  <a href="/notice/post/{{ post.id }}" class="notice-title">{{ post.title }}</a>
+                  <a href="/notice/post/{{ post.no }}" class="notice-title">{{ post.title }}</a>
                 </td>
                 <td>{{ post.writer or '관리자' }}</td>
                 <td>{{ post.created_at }}</td>
