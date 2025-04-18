@@ -2,6 +2,9 @@ from flask import Flask, Blueprint, request, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
+import json
 
 # Flask 앱 초기화
 app = Flask(__name__)
@@ -19,6 +22,15 @@ mysql = MySQL(app)
 # API Blueprint 생성
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 CORS(api_bp)  # CORS 설정
+
+
+
+# 예: 업로드 폴더를 프로젝트 디렉토리 하위의 'static/uploads'로 지정
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static', 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # 폴더가 없으면 자동 생성
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 # 1. 사용자 목록 - admin 페이지용
 @api_bp.route('/users', methods=['GET'])
@@ -119,7 +131,7 @@ def dashboard_info():
         'today_sessions': today_sessions
     })
 
-# 7. 예약 리스트 - 대시보드 표시용
+# 예약 리스트 - 대시보드 표시용
 @api_bp.route('/upcoming-reservations', methods=['GET'])
 def upcoming_reservations():
     cur = mysql.connection.cursor()
@@ -144,6 +156,55 @@ def upcoming_reservations():
 
     return jsonify(results)
 
+#7. Q&A qna.html
+# Q&A 작성 API
+@api_bp.route('/qna', methods=['POST'])
+def create_qna():
+    title = request.form.get('title')
+    comment = request.form.get('comment')
+
+    if not title or not comment:
+        return jsonify({'status': 'fail', 'message': '제목과 내용을 입력해주세요.'}), 400
+
+    image_urls = []
+    files = request.files.getlist("images")
+    upload_folder = app.config['UPLOAD_FOLDER']
+
+    for file in files:
+        if file and file.filename != '':
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(upload_folder, filename)
+            file.save(filepath)
+            image_urls.append('/' + filepath.replace('\\', '/'))
+
+    image_urls_json = json.dumps(image_urls)
+
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        INSERT INTO qna (title, comment, image_urls, category, created_at)
+        VALUES (%s, %s, %s, %s, NOW())
+    """, (title, comment, image_urls_json, '일반'))
+    mysql.connection.commit()
+    cur.close()
+
+    return jsonify({'status': 'success', 'message': 'Q&A가 등록되었습니다.'}), 201
+
+# Q/A 삭제
+@api_bp.route('/qna/<int:post_id>', methods=['DELETE'])
+def delete_qna(post_id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM qna WHERE id = %s", (post_id,))
+    mysql.connection.commit()
+    affected_rows = cur.rowcount
+    cur.close()
+
+    if affected_rows > 0:
+        return jsonify({'status': 'success', 'message': f'{post_id}번 Q&A가 삭제되었습니다.'}), 200
+    else:
+        return jsonify({'status': 'fail', 'message': '해당 ID의 Q&A가 존재하지 않습니다.'}), 404
+
+
+
 # 8. 공지사항 notice.html
 notices = []
 next_notice_id = 1
@@ -153,7 +214,7 @@ next_notice_id = 1
 
 def get_notices():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, title, comment, created_at, views FROM notice ORDER BY created_at DESC")
+    cur.execute("SELECT id, title, comment, created_at, views, image_urls FROM notice ORDER BY created_at DESC")
     notice = cur.fetchall()
     cur.close()
     return jsonify(notice)
@@ -163,32 +224,55 @@ def get_notices():
 def get_notice_detail(post_id):
     from flask_mysqldb import MySQL
     from MySQLdb.cursors import DictCursor
-    
+    import json
+
     cur = mysql.connection.cursor(cursorclass=DictCursor)
-    cur.execute("SELECT id, title, comment, created_at, views FROM notice WHERE id = %s", (post_id,))
+    cur.execute("SELECT id, title, comment, created_at, views, image_urls FROM notice WHERE id = %s", (post_id,))
     row = cur.fetchone()
-    
+    cur.close()
+
     if not row:
         return jsonify({"error": "Notice not found"}), 404
-    
+
+    if row.get('images'):
+        try:
+            row['images'] = json.loads(row['images'])
+        except Exception:
+            row['images'] = []
+
     print("API 응답 데이터:", row)
     return jsonify(row)
+
 
 # 공지사항 작성
 @api_bp.route('/notices', methods=['POST'])
 def create_notice():
-    data = request.get_json()
-    title = data.get('title')
-    comment = data.get('comment')
+    title = request.form.get('title')
+    comment = request.form.get('comment')
 
     if not title or not comment:
         return jsonify({'status': 'fail', 'message': '제목과 내용을 입력해주세요.'}), 400
 
+    image_urls = []
+    files = request.files.getlist('images')
+    upload_folder = app.config['UPLOAD_FOLDER']
+
+    for file in files:
+        if file and file.filename != '':
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(upload_folder, filename)
+            file.save(filepath)
+            # 웹 URL 형식으로 저장
+            image_urls.append('/' + filepath.replace('\\', '/'))
+
+    # JSON 형태로 저장
+    image_urls_json = json.dumps(image_urls)
+
     cur = mysql.connection.cursor()
     cur.execute("""
-        INSERT INTO notice (title, comment)
-        VALUES (%s, %s)
-    """, (title, comment))
+        INSERT INTO notice (title, comment, image_urls)
+        VALUES (%s, %s, %s)
+    """, (title, comment, image_urls_json))
     mysql.connection.commit()
     cur.close()
 
