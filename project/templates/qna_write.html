@@ -666,8 +666,7 @@
                     // 히든 input 생성 및 파일 저장
                     const fileInput = document.createElement('input');
                     fileInput.type = 'file';
-                    fileInput.name = 'image-' + imageId;
-                    fileInput.setAttribute('data-image-id', imageId);
+                    fileInput.name = 'images';                    fileInput.setAttribute('data-image-id', imageId);
                     fileInput.style.display = 'none';
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(file);
@@ -757,16 +756,32 @@
                 }
             });
             
-            // 로컬 파일 이미지 삽입 (모달 내)
-            insertUpload.addEventListener('click', function() {
-                const imageId = uploadPreview.getAttribute('data-image-id');
-                const imgSrc = uploadPreview.src;
-                if (imgSrc) {
-                    insertImageToEditor(imgSrc, imageId);
-                    imageModal.style.display = 'none';
-                    resetImageInputs();
-                }
-            });
+            insertUpload.addEventListener('click', function () {
+    const file = fileUpload.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch('/upload_image', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+    if (data.success) {
+        // 에디터에 자동 삽입하지 않음
+        // const editor = document.getElementById('editor');
+        // editor.appendChild(img);
+        imageModal.style.display = 'none';
+        showAlert('success', '이미지 업로드가 완료되었습니다.');
+    } else {
+        alert("이미지 업로드에 실패했습니다.");
+    }
+});
+
+});
+
             
             // URL 이미지 삽입 (모달 내)
             insertUrl.addEventListener('click', function() {

@@ -8,32 +8,61 @@
         body {
             margin: 40px;
         }
+    
         table {
             margin-top: 30px;
         }
-    </style>
+    
+        /* 제목 a태그 스타일 제거 */
+        a.notice-title {
+            color: inherit;
+            text-decoration: none;
+        }
+    
+        a.notice-title:hover {
+            text-decoration: underline;
+            color: #3498db;
+        }
+    
+        /* 행 전체 클릭 가능 + hover 효과 정확히 적용 */
+        table.table-hover tbody tr.clickable-row {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+    
+        table.table-hover tbody tr.clickable-row:hover {
+            background-color: #f5f8ff;
+        }
+    </style>    
+    
 </head>
 <body>
     <h2>공지사항</h2>
 
-    <form action="/api/notice" method="post" class="mb-3">
-        <div>
-            <input type="date" id="startDate" name="startDate"> ~ 
-            <input type="date" id="endDate" name="endDate"> 
-            <button type="submit">날짜 범위 가져오기</button>
+    <form action="/notice" method="post" class="mb-3">
+        <!-- 날짜 범위 입력 -->
+        <div class="mb-2 text-end">
+            <input type="date" id="startDate" name="startDate" value="{{ start_date }}"
+            style="width: 160px; height: 38px; font-size: 17px; text-align: center;"> ~
+             <input type="date" id="endDate" name="endDate" value="{{ end_date }}"
+            style="width: 160px; height: 38px; font-size: 17px; text-align: center;">
+     
+            <button type="submit" class="btn btn-outline-primary">날짜 범위 가져오기</button>
         </div>
-
-        <div class="search mt-3">
-            <input type="text" name="query" value="" placeholder="검색어를 입력하세요">
-            <button type="submit">검색</button>
+    
+        <!-- 검색 입력 -->
+        <div class="text-end">
+            <input type="text" name="query" value="{{ query }}" placeholder="검색어를 입력하세요"
+            class="form-control d-inline" style="width: 450px;">
+            <button type="submit" class="btn btn-outline-primary">검색</button>
         </div>
     </form>
 
-        <!-- 공지사항 테이블 -->
-    <table class="table table-bordered text-center">
+    <!-- 공지사항 테이블 -->
+    <table class="table table-bordered table-hover text-center">
         <thead class="table-light">
             <tr>
-                <th class="text-center">번호</th>
+                <th class="text-center">No</th>
                 <th class="text-center">제목</th>
                 <th class="text-center">작성자</th>
                 <th class="text-center">작성일자</th>
@@ -41,15 +70,16 @@
             </tr>
         </thead>
         <tbody>
-            {% if notices %}
-                {% for notice in notices %}
-                <tr>
-                    <td class="text-center">{{ notice.id }}</td>
-                    <td class="text-center">{{ notice.title }}</td>
-                    <td class="text-center">{{ notice.writer }}</td>
-                    <td class="text-center">{{ notice.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                    <td class="text-center">{{ notice.views }}</td>
+            {% if posts %}
+                {% for post in posts %}
+                <tr onclick="location.href='/notice/post/{{ post.id }}'" class="clickable-row">
+                    <td class="text-center">{{ post.no }}</td>
+                    <td class="text-center">{{ post.title }}</td>
+                    <td class="text-center">{{ post.writer if post.writer else '관리자' }}</td>
+                    <td class="text-center">{{ post.created_at }}</td>
+                    <td class="text-center">{{ post.views }}</td>
                 </tr>
+                  
                 {% endfor %}
             {% else %}
                 <tr>
@@ -59,19 +89,8 @@
         </tbody>
     </table>
 
-    
-
-
-
-    <!-- 글쓰기 폼 (관리자만 보임) -->
-    {% if is_admin %}
-    <form action="/write" method="POST" class="d-flex mt-4">
-        <input type="text" name="title" class="form-control me-2" placeholder="공지 제목 입력" required>
-        <button type="submit" class="btn btn-primary">글쓰기</button>
-    </form>
-    {% endif %}
-    
-
-    
+    <a href="/notice/notice_write" class="btn btn-primary btn-lg" style="position: fixed; bottom: 30px; right: 30px; z-index: 999;">
+        공지사항 작성
+    </a>
 </body>
 </html>
