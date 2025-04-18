@@ -183,6 +183,23 @@ def upload_image():
         return {'success': True, 'url': url}
     return {'success': False}, 400
 
+@app.route('/password_change')
+def password_change():
+    return render_template("password_change.html")
+
+@app.route('/change_password', methods=['POST'])
+def change_password():
+    current_pw = request.form['current_password']
+    new_pw = request.form['new_password']
+    confirm_pw = request.form['confirm_password']
+
+    if new_pw != confirm_pw:
+        return "새 비밀번호가 일치하지 않습니다.", 400
+
+    # TODO: 현재 로그인한 사용자 확인, 기존 비밀번호 체크 후 변경
+    # 예: if current_pw == user.password: ...
+
+    return redirect(url_for('home'))  # 또는 다른 성공 페이지
 
 
 if __name__ == '__main__':
