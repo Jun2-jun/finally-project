@@ -2,131 +2,17 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>회원가입</title>
+  <title>회원가입 - 닥터퓨쳐</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 400px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .input-wrapper {
-      position: relative;
-      margin: 8px 0;
-    }
-
-    .input-wrapper i {
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      color: #888;
-      z-index: 1;
-    }
-
-    .input-wrapper input {
-      width: 100%;
-      padding: 10px 10px 10px 35px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-      font-size: 14px;
-    }
-
-    .check-message {
-      font-size: 13px;
-      margin-top: -4px;
-      margin-bottom: 8px;
-    }
-
-    .match {
-      color: green;
-    }
-
-    .no-match {
-      color: red;
-    }
-
-    .address-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .address-wrapper .input-wrapper {
-      flex: 1;
-    }
-
-    .search-btn {
-      background-color: #4285f4;
-      border: none;
-      color: white;
-      border-radius: 4px;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 16px;
-      min-width: 44px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 0;
-    }
-
-    .search-btn:hover {
-      background-color: #357ae8;
-    }
-
-    form button[type="submit"] {
-      width: 100%;
-      background-color: #4CAF50;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      padding: 10px;
-      cursor: pointer;
-      margin-top: 12px;
-    }
-
-    form button[type="submit"]:hover {
-      background-color: #45a049;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 12px;
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
 </head>
 <body>
   <div class="container">
     <h2>회원가입</h2>
-    <form action="/auth/register" method="post">
+    <form id="registerForm">
       <div class="input-wrapper">
         <i class="fas fa-user"></i>
-        <input type="text" name="username" placeholder="아이디" required>
+        <input type="text" name="username" id="username" placeholder="아이디" required>
       </div>
 
       <div class="input-wrapper">
@@ -142,7 +28,7 @@
 
       <div class="input-wrapper">
         <i class="fas fa-envelope"></i>
-        <input type="email" name="email" placeholder="이메일" required>
+        <input type="email" name="email" id="email" placeholder="이메일" required>
       </div>
 
       <label for="birthdate">생년월일:</label>
@@ -153,9 +39,10 @@
 
       <div class="input-wrapper">
         <i class="fas fa-phone"></i>
-        <input type="tel" name="phone" placeholder="전화번호 (예: 010-1234-5678)" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
+        <input type="tel" name="phone" id="phone" placeholder="전화번호 (예: 010-1234-5678)" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
       </div>
 
+      <!-- 주소 + 검색 버튼 -->
       <div class="address-wrapper">
         <div class="input-wrapper">
           <i class="fas fa-map-marker-alt"></i>
@@ -166,11 +53,20 @@
         </button>
       </div>
 
+      <!-- 상세 주소 입력 필드 -->
+      <div class="input-wrapper">
+        <i class="fas fa-map-pin"></i>
+        <input type="text" name="address_detail" id="address_detail" placeholder="상세 주소 입력" required>
+      </div>
+
+      <div id="errorMessage" class="check-message no-match" style="display:none;"></div>
+      <div id="successMessage" class="check-message match" style="display:none;"></div>
+
       <button type="submit">가입하기</button>
     </form>
   </div>
 
-  <!-- 비밀번호 확인 JS -->
+  <!-- 비밀번호 일치 검사 -->
   <script>
     const pw = document.getElementById("password");
     const confirmPw = document.getElementById("confirm_password");
@@ -194,7 +90,7 @@
     confirmPw.addEventListener("input", checkPasswordMatch);
   </script>
 
-  <!-- 다음 주소 API -->
+  <!-- 주소 검색 API -->
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
     function execDaumPostcode() {
@@ -204,6 +100,64 @@
         }
       }).open();
     }
+  </script>
+
+  <!-- 회원가입 처리 API 호출 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const registerForm = document.getElementById('registerForm');
+
+      registerForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+
+        if (password !== confirmPassword) {
+          document.getElementById('errorMessage').textContent = "비밀번호가 일치하지 않습니다.";
+          document.getElementById('errorMessage').style.display = "block";
+          return;
+        }
+
+        const formData = {
+          username: document.getElementById('username').value,
+          password: password,
+          email: document.getElementById('email').value,
+          birthdate: document.getElementById('birthdate').value,
+          phone: document.getElementById('phone').value,
+          address: document.getElementById('address').value,
+          address_detail: document.getElementById('address_detail').value
+        };
+
+        fetch('http://localhost:5002/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData),
+          mode: 'cors'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            document.getElementById('successMessage').textContent = "회원가입이 완료되었습니다!";
+            document.getElementById('successMessage').style.display = "block";
+            document.getElementById('errorMessage').style.display = "none";
+            registerForm.reset();
+          } else {
+            document.getElementById('errorMessage').textContent = data.message || "회원가입에 실패했습니다.";
+            document.getElementById('errorMessage').style.display = "block";
+            document.getElementById('successMessage').style.display = "none";
+          }
+        })
+        .catch(error => {
+          document.getElementById('errorMessage').textContent = "서버 오류가 발생했습니다.";
+          document.getElementById('errorMessage').style.display = "block";
+          document.getElementById('successMessage').style.display = "none";
+          console.error('에러 발생:', error);
+        });
+      });
+    });
   </script>
 </body>
 </html>
