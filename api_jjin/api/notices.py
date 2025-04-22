@@ -3,7 +3,7 @@ from . import api_bp
 from models.notice import get_all_notices, get_notice_by_id, create_notice, delete_notice
 from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import admin_required
-from extensions import session
+from flask import session
 
 # 공지사항 전체 목록 조회
 @api_bp.route('/notices', methods=['GET'])

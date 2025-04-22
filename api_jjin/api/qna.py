@@ -4,7 +4,7 @@ from models.qna import get_all_qna, get_qna_by_id, create_qna, delete_qna
 from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import login_required, admin_required
 from flask import current_app
-from extensions import session
+from flask import session
 
 # Q&A 목록 조회
 @api_bp.route('/qna', methods=['GET'])

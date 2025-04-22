@@ -3,7 +3,7 @@ from . import api_bp
 from models.reservation import get_all_reservations, create_reservation, get_upcoming_reservations
 from utils.auth import admin_required
 from utils.email import send_reservation_confirmation
-from extensions import session
+from flask import session
 
 # 1. 예약 목록 - admin 페이지용
 @api_bp.route('/reservations', methods=['GET'])
