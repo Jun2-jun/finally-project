@@ -27,13 +27,13 @@ class Config:
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USERNAME = 'doctorfutures2.0.0@gmail.com'
-    MAIL_PASSWORD = 'ohbu uulg lugu yxyl'
+    MAIL_PASSWORD = 'tauq lacn quhn dbzz'
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
     MAIL_DEFAULT_SENDER = 'doctorfutures2.0.0@gmail.com'
 
     # AI API 설정
-    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyBwGAZB1xCnAW4XcWhY9ZhksBAxXyF5kvA')
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'api키')
 
 
 class DevelopmentConfig(Config):
