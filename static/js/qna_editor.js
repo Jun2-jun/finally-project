@@ -10,9 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const insertUpload = document.getElementById('insert-upload');
   const imageUrl = document.getElementById('image-url');
   const urlPreview = document.getElementById('url-preview');
+  const uploadedFilesContainer = document.getElementById('uploaded-images');
+  const imageCountText = document.getElementById('image-count');
   let selectingMode = false;
+  let uploadCount = 0;
 
-  // ========== 글쓰기 페이지: 에디터 기능 ==========
   if (editor && form && commentTextarea) {
     function updatePlaceholder() {
       if (editor.innerHTML.trim() === '' || editor.innerHTML.trim() === '<br>') {
@@ -68,11 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
       if (confirm('모든 내용을 지우시겠습니까?')) {
         document.getElementById('title').value = '';
         editor.innerHTML = '';
+        uploadedFilesContainer.innerHTML = '';
+        uploadCount = 0;
+        updateUploadCount(0, true);
         updatePlaceholder();
       }
     });
 
-    // 이미지 관련
     document.getElementById('image')?.addEventListener('click', () => {
       document.getElementById('image-modal').style.display = 'flex';
     });
@@ -103,9 +107,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          uploadPreview.src = e.target.result;
-          uploadPreview.style.display = 'block';
-          insertUpload.disabled = false;
+          insertImage(e.target.result);
+          addUploadedFile(file.name, e.target.result);
+          document.getElementById('image-modal').style.display = 'none';
+          resetImageInputs();
         };
         reader.readAsDataURL(file);
       }
@@ -113,23 +118,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     imageUrl?.addEventListener('input', function () {
       const url = this.value.trim();
-      if (url) {
-        urlPreview.src = url;
-        urlPreview.style.display = 'block';
-      } else {
-        urlPreview.style.display = 'none';
-      }
+      urlPreview.src = url;
+      urlPreview.style.display = url ? 'block' : 'none';
     });
 
     insertUpload?.addEventListener('click', () => {
-      insertImage(uploadPreview.src);
-      document.getElementById('image-modal').style.display = 'none';
-      resetImageInputs();
+      if (uploadPreview.src) {
+        insertImage(uploadPreview.src);
+        addUploadedFile('업로드 이미지', uploadPreview.src);
+        document.getElementById('image-modal').style.display = 'none';
+        resetImageInputs();
+      }
     });
 
     document.getElementById('insert-url')?.addEventListener('click', () => {
       const src = imageUrl.value;
       insertImage(src);
+      addUploadedFile(src, src);
       document.getElementById('image-modal').style.display = 'none';
       resetImageInputs();
     });
@@ -145,6 +150,40 @@ document.addEventListener('DOMContentLoaded', function () {
       updatePlaceholder();
     }
 
+    function addUploadedFile(filename, src = null) {
+      if (!uploadedFilesContainer || !imageCountText) return;
+
+      const fileItem = document.createElement('div');
+      fileItem.classList.add('file-item');
+
+      fileItem.innerHTML = `
+        <span class="file-name">${filename}</span>
+        <button type="button" class="remove-btn" title="삭제">&times;</button>
+      `;
+
+      fileItem.querySelector('.remove-btn').addEventListener('click', () => {
+        uploadedFilesContainer.removeChild(fileItem);
+        updateUploadCount(-1);
+
+        if (src) {
+          const images = editor.querySelectorAll('img');
+          images.forEach(img => {
+            if (img.src === src) {
+              img.remove();
+            }
+          });
+        }
+      });
+
+      uploadedFilesContainer.appendChild(fileItem);
+      updateUploadCount(1);
+    }
+
+    function updateUploadCount(delta, reset = false) {
+      uploadCount = reset ? 0 : uploadCount + delta;
+      imageCountText.textContent = uploadCount;
+    }
+
     function resetImageInputs() {
       fileUpload.value = '';
       uploadPreview.src = '';
@@ -154,72 +193,5 @@ document.addEventListener('DOMContentLoaded', function () {
       urlPreview.src = '';
       urlPreview.style.display = 'none';
     }
-  }
-
-  // ========== 리스트 페이지: 삭제 기능 ==========
-  if (deleteButton) {
-    deleteButton.addEventListener('click', () => {
-      const tableBody = document.querySelector('tbody');
-      const rows = tableBody?.querySelectorAll('tr');
-
-      if (!selectingMode) {
-        rows?.forEach(row => {
-          const checkboxCell = row.querySelector('.delete-checkbox-column');
-          if (checkboxCell) checkboxCell.style.display = 'table-cell';
-        });
-
-        const thead = document.querySelector('thead tr');
-        const existing = thead.querySelector('th[data-delete]');
-        if (!existing) {
-          const th = document.createElement('th');
-          th.setAttribute('data-delete', 'true');
-          th.textContent = '선택';
-          thead.prepend(th);
-        }
-
-        deleteButton.textContent = '삭제 확인';
-        selectingMode = true;
-      } else {
-        const checkedBoxes = document.querySelectorAll('.delete-checkbox:checked');
-        if (checkedBoxes.length === 0) {
-          alert('삭제할 게시글을 선택하세요.');
-          return;
-        }
-
-        const deleteIds = Array.from(checkedBoxes).map(box => box.value);
-
-        fetch('/qna/delete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ delete_ids: deleteIds })
-        })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              checkedBoxes.forEach(box => {
-                const row = box.closest('tr');
-                row.remove();
-              });
-              alert('삭제되었습니다.');
-            } else {
-              alert('삭제 실패: 서버 오류');
-            }
-
-            document.querySelectorAll('.delete-checkbox-column').forEach(td => {
-              td.style.display = 'none';
-            });
-
-            const firstTh = document.querySelector('thead tr th[data-delete]');
-            if (firstTh) firstTh.remove();
-
-            deleteButton.textContent = '삭제';
-            selectingMode = false;
-          })
-          .catch(err => {
-            alert('삭제 중 오류 발생');
-            console.error(err);
-          });
-      }
-    });
   }
 });

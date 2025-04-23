@@ -1,28 +1,4 @@
-.toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    padding: 10px;
-    background: #f3f3f3;
-    border: 2px solid #3498db;
-    border-bottom: none;
-    border-radius: 5px 5px 0 0;
-  }
-  
-  .toolbar button {
-    border: 1px solid #ccc;
-    padding: 6px 10px;
-    background: white;
-    cursor: pointer;
-  }
-  
-  .editor {
-    min-height: 400px;
-    padding: 10px;
-    border: 2px solid #3498db;
-    border-radius: 0 0 5px 5px;
-    background: white;
-  }
+
   
   .image-modal {
     display: none;
@@ -61,3 +37,20 @@
     position: absolute;
     pointer-events: none;
   }
+  .file-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+  }
+  .file-name {
+    flex-grow: 1;
+  }
+  .remove-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
