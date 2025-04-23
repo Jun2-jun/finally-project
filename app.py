@@ -23,6 +23,7 @@ app.register_blueprint(api_bp)
 app.register_blueprint(submit_bp)
 app.register_blueprint(qna_bp)
 app.register_blueprint(notice_bp)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
 
 @app.route('/')
 def home():
@@ -52,6 +53,9 @@ def mypage():
 def admin():
     return render_template("admin.html", now=datetime.now())
 
+@app.route('/change_password')
+def chage_password():
+    return render_template("change_password.html", now=datetime.now())
 
 @app.route('/notice')
 def notice():
