@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash
+from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify
 from modules.connection import mysql, init_db
 from routes.auth import auth_bp
 from datetime import datetime
@@ -10,7 +10,7 @@ import os
 from werkzeug.utils import secure_filename
 from routes.qna import qna_bp
 from routes.notice import notice_bp
-
+import requests
 
 
 app = Flask(__name__)
@@ -58,8 +58,8 @@ def notice():
     return render_template("notice.html", now=datetime.now())
 
 @app.route('/ai')
-def ai():
-    return render_template("ai.html", now=datetime.now())
+def ai_chatbot():
+    return render_template('AI/chatbot.html', now=datetime.now())  # 챗봇 HTML 템플릿
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
@@ -161,6 +161,28 @@ def mypage():
     }
 
     return render_template("mypage.html", user=user_data, now=datetime.now())
+
+# 챗봇 메시지 처리 엔드포인트
+@app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.json.get('message')
+
+    # 예시: HuggingFace API 연동
+    response = requests.post(
+        'https://api-inference.huggingface.co/models/YourUsername/YourModelName',
+        headers={'Authorization': 'Bearer YOUR_HUGGINGFACE_API_KEY'},
+        json={"inputs": user_message}
+    )
+
+    if response.status_code == 200:
+        data = response.json()
+        bot_reply = data[0]["generated_text"] if data else "답변을 받을 수 없습니다."
+    else:
+        bot_reply = "모델 응답 실패 😥"
+
+    return jsonify({"reply": bot_reply})
+
+
 
 
 if __name__ == '__main__':
