@@ -1,35 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>My Page - 닥터퓨쳐</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
+    <meta charset="UTF-8">
+    <title>마이페이지</title> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
 </head>
 <body>
-  <div class="mypage-container">
-    <div class="card">
-      <h2 class="header-text">마이페이지</h2>
-      <p class="sub-text">반갑습니다, {{ user_name or 'USER' }}님!</p>
+    <div class="container">
+        <h2>마이페이지</h2>
+        <form method="POST" action="/mypage" id="mypage-form">
+            <div class="form-group">
+                <i class="fas fa-user form-icon"></i>
+                <input type="text" class="form-control" name="userid" value="{{ user.userid }}" readonly>
+            </div>
 
-      <div class="info-group">
-        <label>Name:</label>
-        <span>{{ user_name or 'USER' }}</span>
-      </div>
-      <div class="info-group">
-        <label>Email:</label>
-        <span>{{ user_email or 'Test01@naver.com' }}</span>
-      </div>
-      <div class="info-group">
-        <label>Joined:</label>
-        <span>{{ join_date or '2025-01-01' }}</span>
-      </div>
+            <div class="form-group">
+                <i class="fas fa-envelope form-icon"></i>
+                <input type="email" class="form-control editable" name="email" value="{{ user.email }}" readonly>
+            </div>
 
-      <div class="button-group">
-        <button class="btn-outline">Edit Info</button>
-        <button class="btn-primary">Change Password</button>
-      </div>
+            <div class="form-group">
+                <label class="mb-1">생년월일:</label>
+                <input type="date" class="form-control editable" name="birthdate" value="{{ user.birthdate }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-phone form-icon"></i>
+                <input type="text" class="form-control editable" name="phone" value="{{ user.phone }}" readonly>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-map-marker-alt form-icon"></i>
+                <input type="text" class="form-control editable" name="address" value="{{ user.address }}" readonly>
+                <button type="button" class="search-button"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="form-group">
+                <input type="text" class="form-control editable" name="detail_address" value="{{ user.detail_address }}" readonly>
+            </div>
+
+            <div class="btn-wrap">
+                <a href="/change_password" class="btn btn-submit">비밀번호 변경</a>
+                <button type="button" class="btn btn-submit" id="edit-btn">수정하기</button>
+            </div>
+        </form>
     </div>
-  </div>
+
+    <!-- 분리된 JS 파일 로드 -->
+    <script src="{{ url_for('static', filename='js/mypage.js') }}"></script>
 </body>
 </html>

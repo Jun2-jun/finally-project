@@ -45,10 +45,6 @@ def dashboard():
 def find():
     return render_template("find.html", now=datetime.now())
 
-@app.route('/mypage')
-def mypage():
-    return render_template("mypage.html", now=datetime.now())
-
 @app.route('/admin')
 def admin():
     return render_template("admin.html", now=datetime.now())
@@ -143,6 +139,29 @@ def send_email():
         print('불가능: 이메일 주소 없음.')
 
     return render_template("find.html")
+
+@app.route('/mypage', methods=['GET', 'POST'])
+def mypage():
+    if request.method == 'POST':
+        session['email'] = request.form.get('email')
+        session['birthdate'] = request.form.get('birthdate')
+        session['phone'] = request.form.get('phone')
+        session['address'] = request.form.get('address')
+        session['detail_address'] = request.form.get('detail_address')
+        return redirect(url_for('mypage'))
+
+    # 기본값 설정
+    user_data = {
+        'userid': 'my_id',
+        'email': session.get('email', 'myemail@example.com'),
+        'birthdate': session.get('birthdate', '2000-01-01'),
+        'phone': session.get('phone', '010-1234-5678'),
+        'address': session.get('address', '서울특별시 중구 세종대로'),
+        'detail_address': session.get('detail_address', '101동 1001호')
+    }
+
+    return render_template("mypage.html", user=user_data, now=datetime.now())
+
 
 
 if __name__ == '__main__':

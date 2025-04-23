@@ -1,89 +1,82 @@
+/* static/css/mypage.css */
+
 body {
-    margin: 0;
-    background-color: #f9fafb;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  .mypage-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  
-  .card {
-    background-color: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-  }
-  
-  .header-text {
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .sub-text {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 30px;
-  }
-  
-  .info-group {
-    text-align: left;
-    margin-bottom: 15px;
-  }
-  
-  .info-group label {
-    font-weight: bold;
-    color: #444;
-  }
-  
-  .info-group span {
-    display: block;
-    margin-top: 5px;
-    font-size: 15px;
-    color: #222;
-  }
-  
-  .button-group {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 25px;
-  }
-  
-  .btn-outline {
-    padding: 10px 20px;
-    background-color: transparent;
-    border: 1px solid #007bff;
-    color: #007bff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  
-  .btn-outline:hover {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .btn-primary {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
+  background: #eef4ff;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  height: 45px;
+  padding-left: 40px;
+  border-radius: 10px;
+}
+
+.form-control::placeholder {
+  color: #bbb;
+}
+
+.form-icon {
+  position: absolute;
+  top: 11px;
+  left: 15px;
+  color: #999;
+}
+
+.search-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  border: none;
+  background-color: #5c9fff;
+  color: white;
+  border-radius: 0 10px 10px 0;
+  width: 40px;
+}
+
+.btn-submit {
+  background-color: #6ca9ff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  height: 48px;
+  font-size: 18px;
+  line-height: 48px;
+  padding: 0;
+  text-align: center;
+}
+
+.btn-submit:hover {
+  background-color: #4d91f7;
+}
+
+.btn-wrap {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.btn-wrap .btn {
+  flex: 1;
+}
