@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - 닥터퓨쳐</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="login-form">
+      <h2 class="header-text">
+        <a href="{{ url_for('home') }}" class="home-link">Dr.Future</a>
+      </h2>
+      <p class="sub-text">로그인하고 편리한 서비스를 이용해보세요</p>
+
+      <!-- form 태그에서 action과 method를 제거하고 id만 추가 -->
+      <form id="loginForm">
+        <label for="username" class="form-label">Email:</label>
+        <input type="text" id="username" name="username" placeholder="Email Address" required>
+
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
+        <button type="submit" class="login-btn">Login</button>
+        <p id="errorMessage" style="color: red; display: none;"></p>
+      </form>
+
+      <p class="register-link sub-text">
+        Don't have an account? <a href="{{ url_for('register') }}" class="hover-link1"> Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // 페이지 로드 완료 후 이벤트 리스너 등록
+    document.addEventListener('DOMContentLoaded', function() {
+      // 로그인 폼 요소 가져오기
+      const loginForm = document.getElementById('loginForm');
+      
+      // 폼 제출 이벤트 리스너
+      loginForm.addEventListener('submit', function(event) {
+        // 기본 폼 제출 동작 방지 (매우 중요!)
+        event.preventDefault();
+        
+        // 폼 입력값 가져오기
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // 로그 출력
+        console.log('로그인 시도:', { username, password: '***' });
+        
+        // API 요청에 사용할 데이터 객체
+        const loginData = {
+          username: username,
+          password: password
+        };
+        
+        // API 요청 URL 설정
+        const apiUrl = 'http://192.168.219.142:5002/api/login';
+        console.log('API 요청 URL:', apiUrl);
+        
+        // Fetch API를 사용한 로그인 요청
+        fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(loginData),
+          // credentials: 'include' // 쿠키가 필요하지 않으면 제거
+          mode: 'cors' // CORS 모드 명시적 설정
+        })
+        .then(response => {
+          // 응답 상태 로깅
+          console.log('응답 상태 코드:', response.status);
+          console.log('응답 상태 텍스트:', response.statusText);
+          
+          // 응답이 JSON인지 확인
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            return response.json();
+          } else {
+            throw new Error('응답이 JSON 형식이 아닙니다. 받은 형식: ' + contentType);
+          }
+        })
+        .then(data => {
+          // 응답 데이터 로깅
+          console.log('응답 데이터:', data);
+          
+          // 로그인 성공 처리
+          if (data.status === 'success') {
+            console.log('로그인 성공! 사용자:', data.user);
+            // 사용자 정보를 로컬 스토리지에 저장
+            localStorage.setItem('username', data.user);
+            // 대시보드 페이지로 이동
+            window.location.href = "{{ url_for('dashboard') }}";
+          } else {
+            // 로그인 실패 처리
+            console.error('로그인 실패:', data.message);
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = data.message || '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.';
+            errorMessage.style.display = 'block';
+          }
+        })
+        .catch(error => {
+          // 오류 처리
+          console.error('로그인 오류:', error.message);
+          const errorMessage = document.getElementById('errorMessage');
+          errorMessage.textContent = '서버 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.';
+          errorMessage.style.display = 'block';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

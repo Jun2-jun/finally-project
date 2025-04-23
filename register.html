@@ -129,7 +129,7 @@
           address_detail: document.getElementById('address_detail').value
         };
 
-        fetch('http://localhost:5002/api/register', {
+        fetch('http://192.168.219.142:5002/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -140,10 +140,15 @@
         .then(response => response.json())
         .then(data => {
           if (data.status === 'success') {
-            document.getElementById('successMessage').textContent = "회원가입이 완료되었습니다!";
+            document.getElementById('successMessage').textContent = "회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.";
             document.getElementById('successMessage').style.display = "block";
             document.getElementById('errorMessage').style.display = "none";
             registerForm.reset();
+
+            // 1.5초 후 로그인 페이지로 이동
+            setTimeout(() => {
+              window.location.href = '/login';  // 또는 정확한 로그인 URL 경로
+            }, 1500);
           } else {
             document.getElementById('errorMessage').textContent = data.message || "회원가입에 실패했습니다.";
             document.getElementById('errorMessage').style.display = "block";
