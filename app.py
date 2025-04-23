@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 from routes.qna import qna_bp
 from routes.notice import notice_bp
 import requests
+from flask_cors import CORS
 
 
 app = Flask(__name__)
