@@ -129,13 +129,14 @@
           address_detail: document.getElementById('address_detail').value
         };
 
-        fetch('http://192.168.219.142:5002/api/register', {
+        fetch('http://192.168.219.62:5002/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(formData),
-          mode: 'cors'
+          mode: 'cors',
+          credentials: 'include'  // ✅ 세션 쿠키 저장용 (추가 가능)
         })
         .then(response => response.json())
         .then(data => {

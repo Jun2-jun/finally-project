@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('http://localhost:5002/api/current-user', {
+    fetch('http://192.168.219.62:5002/api/current-user', {
       method: 'GET',
       credentials: 'include'
     })
