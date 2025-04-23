@@ -1,3 +1,4 @@
+
 <form method="POST" action="{{ url_for('qna.qna_write') }}" id="content-form" enctype="multipart/form-data">
   <div class="editor-container">
 
@@ -48,6 +49,7 @@
 
     <!-- 에디터 -->
     <div class="editor" id="editor" contenteditable="true">내용을 입력하세요</div>
+    <input type="hidden" name="comment" id="comment">
     <textarea name="comment" id="comment" style="display: none;"></textarea>
     </div>
     

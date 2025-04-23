@@ -54,3 +54,6 @@
     cursor: pointer;
   }
   
+  .placeholder {
+    color: #999;
+  }
