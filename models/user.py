@@ -133,3 +133,103 @@ def delete_user(user_id):
         # 오류 발생 시 롤백
         mysql.connection.rollback()
         raise e
+
+def update_user_info(user_id, email, birthdate=None, phone=None, address=None, address_detail=None):
+    """
+    사용자 정보를 업데이트합니다.
+    
+    Args:
+        user_id: 사용자 ID
+        email: 이메일 주소(필수)
+        birthdate: 생년월일(선택)
+        phone: 전화번호(선택)
+        address: 주소(선택)
+        address_detail: 상세 주소(선택)
+        
+    Returns:
+        (성공 여부, 오류 메시지)
+    """
+    try:
+        # 이메일 중복 확인 (현재 사용자 제외)
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id FROM users WHERE email = %s AND id != %s", (email, user_id))
+        existing_email = cur.fetchone()
+        
+        if existing_email:
+            cur.close()
+            return False, "이미 사용 중인 이메일입니다."
+        
+        # 업데이트할 필드와 값 준비
+        update_fields = ["email = %s"]
+        params = [email]
+        
+        if birthdate is not None:
+            update_fields.append("birthdate = %s")
+            params.append(birthdate)
+            
+        if phone is not None:
+            update_fields.append("phone = %s")
+            params.append(phone)
+            
+        if address is not None:
+            update_fields.append("address = %s")
+            params.append(address)
+            
+        if address_detail is not None:
+            update_fields.append("address_detail = %s")
+            params.append(address_detail)
+            
+        # 사용자 ID 파라미터 추가
+        params.append(user_id)
+        
+        # UPDATE 쿼리 실행
+        query = f"UPDATE users SET {', '.join(update_fields)} WHERE id = %s"
+        cur.execute(query, params)
+        mysql.connection.commit()
+        
+        updated = cur.rowcount > 0
+        cur.close()
+        
+        if not updated:
+            return False, "사용자 정보 업데이트 실패"
+            
+        return True, None
+    except Exception as e:
+        # 오류 발생 시 롤백
+        mysql.connection.rollback()
+        return False, f"사용자 정보 업데이트 오류: {str(e)}"
+    
+def change_user_password(user_id, current_password, new_password):
+    """
+    사용자의 비밀번호를 변경합니다.
+    """
+    try:
+        # 현재 사용자 정보 가져오기
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT password FROM users WHERE id = %s", (user_id,))
+        user = cur.fetchone()
+        
+        if not user:
+            cur.close()
+            return False, "사용자를 찾을 수 없습니다."
+        
+        stored_password = user.get('password')
+        
+        # 현재 비밀번호 검증
+        if not check_password(stored_password, current_password):
+            cur.close()
+            return False, "현재 비밀번호가 일치하지 않습니다."
+        
+        # 새 비밀번호 해싱
+        hashed_new_password = hash_password(new_password)
+        
+        # 비밀번호 업데이트
+        cur.execute("UPDATE users SET password = %s WHERE id = %s", 
+                   (hashed_new_password, user_id))
+        mysql.connection.commit()
+        
+        cur.close()
+        return True, None
+    except Exception as e:
+        mysql.connection.rollback()
+        return False, str(e)
