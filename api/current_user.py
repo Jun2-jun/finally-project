@@ -1,8 +1,12 @@
-from flask import request, jsonify, session
-from . import api_bp
+# api/current_user.py
+
+from flask import Blueprint, request, jsonify, session
 from models.user import get_user_by_id
 
-@api_bp.route('/current-user', methods=['GET'])  # ✔️ endpoint 경로도 명확하게!
+# ✅ 기능별 Blueprint 정의
+current_user_bp = Blueprint('current_user', __name__, url_prefix='/api')
+
+@current_user_bp.route('/current-user', methods=['GET'])
 def get_current_user():
     user_id = session.get('user_id')
 
@@ -18,6 +22,10 @@ def get_current_user():
         'status': 'success',
         'user': {
             'username': user['username'],
-            'email': user['email']
+            'email': user['email'],
+            'birthdate': user['birthdate'],
+            'phone': user['phone'],
+            'address': user['address'],
+            'address_detail': user['address_detail']
         }
     }), 200

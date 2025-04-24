@@ -17,7 +17,7 @@ def get_user_by_id(user_id):
     ID로 사용자 가져오기
     """
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, username, email, birthdate, phone, address, created_at FROM users WHERE id = %s", (user_id,))
+    cur.execute("SELECT id, username, email, birthdate, phone, address, address_detail, created_at FROM users WHERE id = %s", (user_id,))
     user = cur.fetchone()
     cur.close()
     
@@ -31,12 +31,12 @@ def get_user_by_username(username):
     사용자명으로 사용자 가져오기
     """
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, username, password, email, birthdate, phone, address FROM users WHERE username = %s", (username,))
+    cur.execute("SELECT id, username, password, email, birthdate, phone, address, address_detail FROM users WHERE username = %s", (username,))
     user = cur.fetchone()
     cur.close()
     return user
 
-def create_user(username, password, email, birthdate=None, phone=None, address=None):
+def create_user(username, password, email, birthdate=None, phone=None, address=None, address_detail=None):
     """
     새 사용자 생성
     """
@@ -54,9 +54,9 @@ def create_user(username, password, email, birthdate=None, phone=None, address=N
     
     # 사용자 삽입
     cur.execute("""
-        INSERT INTO users (username, password, email, birthdate, phone, address, created_at)
-        VALUES (%s, %s, %s, %s, %s, %s, NOW())
-    """, (username, hashed_password, email, birthdate, phone, address))
+        INSERT INTO users (username, password, email, birthdate, phone, address, address_detail, created_at)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())
+    """, (username, hashed_password, email, birthdate, phone, address, address_detail))
     mysql.connection.commit()
     user_id = cur.lastrowid
     cur.close()
@@ -93,7 +93,8 @@ def verify_user(username, password):
             'email': user.get('email'),
             'birthdate': format_datetime(user.get('birthdate')),
             'phone': user.get('phone'),
-            'address': user.get('address')
+            'address': user.get('address'),
+            'address_detail' : user.get('address_detail')
         }
 
         print("[DEBUG] 로그인 성공:", user_data)
@@ -102,3 +103,33 @@ def verify_user(username, password):
     except Exception as e:
         print("[FATAL ERROR] verify_user 실패:", str(e))
         return None, "내부 서버 오류 발생"
+
+def delete_user(user_id):
+    """
+    사용자 계정을 삭제하는 함수
+    """
+    try:
+        cur = mysql.connection.cursor()
+        
+        # 사용자와 관련된 데이터 삭제 (외래 키 제약조건 때문에 자식 테이블부터 삭제)
+        # 예약 삭제
+        cur.execute("DELETE FROM reservations WHERE user_id = %s", (user_id,))
+        
+        # Q&A 삭제
+        cur.execute("DELETE FROM qna WHERE user_id = %s", (user_id,))
+        
+        # 공지사항 삭제
+        cur.execute("DELETE FROM notice WHERE user_id = %s", (user_id,))
+        
+        # 마지막으로 사용자 삭제
+        cur.execute("DELETE FROM users WHERE id = %s", (user_id,))
+        
+        mysql.connection.commit()
+        deleted = cur.rowcount > 0
+        cur.close()
+        
+        return deleted
+    except Exception as e:
+        # 오류 발생 시 롤백
+        mysql.connection.rollback()
+        raise e

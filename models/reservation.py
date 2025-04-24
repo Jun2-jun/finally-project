@@ -6,7 +6,7 @@ def get_all_reservations():
     모든 예약 가져오기 (관리자 기능)
     """
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, name, phone, hospital, address, message, email, created_at FROM reservations")
+    cur.execute("SELECT id, user_id, name, phone, hospital, address, message, email, created_at FROM reservations")
     reservations = cur.fetchall()
     cur.close()
     
@@ -76,3 +76,23 @@ def get_reservation_stats():
         'today': today_sessions,
         'new': new_bookings
     }
+
+def get_user_reservations(user_id):
+    """
+    특정 사용자의 모든 예약 가져오기
+    """
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT id, name, phone, hospital, address, message, email, created_at 
+        FROM reservations 
+        WHERE user_id = %s
+        ORDER BY created_at DESC
+    """, (user_id,))
+    reservations = cur.fetchall()
+    cur.close()
+    
+    # 날짜 형식 변환
+    for res in reservations:
+        res['created_at'] = format_datetime(res.get('created_at'))
+    
+    return reservations
