@@ -28,12 +28,12 @@
     max-height: 300px;
   }
   .editor-placeholder {
-    color: #999;
+    color: #6c757d;
     pointer-events: none;
   }
   #editor:not(.has-content):not(.focused)::before {
     content: "내용을 입력하세요";
-    color: #999;
+    color: #6c757d;
     position: absolute;
     pointer-events: none;
   }
