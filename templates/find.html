@@ -20,8 +20,9 @@
       <div class="col-md-2 sidebar">
         <div class="user-block d-flex flex-column align-items-center text-center mb-4">
           <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
-          <div class="user-name">{{ user_name or "USER" }}</div>
-          <div class="user-email">{{ user_email or "test01@naver.com" }}</div>
+          <!-- ✅ 여기 아래에 정확히 이걸 넣으면 돼 -->
+          <div class="user-name" id="user-name">USER</div>
+          <div class="user-email" id="user-email">test01@naver.com</div>
           <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
           <button onclick="logout()" class="btn btn-outline-primary btn-sm w-75">Log out</button>
         </div>
@@ -49,7 +50,7 @@
 
         <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/b8.jpg') left center / cover no-repeat; border-radius: 12px;">
           <h5 class="fw-bold">안녕하세요</h5>
-          <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
+          <h3 class="fw-bold" id="welcome-name">Test Name님!</h3>
           <p>병원 예약페이지 입니다. 병원을 검색해주세요!</p>
           <form class="input-group mb-3" onsubmit="searchPlaces(); return false;">
             <input type="text" id="keyword" value="내과" class="form-control" placeholder="동네 및 병원을 입력하세요">
@@ -72,5 +73,6 @@
   <!-- 외부 JS 연결 -->
   <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6be88c9794d7e1f9095b709637776b77&libraries=services"></script>
   <script src="{{ url_for('static', filename='js/find.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/userInfo.js') }}" defer></script>
 </body>
 </html>

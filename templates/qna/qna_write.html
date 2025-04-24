@@ -22,8 +22,8 @@
       <div class="col-md-2 sidebar">
         <div class="user-block d-flex flex-column align-items-center text-center mb-4">
           <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
-          <div class="user-name">{{ user_name or "USER" }}</div>
-          <div class="user-email">{{ user_email or "test01@naver.com" }}</div>
+          <div id="user-name" class="user-name">{{ user_name or "USER" }}</div>
+          <div id="user-email" class="user-email">{{ user_email or "test01@naver.com" }}</div>
           <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
           <button onclick="logout()" class="btn btn-outline-primary btn-sm w-75">Log out</button>
         </div>
@@ -53,7 +53,7 @@
 
         <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/table.jpg') left center / cover no-repeat; border-radius: 12px;">
           <h5 class="fw-bold">안녕하세요</h5>
-          <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
+          <h3 id="welcome-name" class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
           <p>Q&A 게시판입니다!</p>
         </div>
 

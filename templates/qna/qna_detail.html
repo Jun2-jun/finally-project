@@ -13,8 +13,8 @@
       <div class="col-md-2 sidebar">
         <div class="user-block d-flex flex-column align-items-center text-center mb-4">
           <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
-          <div class="user-name">{{ user_name or "USER" }}</div>
-          <div class="user-email">{{ user_email or "test01@naver.com" }}</div>
+          <div id="user-name" class="user-name">{{ user_name or "USER" }}</div>
+          <div id="user-email" class="user-email">{{ user_email or "test01@naver.com" }}</div>
 
           <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
           <button onclick="alert('로그아웃 되었습니다.'); window.location.href='/login';" class="btn btn-outline-primary btn-sm w-75">Log out</button>
@@ -47,5 +47,8 @@
       </div>
     </div>
   </div>
+
+  <!-- 세션 관리 스크립트 -->
+  <script src="{{ url_for('static', filename='js/qna_detail.js') }}"></script>
 </body>
 </html>

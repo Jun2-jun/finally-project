@@ -5,25 +5,51 @@ window.onpageshow = function(event) {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+  // 사용자 정보 불러오기
+  fetch('http://192.168.219.189:5002/api/current-user', {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        // DOM 요소가 있는지 확인 후 업데이트
+        const userNameEl = document.getElementById('user-name');
+        const userEmailEl = document.getElementById('user-email');
+        const welcomeNameEl = document.getElementById('welcome-name');
+        
+        if (userNameEl) userNameEl.innerText = data.user.username || 'USER';
+        if (userEmailEl) userEmailEl.innerText = data.user.email || 'test01@naver.com';
+        if (welcomeNameEl) welcomeNameEl.innerText = `${data.user.username || 'Test Name'}님!`;
+      }
+    })
+    .catch(err => {
+      console.error('사용자 정보 불러오기 실패:', err);
+    });
+
+  // 기존 에디터 기능
   const editor = document.getElementById('editor');
   const commentTextarea = document.getElementById('comment');
   const form = document.getElementById('content-form');
 
   function updatePlaceholder() {
-    if (editor.innerHTML.trim() === '' || editor.innerHTML.trim() === '<br>') {
-      editor.classList.remove('has-content');
+    if (editor && editor.innerHTML.trim() === '' || editor?.innerHTML.trim() === '<br>') {
+      editor?.classList.remove('has-content');
     } else {
-      editor.classList.add('has-content');
+      editor?.classList.add('has-content');
     }
   }
 
   updatePlaceholder();
 
-  editor.addEventListener('focus', () => {
+  editor?.addEventListener('focus', () => {
     editor.classList.add('focused');
   });
 
-  editor.addEventListener('blur', () => {
+  editor?.addEventListener('blur', () => {
     updatePlaceholder();
     editor.classList.remove('focused');
   });
@@ -140,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function insertImage(src) {
-    if (!src) return;
+    if (!src || !editor) return;
     const img = document.createElement('img');
     img.src = src;
     img.style.maxWidth = '100%';
@@ -165,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
       uploadedFilesContainer.removeChild(fileItem);
       updateUploadCount(-1);
 
-      if (src) {
+      if (src && editor) {
         const images = editor.querySelectorAll('img');
         images.forEach(img => {
           if (img.src === src) {
@@ -181,16 +207,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateUploadCount(delta, reset = false) {
     uploadCount = reset ? 0 : uploadCount + delta;
-    imageCountText.textContent = uploadCount;
+    if (imageCountText) imageCountText.textContent = uploadCount;
   }
 
   function resetImageInputs() {
-    fileUpload.value = '';
-    uploadPreview.src = '';
-    uploadPreview.style.display = 'none';
-    insertUpload.disabled = true;
-    imageUrl.value = '';
-    urlPreview.src = '';
-    urlPreview.style.display = 'none';
+    if (fileUpload) fileUpload.value = '';
+    if (uploadPreview) {
+      uploadPreview.src = '';
+      uploadPreview.style.display = 'none';
+    }
+    if (insertUpload) insertUpload.disabled = true;
+    if (imageUrl) imageUrl.value = '';
+    if (urlPreview) {
+      urlPreview.src = '';
+      urlPreview.style.display = 'none';
+    }
   }
 });

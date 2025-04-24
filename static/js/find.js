@@ -2,6 +2,7 @@ let map;
 let markers = [];
 let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
+
 function initMap(lat, lng) {
   map = new kakao.maps.Map(document.getElementById('map'), {
     center: new kakao.maps.LatLng(lat, lng),
@@ -119,3 +120,4 @@ navigator.geolocation.getCurrentPosition(
     searchPlaces();
   }
 );
+
