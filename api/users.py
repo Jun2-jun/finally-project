@@ -2,6 +2,7 @@ from flask import request, jsonify, session
 from . import api_bp
 from models.user import get_all_users, create_user, verify_user
 from utils.auth import login_required, admin_required
+from flask_cors import cross_origin  # ✅ CORS 프리플라이트 허용을 위한 import
 
 # 1. 사용자 목록 - admin 페이지용
 @api_bp.route('/users', methods=['GET'])
@@ -31,16 +32,14 @@ def api_register():
         phone = data.get('phone')
         address = data.get('address')
 
-        # 필수 필드 검증
         if not all([username, password, email]):
             return jsonify({
                 'status': 'fail',
                 'message': '아이디, 비밀번호, 이메일은 필수 입력 항목입니다.'
             }), 400
 
-        # 사용자 등록
         user_id, error = create_user(username, password, email, birthdate, phone, address)
-        
+
         if error:
             return jsonify({
                 'status': 'fail',
@@ -48,7 +47,7 @@ def api_register():
             }), 400
 
         return jsonify({
-            'status': 'success', 
+            'status': 'success',
             'message': '회원가입이 완료되었습니다.',
             'data': {
                 'user_id': user_id,
@@ -62,38 +61,45 @@ def api_register():
         }), 500
 
 # 3. 로그인 처리
-@api_bp.route('/login', methods=['POST'])
+@api_bp.route('/login', methods=['POST', 'OPTIONS'])  # ✅ POST + OPTIONS
+@cross_origin(origins=[
+    "http://localhost:5000",
+    "http://127.0.0.1:5000",
+    "http://192.168.219.189:5000"  # ✅ 실제 프론트 주소를 정확하게 지정
+], supports_credentials=True)
 def api_login():
+    if request.method == 'OPTIONS':
+        return '', 204  # ✅ Preflight 응답 처리
+
     try:
         data = request.get_json() or {}
         username = data.get('username')
         password = data.get('password')
-        print("세션 저장됨:", session.get('user_id'))  # ✅ 이 줄 추가!
-        
+        print("세션 저장됨:", session.get('user_id'))
+
         if not username or not password:
             return jsonify({
                 'status': 'fail',
                 'message': '아이디와 비밀번호를 입력하세요.'
             }), 400
 
-        # 사용자 인증
         user_data, error = verify_user(username, password)
-        
+
         if error:
             return jsonify({
                 'status': 'fail',
                 'message': error
             }), 401
 
-        # 세션에 사용자 정보 저장
         session['user_id'] = user_data.get('id')
         session['username'] = user_data.get('username')
-        
+
         return jsonify({
             'status': 'success',
             'message': '로그인 성공',
             'data': user_data
         }), 200
+
     except Exception as e:
         return jsonify({
             'status': 'fail',
@@ -104,10 +110,9 @@ def api_login():
 @api_bp.route('/logout', methods=['POST'])
 def api_logout():
     try:
-        # 세션에서 사용자 정보 제거
         session.pop('user_id', None)
         session.pop('username', None)
-        
+
         return jsonify({
             'status': 'success',
             'message': '로그아웃 성공'

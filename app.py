@@ -17,7 +17,11 @@ def create_app(config_name='default'):
     CORS(app, resources={r"/api/*": {"origins": [
     "http://localhost:5000",
     "http://127.0.0.1:5000",
-    "http://192.168.219.62:5000"
+    "http://192.168.59.1:5000",
+    "http://192.168.219.221:5000",
+    "http://192.168.219.203:5000",
+    "http://192.168.219.111:5001"
+
 ]}}, supports_credentials=True)
     
     # 확장 초기화
