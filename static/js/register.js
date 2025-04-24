@@ -45,7 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
         address_detail: document.getElementById("address_detail").value
       };
   
-      fetch("http://192.168.219.62:5002/api/register", {
+      // ✅ API 주소 자동 설정 (현재 호스트에 맞춰서)
+      const apiHost = window.location.hostname;
+      const apiBaseUrl = `http://${apiHost}:5002`;
+  
+      fetch(`${apiBaseUrl}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
