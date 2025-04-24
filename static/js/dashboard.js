@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   console.log("🔥 유저 정보 API 호출 시작");  
-  fetch('http://192.168.59.1:5002/api/current-user', {
+  fetch('http://192.168.219.189:5002/api/current-user', {
       method: 'GET',
       credentials: 'include'
     })

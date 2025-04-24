@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         password: password
       };
   
-      const apiUrl = 'http://192.168.59.1:5002/api/login';
+      const apiUrl = 'http://192.168.219.189:5002/api/login';
   
       fetch(apiUrl, {
         method: 'POST',
