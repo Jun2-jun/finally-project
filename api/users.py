@@ -1,7 +1,7 @@
 # api/users.py
 
 from flask import Blueprint, request, jsonify, session
-from models.user import get_all_users, create_user, verify_user, delete_user
+from models.user import get_all_users, create_user, verify_user, delete_user, update_user_info, get_user_by_id, change_user_password
 from utils.auth import login_required, admin_required
 from flask_cors import cross_origin
 
@@ -108,3 +108,61 @@ def withdraw_account():
             return jsonify({'status': 'fail', 'message': '회원 탈퇴 처리 중 오류 발생'}), 400
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'탈퇴 중 오류: {str(e)}'}), 500
+
+# 6. 사용자 정보 수정
+@users_bp.route('/update', methods=['POST'])
+@login_required
+def update_user_information():
+    try:
+        user_id = session.get('user_id')
+        if not user_id:
+            return jsonify({'status': 'fail', 'message': '로그인이 필요합니다.'}), 401
+        
+        data = request.get_json()
+        email = data.get('email')
+        birthdate = data.get('birthdate')
+        phone = data.get('phone')
+        address = data.get('address')
+        address_detail = data.get('address_detail')
+        
+        # 이메일은 필수 항목으로 처리
+        if not email:
+            return jsonify({'status': 'fail', 'message': '이메일은 필수 입력 항목입니다.'}), 400
+        
+        success, error = update_user_info(user_id, email, birthdate, phone, address, address_detail)
+        
+        if not success:
+            return jsonify({'status': 'fail', 'message': error}), 400
+            
+        # 업데이트된 사용자 정보 가져오기
+        updated_user = get_user_by_id(user_id)
+            
+        return jsonify({
+            'status': 'success',
+            'message': '사용자 정보가 성공적으로 수정되었습니다.',
+            'data': updated_user
+        }), 200
+    except Exception as e:
+        return jsonify({'status': 'fail', 'message': f'정보 수정 중 오류: {str(e)}'}), 500
+    
+# 7. 비밀번호 변경
+@users_bp.route('/change-password', methods=['POST'])
+@login_required
+def change_password():
+    try:
+        user_id = session.get('user_id')
+        data = request.get_json()
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+        
+        success, error = change_user_password(user_id, current_password, new_password)
+        
+        if not success:
+            return jsonify({'status': 'fail', 'message': error}), 400
+            
+        return jsonify({
+            'status': 'success',
+            'message': '비밀번호가 변경되었습니다.'
+        }), 200
+    except Exception as e:
+        return jsonify({'status': 'fail', 'message': str(e)}), 500
