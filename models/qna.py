@@ -16,8 +16,8 @@ def get_all_qna(page=1, per_page=10):
     
     # 페이지 데이터 가져오기 (사용자 정보 포함)
     cur.execute("""
-        SELECT q.id, q.title, q.comment, q.image_urls, q.created_at, 
-               q.user_id, u.username as author
+        SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.created_at, 
+               u.username as author
         FROM qna q
         LEFT JOIN users u ON q.user_id = u.id
         ORDER BY q.created_at DESC
@@ -39,8 +39,8 @@ def get_qna_by_id(post_id):
     """
     cur = mysql.connection.cursor()
     cur.execute("""
-        SELECT q.id, q.title, q.comment, q.image_urls, q.created_at, 
-               q.user_id, u.username as author
+        SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.created_at, 
+               u.username as author
         FROM qna q
         LEFT JOIN users u ON q.user_id = u.id
         WHERE q.id = %s
@@ -58,19 +58,24 @@ def create_qna(title, comment, image_urls=None, category='일반', user_id=None)
     """
     새 Q&A 게시물 생성하기
     """
-    # image_urls를 JSON 문자열로 변환
-    image_urls_json = json.dumps(image_urls) if image_urls else '[]'
-    
-    cur = mysql.connection.cursor()
-    cur.execute("""
-        INSERT INTO qna (title, comment, image_urls, category, user_id, created_at)
-        VALUES (%s, %s, %s, %s, %s, NOW())
-    """, (title, comment, image_urls_json, category, user_id))
-    mysql.connection.commit()
-    post_id = cur.lastrowid
-    cur.close()
-    
-    return post_id
+    try:
+        image_urls_json = json.dumps(image_urls) if image_urls else '[]'
+        cur = mysql.connection.cursor()
+
+        cur.execute("""
+            INSERT INTO qna (user_id, title, comment, image_urls, category, created_at)
+            VALUES (%s, %s, %s, %s, %s, NOW())
+        """, (user_id, title, comment, image_urls_json, category))
+
+        mysql.connection.commit()
+        post_id = cur.lastrowid
+        cur.close()
+
+        print("✅ QNA INSERT 성공. post_id:", post_id)
+        return post_id
+    except Exception as e:
+        print("💥 QNA INSERT ERROR:", str(e))
+        return None
 
 def delete_qna(post_id):
     """

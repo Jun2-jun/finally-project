@@ -59,7 +59,8 @@ def create_notice_api():
         return jsonify({
             'status': 'success',
             'message': '공지사항 등록 완료',
-            'data': {'notice_id': notice_id}
+            'data': {'notice_id': notice_id},
+            'session' : session.sid
         }), 201
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'공지사항 등록 오류: {str(e)}'}), 500

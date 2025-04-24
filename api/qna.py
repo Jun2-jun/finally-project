@@ -3,7 +3,7 @@
 from flask import Blueprint, request, jsonify, session, current_app
 from models.qna import get_all_qna, get_qna_by_id, create_qna, delete_qna
 from utils.helpers import save_uploaded_files, paginate_results
-from utils.auth import admin_required
+from utils.auth import login_required, admin_required
 
 # ✅ Q&A 전용 Blueprint 정의
 qna_bp = Blueprint('qna', __name__, url_prefix='/api/qna')
@@ -36,6 +36,7 @@ def get_qna_detail_api(post_id):
 
 # 3. Q&A 작성 (JSON 또는 FormData 지원)
 @qna_bp.route('/', methods=['POST'])
+@login_required
 def create_qna_api():
     try:
         user_id = session.get('user_id')
@@ -56,12 +57,13 @@ def create_qna_api():
         if not title or not comment:
             return jsonify({'status': 'fail', 'message': '제목과 내용을 입력해주세요.'}), 400
 
-        post_id = create_qna(title, comment, image_urls, category, user_id)
+        post_id = create_qna(user_id, title, comment, image_urls, category)
 
         return jsonify({
             'status': 'success',
             'message': 'Q&A가 등록되었습니다.',
-            'data': {'post_id': post_id}
+            'data': {'post_id': post_id},
+            'session' : session.sid
         }), 201
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'Q&A 등록 오류: {str(e)}'}), 500

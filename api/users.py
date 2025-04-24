@@ -76,6 +76,7 @@ def api_login():
             'status': 'success',
             'message': '로그인 성공',
             'data': user_data,
+            'session' : session.sid
         }), 200
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'로그인 오류: {str(e)}'}), 500
