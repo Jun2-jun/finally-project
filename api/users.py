@@ -97,7 +97,8 @@ def api_login():
         return jsonify({
             'status': 'success',
             'message': '로그인 성공',
-            'data': user_data
+            'data': user_data,
+            'session': session.sid
         }), 200
 
     except Exception as e:
