@@ -22,7 +22,7 @@ app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(reserve_bp, url_prefix="/api")
 app.register_blueprint(api_bp)
 app.register_blueprint(submit_bp)
-app.register_blueprint(qna_bp)
+app.register_blueprint(qna_bp, url_prefix='/api/qna')
 app.register_blueprint(notice_bp)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
 
