@@ -5,13 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 초기 로딩 텍스트
   tbody.innerHTML = '<tr><td colspan="3" class="text-center">불러오는 중...</td></tr>';
 
-  fetch('http://192.168.219.189:5002/api/reservations/upcoming', {
+  // 1. 로그인된 사용자 정보 가져오기
+  fetch('http://192.168.219.189:5002/api/current-user', {
     method: 'GET',
     credentials: 'include'
   })
     .then(res => res.json())
     .then(userData => {
-      if (userData.status === 'success') {
+      if (userData.status === 'success' && userData.user) {
         const user = userData.user;
         const userId = user.id;
 
