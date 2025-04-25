@@ -6,10 +6,18 @@ document.addEventListener('DOMContentLoaded', function () {
   function appendMessage(content, sender) {
     const msg = document.createElement('div');
     msg.className = `chat-message ${sender}`;
-    msg.textContent = content;
+  
+    if (sender === 'bot') {
+      // 마크다운 → HTML 처리
+      msg.innerHTML = marked.parse(content);
+    } else {
+      msg.textContent = content;
+    }
+  
     chatBody.appendChild(msg);
     chatBody.scrollTop = chatBody.scrollHeight;
   }
+  
 
   async function sendMessage() {
     const userInput = input.value.trim();
@@ -24,18 +32,18 @@ document.addEventListener('DOMContentLoaded', function () {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          prompt: userInput
-        })
+        body: JSON.stringify({ prompt: userInput })
       });
 
       const result = await response.json();
 
       if (result.status === 'success') {
-        appendMessage(result.data.response || '응답 없음', 'bot');
+        const text = result.data?.candidates?.[0]?.content?.parts?.[0]?.text || '응답 없음';
+        appendMessage(text, 'bot');
       } else {
         appendMessage(`❗ ${result.message}`, 'bot');
       }
+
     } catch (error) {
       appendMessage(`❗ 서버 오류 발생: ${error.message}`, 'bot');
     }
