@@ -28,6 +28,8 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허
 
 @app.route('/')
 def home():
+    if 'user_id' in session:
+        return redirect(url_for('dashboard.dashboard_info'))  # 블루프린트 이름에 맞게 수정
     return render_template("index.html")
 
 @app.route('/login')
