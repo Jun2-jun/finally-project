@@ -34,19 +34,19 @@ def create_reservation_api():
     print("✅ 예약 라우터 진입", flush=True)
 
     try:
-        data = request.get_json(force=True)  # 강제로 JSON 파싱 시도
+        data = request.get_json(force=True)
         print("받은 데이터:", data, flush=True)
     except Exception as e:
         print("❌ JSON 파싱 실패:", str(e), flush=True)
         return jsonify({'status': 'fail', 'message': '요청 형식 오류 (JSON 아님)'}), 400
-    data = request.get_json()
+
     name = data.get('name')
     phone = data.get('phone')
     hospital = data.get('hospital')
     address = data.get('address')
     message = data.get('message', '')
     email = data.get('email', '')
-    user_id = data.get('user_id')  # 로그인 유저일 경우
+    user_id = data.get('user_id')
     reservation_time_str = data.get('reservation_time')
 
     if not all([name, phone, hospital, address, reservation_time_str]):
@@ -56,9 +56,15 @@ def create_reservation_api():
         }), 400
 
     try:
-        # 문자열을 datetime으로 파싱 (예: "2025-04-30T15:00")
-        reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%dT%H:%M')
+        # "2025-04-30 15:00" 형식만 허용
+        reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
+    except ValueError:
+        return jsonify({
+            'status': 'fail',
+            'message': '예약 시간 형식은 "YYYY-MM-DD HH:MM" 이어야 합니다.'
+        }), 400
 
+    try:
         reservation_id = create_reservation(
             name=name,
             phone=phone,
