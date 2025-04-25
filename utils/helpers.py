@@ -18,7 +18,7 @@ def save_uploaded_files(files, upload_folder):
     
     for file in files:
         if file and file.filename != '':
-            filename = secure_filename(file.filename)
+            filename = file.filename
             filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
             # 웹 URL 형식으로 반환
