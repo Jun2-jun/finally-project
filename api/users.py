@@ -1,7 +1,7 @@
 # api/users.py
 
 from flask import Blueprint, request, jsonify, session
-from models.user import get_all_users, create_user, verify_user, delete_user, update_user_info, get_user_by_id, change_user_password, vulnerable_admin_login
+from models.user import get_all_users, create_user, verify_user, delete_user, update_user_info, get_user_by_id, change_user_password
 from utils.auth import login_required, admin_required
 from flask_cors import cross_origin
 

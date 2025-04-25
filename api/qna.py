@@ -1,5 +1,3 @@
-# api/qna.py
-
 from flask import Blueprint, request, jsonify, session, current_app
 from models.qna import get_all_qna, get_qna_by_id, create_qna, delete_qna
 from utils.helpers import save_uploaded_files, paginate_results
@@ -34,12 +32,18 @@ def get_qna_detail_api(post_id):
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'Q&A 상세 조회 오류: {str(e)}'}), 500
 
-# 3. Q&A 작성 (JSON 또는 FormData 지원)
+# 3. Q&A 작성 (작성자 자동 설정 포함)
 @qna_bp.route('/', methods=['POST'])
 @login_required
 def create_qna_api():
     try:
         user_id = session.get('user_id')
+        writer = session.get('username') or session.get('user', {}).get('username', '익명')
+
+        # 🔍 디버깅용 로그 출력
+        print("✅ [QNA] 세션 사용자 ID:", user_id)
+        print("✅ [QNA] 세션 작성자 이름:", writer)
+        print("✅ [QNA] 세션 전체 내용:", dict(session))
 
         if request.is_json:
             data = request.get_json()
@@ -58,18 +62,17 @@ def create_qna_api():
             return jsonify({'status': 'fail', 'message': '제목과 내용을 입력해주세요.'}), 400
 
         post_id = create_qna(
-        title=title,
-        comment=comment,
-        image_urls=image_urls,
-        category=category,
-        user_id=user_id
-    )
+            title=title,
+            comment=comment,
+            image_urls=image_urls,
+            user_id=user_id,
+            writer=writer
+        )
 
         return jsonify({
             'status': 'success',
             'message': 'Q&A가 등록되었습니다.',
-            'data': {'post_id': post_id},
-            'session' : session.sid
+            'data': {'post_id': post_id}
         }), 201
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'Q&A 등록 오류: {str(e)}'}), 500
@@ -93,7 +96,7 @@ def delete_qna_api(post_id):
 def delete_qna_post_api(post_id):
     return delete_qna_api(post_id)
 
-# 6. 추가 경로 호환성 대응: /api/qna/posts
+# 6. 추가 경로 호환성 대응
 @qna_bp.route('/posts', methods=['GET'])
 def get_posts():
     return get_qna_api()
