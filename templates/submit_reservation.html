@@ -16,7 +16,7 @@
       <div class="detail-item"><strong>병원 주소</strong><span>{{ address }}</span></div>
       <div class="detail-item"><strong>예약자 이름</strong><span>{{ name }}</span></div>
       <div class="detail-item"><strong>연락처</strong><span>{{ phone }}</span></div>
-      <div class="detail-item"><strong>예약 시간</strong><span>{{ reservation_time.strftime('%Y-%m-%d %H:%M') }}</span></div>
+      <div class="detail-item"><strong>예약 시간</strong><span>{{ reservation_time }}</span></div>
       <div class="detail-item"><strong>요청 사항</strong><span>{{ message or "없음" }}</span></div>
       <div class="detail-item"><strong>이메일</strong><span>{{ email }}</span></div>
     </div>
@@ -30,7 +30,7 @@
         <input type="hidden" name="address" value="{{ address }}">
         <input type="hidden" name="name" value="{{ name }}">
         <input type="hidden" name="phone" value="{{ phone }}">
-        <input type="hidden" name="reservation_time" value="{{ reservation_time.strftime('%Y-%m-%d %H:%M') }}">
+        <input type="hidden" name="reservation_time" value="{{ reservation_time }}">
         <input type="hidden" name="message" value="{{ message }}">
         <input type="hidden" name="email" value="{{ email }}">
         <button type="submit" class="btn"><i data-lucide="mail"></i> 이메일 전송</button>

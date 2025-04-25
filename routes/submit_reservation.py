@@ -10,8 +10,6 @@ def submit_reservation():
     address = request.form.get('address')
     name = request.form.get('name')
     phone = request.form.get('phone')
-    date = request.form.get('date')      # 예: '2025-04-30'
-    time = request.form.get('time')      # 예: '09:30'
     message = request.form.get('message')
     email = request.form.get('email')
     reservation_time = request.form.get('reservation_time')
@@ -20,7 +18,7 @@ def submit_reservation():
     #     reservation_time_str = reservation_time_str.replace('T', ' ')
     #     reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
     
-    reservation_time_str = reservation_time.strftime('%Y-%m-%d %H:%M') if reservation_time else "yyyy-mm-dd hh:mm 형식으로 입력해주세요."
+    reservation_time = reservation_time.strftime('%Y-%m-%d %H:%M') if reservation_time else "yyyy-mm-dd hh:mm 형식으로 입력해주세요."
 
     return render_template("submit_reservation.html",
                            hospital=hospital,
