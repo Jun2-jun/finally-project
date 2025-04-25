@@ -1,4 +1,5 @@
 // qna_detail.js
+console.log("✅ qna_detail.js 로딩됨");
 document.addEventListener('DOMContentLoaded', function () {
   // ✅ 사용자 정보 표시
   fetch('http://192.168.219.189:5002/api/current-user', {
