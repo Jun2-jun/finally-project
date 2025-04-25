@@ -17,6 +17,8 @@ def submit_reservation():
     # if reservation_time_str:
     #     reservation_time_str = reservation_time_str.replace('T', ' ')
     #     reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
+    
+    reservation_time_str = reservation_time.strftime('%Y-%m-%d %H:%M') if reservation_time else "yyyy-mm-dd hh:mm 형식으로 입력해주세요."
 
     return render_template("submit_reservation.html",
                            hospital=hospital,
