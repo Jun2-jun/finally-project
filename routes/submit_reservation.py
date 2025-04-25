@@ -10,9 +10,11 @@ def submit_reservation():
     address = request.form.get('address')
     name = request.form.get('name')
     phone = request.form.get('phone')
-    reservation_time = request.form.get('reservation_time')
+    date = request.form.get('date')      # 예: '2025-04-30'
+    time = request.form.get('time')      # 예: '09:30'
     message = request.form.get('message')
     email = request.form.get('email')
+    reservation_time = request.form.get('reservation_time')
 
     # if reservation_time_str:
     #     reservation_time_str = reservation_time_str.replace('T', ' ')
