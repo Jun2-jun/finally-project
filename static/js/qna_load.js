@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
           <td>${post.writer || '알 수 없음'}</td>
           <td>${post.created_at}</td>
-          <td>${post.views || 0}</td>
         `;
 
         tbody.appendChild(row);
