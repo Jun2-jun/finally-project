@@ -70,9 +70,9 @@ def qna_post_detail(post_id):
 def qna_test():
     return '라우트는 작동 중입니다.'
 
-@app.route('/qna/post/<int:post_id>/test')
-def test_post_id(post_id):
-    return f"테스트 성공: 게시물 ID = {post_id}"
+@app.route('/qna/')
+def qna_list():
+    return render_template('qna/qna.html', now=datetime.now())
     
 @app.route('/notice/post/<int:post_id>')
 def notice_detail(post_id):
