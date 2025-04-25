@@ -20,7 +20,7 @@ def gemini_api():
                 'message': '프롬프트가 필요합니다.'
             }), 400
             
-        api_key = os.environ.get('GEMINI_API_KEY','API 키 넣어주세요')  # 환경 변수에서 가져오기
+        api_key = os.environ.get('GEMINI_API_KEY','AIzaSyCNNvCkXPWQGKghFa7gMNVF1FPZm5-0V00')  # 환경 변수에서 가져오기
         result = call_gemini_api(prompt, api_key)
 
         if 'error' in result:
