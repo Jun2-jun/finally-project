@@ -91,11 +91,25 @@ def delete_qna_api(post_id):
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'Q&A 삭제 오류: {str(e)}'}), 500
 
-# 5. Q&A 삭제 (POST 대체)
 @qna_bp.route('/<int:post_id>/delete', methods=['POST'])
-@admin_required
+@login_required
 def delete_qna_post_api(post_id):
-    return delete_qna_api(post_id)
+    user_id = session.get('user_id')
+    username = session.get('username')
+
+    qna = get_qna_by_id(post_id)
+    if not qna:
+        return jsonify({'status': 'fail', 'message': '게시글이 존재하지 않습니다.'}), 404
+
+    if qna['writer'] != username:
+        return jsonify({'status': 'fail', 'message': '본인만 삭제할 수 있습니다.'}), 403
+
+    success = delete_qna(post_id)
+    if success:
+        return jsonify({'status': 'success', 'message': f'{post_id}번 Q&A 삭제됨'}), 200
+    else:
+        return jsonify({'status': 'fail', 'message': '삭제 실패'}), 500
+
 
 # 6. 추가 경로 호환성 대응
 @qna_bp.route('/posts', methods=['GET'])
