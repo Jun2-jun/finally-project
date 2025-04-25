@@ -47,23 +47,23 @@ def create_reservation_api():
     message = data.get('message', '')
     email = data.get('email', '')
     user_id = data.get('user_id')
-    reservation_time_str = data.get('reservation_time')
+    reservation_time = data.get('reservation_time')
 
-    if not all([name, phone, hospital, address, reservation_time_str]):
+    if not all([name, phone, hospital, address, reservation_time]):
         return jsonify({
             'status': 'fail',
             'message': '필수 정보가 누락되었습니다.'
         }), 400
 
-    try:
-        # T → 공백으로 변환 후, 형식 확인
-        reservation_time_str = reservation_time_str.replace("T", " ")
-        reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
-    except ValueError:
-        return jsonify({
-            'status': 'fail',
-            'message': '예약 시간 형식은 "YYYY-MM-DD HH:MM" 이어야 합니다.'
-        }), 400
+    # try:
+    #     # T → 공백으로 변환 후, 형식 확인
+    #     reservation_time_str = reservation_time_str.replace("T", " ")
+    #     reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
+    # except ValueError:
+    #     return jsonify({
+    #         'status': 'fail',
+    #         'message': '예약 시간 형식은 "YYYY-MM-DD HH:MM" 이어야 합니다.'
+    #     }), 400
 
     try:
         reservation_id = create_reservation(

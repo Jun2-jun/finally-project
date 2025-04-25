@@ -16,7 +16,7 @@ def send_reservation_confirmation(email, name, hospital, address, phone, reserva
 
     ▷ 병원: {hospital}
     ▷ 주소: {address}
-    ▷ 예약 시간: {reservation_time.strftime('%Y년 %m월 %d일 %H시 %M분')}
+    ▷ 예약 시간: {reservation_time}
     ▷ 이름: {name}
     ▷ 연락처: {phone}
     ▷ 요청 사항: {message or "없음"}
