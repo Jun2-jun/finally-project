@@ -1,7 +1,7 @@
 from flask_mail import Message
 from extensions import mail
 
-def send_reservation_confirmation(email, name, hospital, address, phone, message=None):
+def send_reservation_confirmation(email, name, hospital, address, phone, reservation_time, message=None):
     """
     예약 확인 이메일 발송
     """
@@ -18,6 +18,7 @@ def send_reservation_confirmation(email, name, hospital, address, phone, message
     ▷ 주소: {address}
     ▷ 이름: {name}
     ▷ 연락처: {phone}
+    ▷ 예약 시간: {reservation_time.strftime('%Y년 %m월 %d일 %H시 %M분')}
     ▷ 요청 사항: {message or "없음"}
 
     감사합니다!

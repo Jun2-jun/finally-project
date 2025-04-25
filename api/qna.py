@@ -57,7 +57,13 @@ def create_qna_api():
         if not title or not comment:
             return jsonify({'status': 'fail', 'message': '제목과 내용을 입력해주세요.'}), 400
 
-        post_id = create_qna(user_id, title, comment, image_urls, category)
+        post_id = create_qna(
+        title=title,
+        comment=comment,
+        image_urls=image_urls,
+        category=category,
+        user_id=user_id
+    )
 
         return jsonify({
             'status': 'success',
