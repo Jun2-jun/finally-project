@@ -1,6 +1,7 @@
 from extensions import mysql
 from utils.auth import hash_password, check_password
 from utils.helpers import format_datetime
+from MySQLdb.cursors import DictCursor
 
 def get_all_users():
     """
