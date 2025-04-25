@@ -42,16 +42,42 @@ def create_reservation(name, phone, hospital, address, message='', email='', use
     """
     새 예약 생성하기
     """
-    cur = mysql.connection.cursor()
-    cur.execute("""
-        INSERT INTO reservations (name, phone, hospital, address, message, email, user_id, created_at, reservation_time)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s)
-    """, (name, phone, hospital, address, message, email, user_id, reservation_time))
-    mysql.connection.commit()
-    reservation_id = cur.lastrowid
-    cur.close()
+    # 디버깅 로그 추가
+    print(f"🔍 DB 저장 시도: {name}, {phone}, {hospital}, {reservation_time}", flush=True)
     
-    return reservation_id
+    try:
+        cur = mysql.connection.cursor()
+        # NULL 값 처리를 위한 수정
+        if user_id == "":
+            user_id = None
+            
+        # reservation_time이 문자열인지 확인하고 적절히 처리
+        if isinstance(reservation_time, str):
+            # 이미 'YYYY-MM-DD HH:MM' 포맷이라고 가정
+            pass
+        elif reservation_time is None:
+            reservation_time = datetime.now().strftime('%Y-%m-%d %H:%M')
+            
+        sql = """
+            INSERT INTO reservations 
+            (name, phone, hospital, address, message, email, user_id, created_at, reservation_time)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s)
+        """
+        print(f"🔍 실행 SQL: {sql}", flush=True)
+        print(f"🔍 매개변수: {(name, phone, hospital, address, message, email, user_id, reservation_time)}", flush=True)
+        
+        cur.execute(sql, (name, phone, hospital, address, message, email, user_id, reservation_time))
+        mysql.connection.commit()
+        reservation_id = cur.lastrowid
+        cur.close()
+        
+        print(f"✅ DB 저장 성공: ID={reservation_id}", flush=True)
+        return reservation_id
+    except Exception as e:
+        print(f"❌ DB 저장 중 오류: {str(e)}", flush=True)
+        import traceback
+        traceback.print_exc()  # 상세 에러 로그 출력
+        raise
 
 def get_reservation_stats():
     """

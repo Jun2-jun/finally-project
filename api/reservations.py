@@ -49,13 +49,28 @@ def create_reservation_api():
     user_id = data.get('user_id')
     reservation_time = data.get('reservation_time')
 
+    # 로그 추가
+    print(f"✅ 파싱된 데이터: 이름={name}, 전화번호={phone}, 병원={hospital}, 시간={reservation_time}", flush=True)
+
     if not all([name, phone, hospital, address, reservation_time]):
+        missing = []
+        if not name: missing.append('이름')
+        if not phone: missing.append('전화번호')
+        if not hospital: missing.append('병원')
+        if not address: missing.append('주소')
+        if not reservation_time: missing.append('예약시간')
+        
         return jsonify({
             'status': 'fail',
-            'message': '필수 정보가 누락되었습니다.'
+            'message': f'필수 정보가 누락되었습니다: {", ".join(missing)}'
         }), 400
 
     try:
+        # DB 연결 상태 확인
+        if not mysql.connection or mysql.connection.closed:
+            print("❌ DB 연결이 닫혀있습니다. 재연결 시도...", flush=True)
+            # 여기서 DB 재연결 로직 구현 필요
+        
         reservation_id = create_reservation(
             name=name,
             phone=phone,
@@ -66,6 +81,8 @@ def create_reservation_api():
             user_id=user_id,
             reservation_time=reservation_time
         )
+
+        print(f"✅ 예약 생성 성공: ID={reservation_id}", flush=True)
 
         email_sent = False
         if email:
@@ -86,6 +103,10 @@ def create_reservation_api():
             'email_sent': email_sent
         }), 201
     except Exception as e:
+        print(f"❌ 예약 생성 실패: {str(e)}", flush=True)
+        import traceback
+        traceback.print_exc()  # 상세 에러 로그 출력
+        
         return jsonify({
             'status': 'fail',
             'message': f'예약 생성 중 오류가 발생했습니다: {str(e)}'
