@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request
+from datetime import datetime
 
 submit_bp = Blueprint('submit', __name__)
 
@@ -9,9 +10,15 @@ def submit_reservation():
     address = request.form.get('address')
     name = request.form.get('name')
     phone = request.form.get('phone')
-    reservation_time = request.form.get('reservation_time')
+    date = request.form.get('date')    # 예: '2025-05-01'
+    time = request.form.get('time')    # 예: '09:30'
     message = request.form.get('message')
     email = request.form.get('email')
+    try:
+        reservation_str = f"{date} {time}"
+        reservation_time = datetime.strptime(reservation_str, "%Y-%m-%d %H:%M")
+    except ValueError:
+        return "잘못된 날짜/시간 형식입니다.", 400
 
     return render_template("submit_reservation.html",
                            hospital=hospital,
