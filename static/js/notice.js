@@ -16,11 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(res => res.json())
     .then(data => {
       if (data.status === 'success') {
-        // DOM 요소가 있는지 확인 후 업데이트
         const userNameEl = document.getElementById('user-name');
         const userEmailEl = document.getElementById('user-email');
         const welcomeNameEl = document.getElementById('welcome-name');
-        
+
         if (userNameEl) userNameEl.innerText = data.user.username || 'USER';
         if (userEmailEl) userEmailEl.innerText = data.user.email || 'test01@naver.com';
         if (welcomeNameEl) welcomeNameEl.innerText = `${data.user.username || 'Test Name'}님!`;
@@ -30,7 +29,21 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('사용자 정보 불러오기 실패:', err);
     });
 
-  // 기존 에디터 기능
+  // ✅ 공지사항 테이블 행 클릭 시 상세 페이지로 이동
+  document.querySelectorAll('.clickable-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const postId = row.getAttribute('data-no'); 
+      if (postId) {
+        window.location.href = `/notice/post/${postId}`;
+      } else {
+        console.warn('data-no가 비어 있습니다');
+      }
+    });
+  });
+
+  // (생략된 editor 관련 나머지 로직들 그대로 유지)
+
+  // ⬇ 아래는 생략하지 않고 그대로 붙여넣기
   const editor = document.getElementById('editor');
   const commentTextarea = document.getElementById('comment');
   const form = document.getElementById('content-form');

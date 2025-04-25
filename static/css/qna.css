@@ -1,92 +1,96 @@
 body {
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Q&A 테이블 wrapper */
-  .qna-wrapper {
-    border-radius: 12px;
-    overflow: hidden;
-    margin-top: 10px;
-  }
-  
-  /* 테이블 자체 */
-  table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: separate; /* 둥글게 처리할 때 필수 */
-    border-spacing: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    word-break: break-word;
-  }
-  
-  th {
-    background-color: #f5f5f5;
-  }
-  
-  /* 마지막 행 둥글게 처리 */
-  tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 12px;
-  }
-  
-  tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 12px;
-  }
-  
-  .no-posts {
-    text-align: center;
-    padding: 20px;
-    color: #666;
-  }
-  
-  .button-container {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .write-button {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-  }
-  
-  .write-button:hover {
-    background-color: #2c3e50;
-  }
-  
-  tbody tr:hover {
-    background-color: #f0f0f0;
-    cursor: pointer;
-  }
-  
-  .editor-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .editor-buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .upload-count {
-    font-size: 14px;
-    color: #777;
-    margin: 0;
-  }
-  
+  margin: 0;
+  padding: 0;
+}
+
+/* Q&A 테이블 wrapper */
+.qna-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+/* 테이블 자체 */
+table.qna-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate; /* 둥글게 처리할 때 필수 */
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+/* 셀 기본 스타일 */
+.qna-table th,
+.qna-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  word-break: break-word;
+}
+
+/* 헤더 배경색 */
+.qna-table th {
+  background-color: #f5f5f5;
+}
+
+/* 마지막 행 둥글게 처리 */
+.qna-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+
+.qna-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+/* 비어 있을 때 메시지 */
+.no-posts {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* 버튼 영역 */
+.qna-buttons {
+  margin-top: 20px;
+  text-align: right;
+}
+
+/* 작성 버튼 */
+.qna-write-btn {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.qna-write-btn:hover {
+  background-color: #2c3e50;
+}
+
+/* ✅ 행 hover 효과 */
+.qna-table tbody tr:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+/* 기본 테이블 공통 스타일 (선택사항) */
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.notice-table tbody tr:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}

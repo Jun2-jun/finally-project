@@ -10,25 +10,8 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-      <!-- Sidebar -->
-      <div class="col-md-2 sidebar">
-        <div class="user-block d-flex flex-column align-items-center text-center mb-4">
-          <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
-          <div class="user-name" id="user-name">USER</div>
-          <div class="user-email" id="user-email">test01@naver.com</div>
-
-          <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
-          <button onclick="logout()" class="btn btn-outline-primary btn-sm w-75">Log out</button>
-        </div>
-
-        <ul class="nav flex-column">
-          <li class="nav-item"><a href="/dashboard" class="nav-link active"><img src="{{ url_for('static', filename='img/icons/home.svg') }}" class="icon"> Home</a></li>
-          <li class="nav-item"><a href="/find" class="nav-link"><img src="{{ url_for('static', filename='img/icons/doctors.svg') }}" class="icon"> reservations</a></li>
-          <li class="nav-item"><a href="/notice" class="nav-link"><img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> Notice</a></li>
-          <li class="nav-item"><a href="/qna" class="nav-link"><img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> Q&A</a></li>
-          <li class="nav-item"><a href="/ai" class="nav-link"><img src="{{ url_for('static', filename='img/icons/settings.svg') }}" class="icon"> AI 책볼 & 비대면 진료 </a></li>
-        </ul>
-      </div>
+      <!-- Sidebar include -->
+      {% include 'sidebar/sidebar.html' %}
 
       <!-- Main Body -->
       <div class="col-md-10 p-4">
@@ -39,7 +22,7 @@
               <p class="mb-0 small">Today's Date</p>
               <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
             </div>
-            <img src="{{ url_for('static', filename='/img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
+            <img src="{{ url_for('static', filename='img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
           </div>
         </div>
 
