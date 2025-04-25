@@ -1,6 +1,5 @@
-# api/reservations.py
-
 from flask import Blueprint, request, jsonify, session
+from datetime import datetime
 from models.reservation import (
     get_all_reservations,
     create_reservation,
@@ -40,18 +39,40 @@ def create_reservation_api():
     message = data.get('message', '')
     email = data.get('email', '')
     user_id = data.get('user_id')  # 로그인 유저일 경우
+    reservation_time_str = data.get('reservation_time')
 
-    if not all([name, phone, hospital, address]):
+    if not all([name, phone, hospital, address, reservation_time_str]):
         return jsonify({
             'status': 'fail',
             'message': '필수 정보가 누락되었습니다.'
         }), 400
 
     try:
-        reservation_id = create_reservation(name, phone, hospital, address, message, email, user_id)
+        # 문자열을 datetime으로 파싱 (예: "2025-04-30T15:00")
+        reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%dT%H:%M')
+
+        reservation_id = create_reservation(
+            name=name,
+            phone=phone,
+            hospital=hospital,
+            address=address,
+            message=message,
+            email=email,
+            user_id=user_id,
+            reservation_time=reservation_time
+        )
+
         email_sent = False
         if email:
-            email_sent = send_reservation_confirmation(email, name, hospital, address, phone, message)
+            email_sent = send_reservation_confirmation(
+                email=email,
+                name=name,
+                hospital=hospital,
+                address=address,
+                phone=phone,
+                message=message,
+                reservation_time=reservation_time
+            )
 
         return jsonify({
             'status': 'success',
@@ -68,6 +89,9 @@ def create_reservation_api():
 # 3. 대시보드용 최근 예약 목록
 @reservations_bp.route('/upcoming', methods=['GET'])
 def upcoming_reservations_api():
+    if request.method == 'OPTIONS':
+        return '', 200
+
     try:
         reservations = get_upcoming_reservations(limit=5)
         return jsonify({
@@ -91,6 +115,14 @@ def send_email_api():
         phone = data.get('phone')
         message = data.get('message', '')
         email = data.get('email')
+        reservation_time_str = data.get('reservation_time')  # 👈 optional
+
+        reservation_time = None
+        if reservation_time_str:
+            try:
+                reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%dT%H:%M')
+            except:
+                reservation_time = None
 
         if not email:
             return jsonify({
@@ -98,7 +130,15 @@ def send_email_api():
                 'message': '이메일 주소가 필요합니다.'
             }), 400
 
-        email_sent = send_reservation_confirmation(email, name, hospital, address, phone, message)
+        email_sent = send_reservation_confirmation(
+            email=email,
+            name=name,
+            hospital=hospital,
+            address=address,
+            phone=phone,
+            message=message,
+            reservation_time=reservation_time
+        )
 
         if email_sent:
             return jsonify({'status': 'success', 'message': '이메일 전송 성공'}), 200
