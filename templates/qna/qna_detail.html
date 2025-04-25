@@ -2,36 +2,44 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>Q&A 상세보기</title>
+  <title>닥터퓨쳐 - Q&A 상세</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
+  <script src="{{ url_for('static', filename='js/checkLogin.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/userInfo.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/qna_detail.js') }}"></script>
 </head>
 <body>
   <div class="container-fluid">
     <div class="row">
-      <!-- ✅ Sidebar Include -->
+      <!-- 사이드바 -->
       {% include 'sidebar/sidebar.html' %}
 
-      <!-- Main Content -->
+      <!-- 본문 -->
       <div class="col-md-10 p-4">
         <div class="mb-4">
-          <h4>{{ post.title }}</h4>
-          <p class="text-muted mb-1"><strong>작성자:</strong> {{ post.author or '익명' }}</p>
-          <p class="text-muted"><strong>작성일:</strong> {{ post.created_at }}</p>
+          <h4>Q&A 상세 보기</h4>
           <hr>
-          <div class="border p-3" style="min-height: 200px;">
-            {{ post.content | safe }}
+        </div>
+
+        <div class="card">
+          <div class="card-header bg-light">
+            <h5 id="post-title" class="mb-0">로딩 중...</h5>
+            <small class="text-muted">
+              작성자: <span id="post-author">-</span> |
+              작성일: <span id="post-date">-</span>
+            </small>
+          </div>
+          <div class="card-body">
+            <div id="post-content" class="mt-3">내용을 불러오는 중입니다...</div>
           </div>
         </div>
 
-        <div class="text-end">
-          <a href="{{ url_for('qna.qna_list') }}" class="btn btn-secondary">목록으로 돌아가기</a>
+        <div class="mt-4 text-end">
+          <a href="/qna" class="btn btn-secondary">목록으로</a>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- 세션 관리 스크립트 -->
-  <script src="{{ url_for('static', filename='js/qna_detail.js') }}"></script>
 </body>
 </html>
