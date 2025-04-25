@@ -12,19 +12,24 @@ def submit_reservation():
     phone = request.form.get('phone')
     message = request.form.get('message')
     email = request.form.get('email')
-    reservation_time = request.form.get('reservation_time')
+    reservation_time_raw = request.form.get('reservation_time')
 
-    # if reservation_time_str:
-    #     reservation_time_str = reservation_time_str.replace('T', ' ')
-    #     reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
-    
-    reservation_time = reservation_time.strftime('%Y-%m-%d %H:%M') if reservation_time else "yyyy-mm-dd hh:mm 형식으로 입력해주세요."
+    # datetime-local에서 오는 포맷은 "YYYY-MM-DDTHH:MM"
+    try:
+        if reservation_time_raw:
+            reservation_time_str = reservation_time_raw.replace('T', ' ')
+            reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
+            formatted_time = reservation_time.strftime('%Y-%m-%d %H:%M')
+        else:
+            formatted_time = "예약 시간이 입력되지 않았습니다."
+    except Exception:
+        formatted_time = "날짜 형식이 올바르지 않습니다. (예: 2025-04-25 15:00)"
 
     return render_template("submit_reservation.html",
                            hospital=hospital,
                            address=address,
                            name=name,
                            phone=phone,
-                           reservation_time=reservation_time,
+                           reservation_time=formatted_time,
                            message=message,
                            email=email)
