@@ -1,342 +1,96 @@
-// 페이지 로드 시 실행
-document.addEventListener('DOMContentLoaded', function() {
-  // API 서버 엔드포인트
-  const API_BASE_URL = document.getElementById('api-endpoint').value || 'http://192.168.219.189:5002';
-  
-  // 폼 요소 가져오기
-  const reservationForm = document.getElementById('reservation-form');
-  
-  if (!reservationForm) return; // 예약 폼이 없는 페이지에서는 실행하지 않음
-  
-  // 현재 날짜 설정 (오늘부터 예약 가능하도록)
-  const reservationTimeInput = document.getElementById('reservation_time');
-  if (reservationTimeInput) {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    
-    const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
-    reservationTimeInput.setAttribute('min', minDateTime);
-  }
-  
-  // 전화번호 입력 형식 제한 (자동으로 하이픈 추가)
-  const phoneInput = document.getElementById('phone');
-  if (phoneInput) {
-    phoneInput.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 남김
-      
-      if (value.length > 3 && value.length <= 7) {
-        value = value.slice(0, 3) + '-' + value.slice(3);
-      } else if (value.length > 7) {
-        value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7, 11);
-      }
-      
-      e.target.value = value;
-    });
-  }
-  
-  // 폼 제출 이벤트 처리
-  reservationForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // 기본 제출 동작 방지
-    
-    // 폼 유효성 검사
-    if (!validateForm()) {
-      return;
-    }
-    
-    // 폼 데이터 수집
-    const formData = {
-      name: document.getElementById('name').value.trim(),
-      phone: document.getElementById('phone').value.trim(),
-      hospital: document.getElementById('hospital').value.trim(),
-      address: document.getElementById('address').value.trim(),
-      reservation_time: formatReservationTime(document.getElementById('reservation_time').value),
-      message: document.getElementById('message').value.trim(),
-      email: document.getElementById('email').value.trim()
-    };
-    
-    // API 요청 보내기
-    submitReservation(formData);
-  });
-  
-  // 폼 유효성 검사 함수
-  function validateForm() {
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const reservationTime = document.getElementById('reservation_time').value;
-    
-    // 이름 검사
-    if (name === '') {
-      alert('이름을 입력해주세요.');
-      return false;
-    }
-    
-    // 전화번호 검사
-    const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
-    if (!phoneRegex.test(phone)) {
-      alert('올바른 전화번호 형식을 입력해주세요. (예: 010-1234-5678)');
-      return false;
-    }
-    
-    // 예약 시간 검사
-    if (reservationTime === '') {
-      alert('예약 시간을 선택해주세요.');
-      return false;
-    }
-    
-    // 이메일 검사 (입력된 경우에만)
-    const email = document.getElementById('email').value.trim();
-    if (email !== '') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        alert('올바른 이메일 형식을 입력해주세요.');
-        return false;
-      }
-    }
-    
-    return true;
-  }
-  
-  // 예약 시간 포맷 변환 (YYYY-MM-DDTHH:MM → YYYY-MM-DD HH:MM)
-  function formatReservationTime(dateTimeLocal) {
-    return dateTimeLocal.replace('T', ' ');
-  }
-  
-  // API 요청 함수 수정
-function submitReservation(formData) {
-  // 로딩 표시 추가
-  showLoading(true);
-  
-  console.log('API로 전송할 데이터:', formData); // 디버깅용 로그 추가
-  
-  // API 엔드포인트로 요청
-  fetch(`${API_BASE_URL}/api/reservations`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
-    // CORS 문제 해결을 위한 옵션 추가
-    credentials: 'include',
-    mode: 'cors'
-  })
-  .then(response => {
-    console.log('서버 응답 상태:', response.status); // 응답 상태 코드 확인
-    
-    if (!response.ok) {
-      return response.json().then(data => {
-        console.error('서버 오류 응답:', data); // 오류 응답 확인
-        throw new Error(data.message || '서버 응답 오류');
-      });
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('서버 응답 데이터:', data); // 응답 데이터 확인
-    
-    if (data.status === 'success') {
-      // 성공 시 예약 완료 페이지로 이동
-      showReservationSuccess(formData, data);
-    } else {
-      alert('예약 처리 중 오류가 발생했습니다: ' + data.message);
-    }
-  })
-  .catch(error => {
-    console.error('예약 제출 중 오류 발생:', error);
-    alert('예약 제출 중 오류가 발생했습니다: ' + error.message);
-  })
-  .finally(() => {
-    showLoading(false);
-  });
-}
-  
-  // 예약 성공 화면 표시
-  function showReservationSuccess(formData, responseData) {
-    // 기존 컨텐츠 제거
-    document.querySelector('.container').innerHTML = '';
-    
-    // 성공 화면 생성
-    const successHtml = `
-      <h1>🎉 예약이 완료되었습니다! 🎉</h1>
-      
-      <div class="details">
-        <div class="detail-item"><strong>병원 이름</strong><span>${formData.hospital}</span></div>
-        <div class="detail-item"><strong>병원 주소</strong><span>${formData.address}</span></div>
-        <div class="detail-item"><strong>예약자 이름</strong><span>${formData.name}</span></div>
-        <div class="detail-item"><strong>연락처</strong><span>${formData.phone}</span></div>
-        <div class="detail-item"><strong>예약 시간</strong><span>${formData.reservation_time}</span></div>
-        <div class="detail-item"><strong>요청 사항</strong><span>${formData.message || "없음"}</span></div>
-        <div class="detail-item"><strong>이메일</strong><span>${formData.email || "없음"}</span></div>
-      </div>
-      
-      <div class="btn-group">
-        <a href="/" class="btn"><i data-lucide="home"></i> 홈으로</a>
-        <a href="/find" class="btn"><i data-lucide="calendar-plus"></i> 다시 예약</a>
-        <a href="/my_reservations" class="btn"><i data-lucide="clipboard-list"></i> 예약 내역</a>
-        ${formData.email ? `<button id="send-email-btn" class="btn"><i data-lucide="mail"></i> 이메일 전송</button>` : ''}
-      </div>
-    `;
-    
-    document.querySelector('.container').innerHTML = successHtml;
-    
-    // 브라우저 이력에 추가 (뒤로 가기 버튼 작동하도록)
-    window.history.pushState({}, "예약 완료", "/submit_reservation");
-    
-    // lucide 아이콘 다시 로드
-    if (window.lucide) {
-      window.lucide.createIcons();
-    } else {
-      // lucide 스크립트 로드
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/lucide@latest';
-      script.onload = function() {
-        window.lucide.createIcons();
-      };
-      document.head.appendChild(script);
-    }
-    
-    // 이메일 전송 버튼 이벤트 리스너 추가
-    const sendEmailBtn = document.getElementById('send-email-btn');
-    if (sendEmailBtn) {
-      sendEmailBtn.addEventListener('click', function() {
-        sendEmail(formData);
-      });
-    }
-    
-    // 이메일이 자동 전송되었는지 표시
-    if (responseData.email_sent) {
-      const emailStatus = document.createElement('div');
-      emailStatus.className = 'email-status success';
-      emailStatus.innerHTML = '✅ 예약 정보가 이메일로 자동 전송되었습니다.';
-      document.querySelector('.details').after(emailStatus);
-    }
-  }
-  
-  // 이메일 전송 API 요청 함수
-  function sendEmail(formData) {
-    if (!formData.email) {
-      alert('이메일 주소가 필요합니다.');
-      return;
-    }
-    
-    showLoading(true);
-    
-    fetch(`${API_BASE_URL}/api/reservations/send-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        alert('예약 정보가 이메일로 전송되었습니다.');
-      } else {
-        alert('이메일 전송에 실패했습니다: ' + (data.message || '알 수 없는 오류'));
-      }
-    })
-    .catch(error => {
-      console.error('이메일 전송 중 오류 발생:', error);
-      alert('이메일 전송 중 오류가 발생했습니다.');
-    })
-    .finally(() => {
-      showLoading(false);
-    });
-  }
-  
-  // 로딩 표시 함수
-  function showLoading(isLoading) {
-    const loadingOverlay = document.getElementById('loading-overlay');
-    
-    if (isLoading) {
-      loadingOverlay.style.display = 'flex';
-    } else {
-      loadingOverlay.style.display = 'none';
-    }
-  }
-});
+/**
+ * 닥터퓨쳐 API 통신 모듈
+ * - 예약 시스템과 API 서버(http://192.168.219.189:5002/api) 사이의 통신을 담당
+ */
 
-// 완료 페이지에서 이메일 전송 버튼 처리 (이미 생성된 페이지용)
-document.addEventListener('DOMContentLoaded', function() {
-  const API_BASE_URL = document.getElementById('api-endpoint')?.value || 'http://192.168.219.189:5002';
-  
-  const emailForm = document.querySelector('form[action="/send_email"]');
-  if (emailForm) {
-    emailForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const formData = {
-        hospital: emailForm.querySelector('input[name="hospital"]').value,
-        address: emailForm.querySelector('input[name="address"]').value,
-        name: emailForm.querySelector('input[name="name"]').value,
-        phone: emailForm.querySelector('input[name="phone"]').value,
-        reservation_time: emailForm.querySelector('input[name="reservation_time"]').value,
-        message: emailForm.querySelector('input[name="message"]').value,
-        email: emailForm.querySelector('input[name="email"]').value
-      };
-      
-      // 이메일 주소 체크
-      if (!formData.email) {
-        alert('이메일 주소가 필요합니다.');
-        return;
-      }
-      
-      // 로딩 표시
-      const loadingOverlay = document.createElement('div');
-      loadingOverlay.id = 'email-loading';
-      loadingOverlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-      `;
-      
-      const loadingText = document.createElement('div');
-      loadingText.style.cssText = `
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      `;
-      loadingText.textContent = '이메일 전송 중...';
-      
-      loadingOverlay.appendChild(loadingText);
-      document.body.appendChild(loadingOverlay);
-      
-      // API 요청
-      fetch(`${API_BASE_URL}/api/reservations/send-email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          alert('예약 정보가 이메일로 전송되었습니다.');
-        } else {
-          alert('이메일 전송에 실패했습니다: ' + (data.message || '알 수 없는 오류'));
+// API 서버 기본 URL
+const API_BASE_URL = 'http://192.168.219.189:5002/api/reservations';
+
+/**
+ * 예약 정보를un API 서버로 전송하는 함수
+ * @param {Object} reservationData - 예약 데이터 객체
+ * @returns {Promise} - API 응답 프라미스
+ */
+async function sendReservationToAPI(reservationData) {
+    try {
+        console.log('API 서버로 예약 데이터 전송 시도:', reservationData);
+        
+        const response = await fetch(`${API_BASE_URL}/reservations`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reservationData)
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            console.error('API 서버 응답 오류:', data);
+            throw new Error(data.message || '예약 처리 중 오류가 발생했습니다.');
         }
-      })
-      .catch(error => {
-        console.error('이메일 전송 중 오류 발생:', error);
-        alert('이메일 전송 중 오류가 발생했습니다.');
-      })
-      .finally(() => {
-        // 로딩 제거
-        document.getElementById('email-loading').remove();
-      });
-    });
-  }
-});
+        
+        console.log('API 서버 응답 성공:', data);
+        return data;
+    } catch (error) {
+        console.error('예약 API 호출 실패:', error);
+        throw error;
+    }
+}
+
+/**
+ * 예약 확인 이메일을 재전송하는 함수
+ * @param {Object} emailData - 이메일 전송에 필요한 데이터
+ * @returns {Promise} - API 응답 프라미스
+ */
+async function sendConfirmationEmail(emailData) {
+    try {
+        console.log('이메일 전송 요청:', emailData);
+        
+        const response = await fetch(`${API_BASE_URL}/reservations/send-email`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(emailData)
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || '이메일 전송 중 오류가 발생했습니다.');
+        }
+        
+        return data;
+    } catch (error) {
+        console.error('이메일 전송 API 호출 실패:', error);
+        throw error;
+    }
+}
+
+/**
+ * 사용자의 예약 목록을 조회하는 함수
+ * @param {number} userId - 사용자 ID
+ * @returns {Promise} - API 응답 프라미스
+ */
+async function getUserReservations(userId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reservations/user/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || '예약 조회 중 오류가 발생했습니다.');
+        }
+        
+        return data;
+    } catch (error) {
+        console.error('예약 조회 API 호출 실패:', error);
+        throw error;
+    }
+}
