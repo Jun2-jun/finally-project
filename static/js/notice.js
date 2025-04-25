@@ -29,21 +29,48 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('사용자 정보 불러오기 실패:', err);
     });
 
-  // ✅ 공지사항 테이블 행 클릭 시 상세 페이지로 이동
-  document.querySelectorAll('.clickable-row').forEach(row => {
-    row.addEventListener('click', () => {
-      const postId = row.getAttribute('data-no'); 
-      if (postId) {
-        window.location.href = `/notice/post/${postId}`;
+  // ✅ 공지사항 목록 불러오기
+  fetch('http://192.168.219.189:5002/api/notices?page=1&per_page=10', {
+    method: 'GET',
+    credentials: 'include',
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        const notices = data.data.results;
+        const tbody = document.querySelector('#noticeTable tbody');
+        tbody.innerHTML = '';
+
+        notices.forEach((notice, index) => {
+          const row = document.createElement('tr');
+          row.classList.add('clickable-row');
+          row.setAttribute('data-no', notice.id);
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${notice.title}</td>
+            <td>${notice.author || '관리자'}</td>
+            <td>${notice.created_at}</td>
+            <td>${notice.views}</td>
+          `;
+
+          // ✅ 동적으로 만든 행에 직접 이벤트 바인딩
+          row.addEventListener('click', () => {
+            window.location.href = `/notice/post/${notice.id}`;
+          });
+
+          tbody.appendChild(row);
+        });
+
       } else {
-        console.warn('data-no가 비어 있습니다');
+        console.error('공지사항 불러오기 실패:', data.message);
       }
+    })
+    .catch(error => {
+      console.error('공지사항 불러오기 에러:', error);
     });
-  });
 
-  // (생략된 editor 관련 나머지 로직들 그대로 유지)
+  // ✅ 이하 에디터, 업로드 관련 기존 코드 유지 (수정 없이 복사됨)
 
-  // ⬇ 아래는 생략하지 않고 그대로 붙여넣기
   const editor = document.getElementById('editor');
   const commentTextarea = document.getElementById('comment');
   const form = document.getElementById('content-form');

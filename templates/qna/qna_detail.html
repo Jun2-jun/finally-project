@@ -16,8 +16,8 @@
       <div class="col-md-10 p-4">
         <div class="mb-4">
           <h4>{{ post.title }}</h4>
-          <p class="text-muted mb-1">작성일: {{ post.created_at }}</p>
-          <p class="text-muted">카테고리: {{ post.category }}</p>
+          <p class="text-muted mb-1"><strong>작성자:</strong> {{ post.author or '익명' }}</p>
+          <p class="text-muted"><strong>작성일:</strong> {{ post.created_at }}</p>
           <hr>
           <div class="border p-3" style="min-height: 200px;">
             {{ post.content | safe }}

@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Loading indicator
   tbody.innerHTML = '<tr><td colspan="3" class="text-center">불러오는 중...</td></tr>';
     
-  fetch('http://192.168.219.189:5002/api/upcoming-reservations', {
+  fetch('http://192.168.219.189:5002/api/reservations/upcoming', {
     method: 'GET',
     credentials: 'include',  // 세션 쿠키를 포함하여 요청
     headers: {

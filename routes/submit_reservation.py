@@ -9,6 +9,7 @@ def submit_reservation():
     address = request.form.get('address')
     name = request.form.get('name')
     phone = request.form.get('phone')
+    reservation_time = request.form.get('reservation_time')
     message = request.form.get('message')
     email = request.form.get('email')
 
@@ -17,5 +18,6 @@ def submit_reservation():
                            address=address,
                            name=name,
                            phone=phone,
+                           reservation_time=reservation_time,
                            message=message,
                            email=email)

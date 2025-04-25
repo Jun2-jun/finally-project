@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>닥터퓨쳐 - 병원 예약하기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 외부 CSS 연결 -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reserve.css') }}">
 </head>
 <body>
@@ -19,12 +20,16 @@
       </div>
 
       <div class="info-box">
+
         <label for="name">이름</label>
         <input type="text" id="name" name="name" placeholder="홍길동" required>
 
         <label for="phone">연락처</label>
         <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
 
+        <label for="reservation_time">예약 시간</label>
+        <input type="datetime-local" id="reservation_time" name="reservation_time" required>
+        
         <label for="message">요청 사항</label>
         <textarea id="message" name="message" rows="4" placeholder="특이사항을 입력해주세요."></textarea>
         
