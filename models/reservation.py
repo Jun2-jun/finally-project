@@ -1,5 +1,6 @@
 from extensions import mysql
 from utils.helpers import format_datetime
+from datetime import datetime
 
 def get_all_reservations():
     """

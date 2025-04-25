@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify, session
+from extensions import mysql
 from datetime import datetime
 from models.reservation import (
     get_all_reservations,
