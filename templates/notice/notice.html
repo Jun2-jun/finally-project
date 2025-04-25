@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>닥터퓨쳐 - Notice</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/notice.css') }}">
+  <style>
+    .clickable-row {
+      cursor: pointer;
+    }
+  </style>
   <script>
     function logout() {
       alert("로그아웃 되었습니다.");
@@ -16,25 +21,8 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-      <!-- Sidebar -->
-      <div class="col-md-2 sidebar">
-        <div class="user-block d-flex flex-column align-items-center text-center mb-4">
-          <img src="{{ url_for('static', filename='img/user.png') }}" alt="User" class="user-avatar mb-3">
-          <div class="user-name">{{ user_name or "USER" }}</div>
-          <div class="user-email">{{ user_email or "test01@naver.com" }}</div>
-
-          <a href="/mypage" class="btn btn-outline-secondary btn-sm w-75 mt-3 mb-2">My Page</a>
-          <button onclick="logout()" class="btn btn-outline-primary btn-sm w-75">Log out</button>
-        </div>
-
-        <ul class="nav flex-column">
-          <li class="nav-item"><a href="/dashboard" class="nav-link"><img src="{{ url_for('static', filename='img/icons/home.svg') }}" class="icon"> Home</a></li>
-          <li class="nav-item"><a href="/find" class="nav-link"><img src="{{ url_for('static', filename='img/icons/doctors.svg') }}" class="icon"> reservations</a></li>
-          <li class="nav-item"><a href="/notice" class="nav-link active"><img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> Notice</a></li>
-          <li class="nav-item"><a href="/qna" class="nav-link"><img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> Q&A</a></li>
-          <li class="nav-item"><a href="/ai" class="nav-link"><img src="{{ url_for('static', filename='img/icons/settings.svg') }}" class="icon"> AI 챗봇 & 비대면 진료 </a></li>
-        </ul>
-      </div>
+      <!-- ✅ Sidebar Include -->
+      {% include 'sidebar/sidebar.html' %}
 
       <!-- Main Body -->
       <div class="col-md-10 p-4">
@@ -51,12 +39,11 @@
 
         <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/1234.jpg') left center / cover no-repeat; border-radius: 12px;">
           <h5 class="fw-bold">안녕하세요</h5>
-          <h3 class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
+          <h3 id="welcome-name" class="fw-bold">{{ user_name or 'Test Name' }}님!</h3>
           <p>공지사항 입니다.</p>
         </div>
 
-        <!-- 공지사항 테이블 등 내부 내용은 별도로 유지 -->
-        
+        <!-- 공지사항 테이블 -->
         <table class="table table-bordered table-hover text-center mt-4">
           <thead class="table-light">
             <tr>
@@ -70,11 +57,9 @@
           <tbody>
             {% if posts %}
               {% for post in posts %}
-              <tr onclick="location.href='/notice/post/{{ post.id }}'" class="clickable-row">
+              <tr class="clickable-row" data-no="{{ post.no }}">
                 <td>{{ post.no }}</td>
-                <td>
-                  <a href="/notice/post/{{ post.no }}" class="notice-title">{{ post.title }}</a>
-                </td>
+                <td><span class="notice-title">{{ post.title }}</span></td>
                 <td>{{ post.writer or '관리자' }}</td>
                 <td>{{ post.created_at }}</td>
                 <td>{{ post.views }}</td>
@@ -87,13 +72,14 @@
             {% endif %}
           </tbody>
         </table>
-        
-        <!-- ✅ 여기서 위치를 고정하지 않고 자연스럽게 아래에 배치 -->
+
         <div class="text-end mt-3">
           <a href="/notice/notice_write" class="btn btn-primary">공지사항 작성</a>
         </div>
       </div>
     </div>
   </div>
+
+  <script src="{{ url_for('static', filename='js/notice.js') }}"></script>
 </body>
 </html>

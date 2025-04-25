@@ -141,6 +141,8 @@ def send_email():
 
     return render_template("find.html")
 
+from datetime import datetime
+
 @app.route('/mypage', methods=['GET', 'POST'])
 def mypage():
     if request.method == 'POST':
@@ -151,17 +153,27 @@ def mypage():
         session['detail_address'] = request.form.get('detail_address')
         return redirect(url_for('mypage'))
 
-    # 기본값 설정
+    # 기본값 설정 + 날짜 형식 처리
+    birthdate = session.get('birthdate', '2000-01-01')
+    try:
+        # 문자열 형식을 datetime으로 변환 후 다시 YYYY-MM-DD로
+        birthdate = datetime.strptime(birthdate, '%a, %d %b %Y %H:%M:%S GMT').strftime('%Y-%m-%d')
+    except Exception:
+        # 이미 YYYY-MM-DD거나 변환 실패 시 기본값 유지
+        if len(birthdate) != 10:
+            birthdate = '2000-01-01'
+
     user_data = {
         'userid': 'my_id',
         'email': session.get('email', 'myemail@example.com'),
-        'birthdate': session.get('birthdate', '2000-01-01'),
+        'birthdate': birthdate,
         'phone': session.get('phone', '010-1234-5678'),
         'address': session.get('address', '서울특별시 중구 세종대로'),
         'detail_address': session.get('detail_address', '101동 1001호')
     }
 
     return render_template("mypage.html", user=user_data, now=datetime.now())
+
 
 # 챗봇 메시지 처리 엔드포인트
 @app.route('/chat', methods=['POST'])
