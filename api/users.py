@@ -46,7 +46,6 @@ def api_register():
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'회원가입 중 오류: {str(e)}'}), 500
 
-# 3. 로그인
 @users_bp.route('/login', methods=['POST', 'OPTIONS'])
 @cross_origin(origins=[
     "http://localhost:5000",
@@ -59,47 +58,36 @@ def api_login():
 
     try:
         data = request.get_json() or {}
-        username = data.get('username')
+        username = data.get('username', '').strip()
         password = data.get('password')
 
         if not username or not password:
             return jsonify({'status': 'fail', 'message': '아이디와 비밀번호를 입력하세요.'}), 400
 
-        # ✅ admin 로그인 분기
-        username = data.get('username', '').strip()
-        if username.lower() == 'admin':
-            user_data = vulnerable_admin_login(username, password)
-            if not user_data:
-                return jsonify({'status': 'fail', 'message': '관리자 로그인 실패'}), 401
-            
-            session['user_id'] = user_data.get('id')
-            session['username'] = user_data.get('username')
-
-            return jsonify({
-                'status': 'success',
-                'message': '관리자 로그인 성공',
-                'data': user_data,
-                'session': session.sid,
-                'redirect': '/admin'  # 👉 JS에서 이걸로 리다이렉트
-            }), 200
-
-        # 일반 사용자 로그인
         user_data, error = verify_user(username, password)
+
         if error:
             return jsonify({'status': 'fail', 'message': error}), 401
 
         session['user_id'] = user_data.get('id')
         session['username'] = user_data.get('username')
 
-        return jsonify({
+        # ✅ admin이면 /admin으로 리다이렉트 포함
+        response = {
             'status': 'success',
             'message': '로그인 성공',
             'data': user_data,
             'session': session.sid
-        }), 200
+        }
+
+        if username.lower() == 'admin':
+            response['redirect'] = '/admin'
+
+        return jsonify(response), 200
 
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'로그인 오류: {str(e)}'}), 500
+
 
 # 4. 로그아웃
 @users_bp.route('/logout', methods=['POST'])
