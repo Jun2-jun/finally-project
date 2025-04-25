@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
       showLoading(true);
       
       // API 엔드포인트로 요청
-      fetch('http://192.168.219.189/api/reservations', {
+      fetch('http://192.168.219.189:5002/api/reservations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       showLoading(true);
       
-      fetch('http://192.168.219.189/api/reservations/send-email', {
+      fetch('http://192.168.219.189:5002/api/reservations/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.appendChild(loadingOverlay);
       
       // API 요청
-      fetch('http://192.168.219.189/api/reservations/send-email', {
+      fetch('http://192.168.219.189:5002/api/reservations/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
