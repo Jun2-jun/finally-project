@@ -33,26 +33,28 @@ def get_reservations():
 @reservations_bp.route('/', methods=['POST'])
 def create_reservation_api():
     print("✅ 예약 라우터 진입", flush=True)
-
     try:
         data = request.get_json(force=True)
         print("받은 데이터:", data, flush=True)
     except Exception as e:
         print("❌ JSON 파싱 실패:", str(e), flush=True)
         return jsonify({'status': 'fail', 'message': '요청 형식 오류 (JSON 아님)'}), 400
-
+    
     name = data.get('name')
     phone = data.get('phone')
     hospital = data.get('hospital')
     address = data.get('address')
     message = data.get('message', '')
     email = data.get('email', '')
-    user_id = data.get('user_id')
     reservation_time = data.get('reservation_time')
-
+    
+    # 세션에서 user_id를 가져옴 (로그인된 경우)
+    user_id = session.get('user_id')
+    print(f"✅ 세션에서 가져온 user_id: {user_id}", flush=True)
+    
     # 로그 추가
     print(f"✅ 파싱된 데이터: 이름={name}, 전화번호={phone}, 병원={hospital}, 시간={reservation_time}", flush=True)
-
+    
     if not all([name, phone, hospital, address, reservation_time]):
         missing = []
         if not name: missing.append('이름')
@@ -65,7 +67,7 @@ def create_reservation_api():
             'status': 'fail',
             'message': f'필수 정보가 누락되었습니다: {", ".join(missing)}'
         }), 400
-
+    
     try:
         # DB 연결 상태 확인
         if not mysql.connection or mysql.connection.closed:
@@ -79,12 +81,12 @@ def create_reservation_api():
             address=address,
             message=message,
             email=email,
-            user_id=user_id,
+            user_id=user_id,  # 세션에서 가져온 user_id 사용
             reservation_time=reservation_time
         )
-
+        
         print(f"✅ 예약 생성 성공: ID={reservation_id}", flush=True)
-
+        
         email_sent = False
         if email:
             email_sent = send_reservation_confirmation(
@@ -96,13 +98,14 @@ def create_reservation_api():
                 message=message,
                 reservation_time=reservation_time
             )
-
+            
         return jsonify({
             'status': 'success',
             'message': '예약이 완료되었습니다.',
             'data': {'reservation_id': reservation_id},
             'email_sent': email_sent
         }), 201
+        
     except Exception as e:
         print(f"❌ 예약 생성 실패: {str(e)}", flush=True)
         import traceback
