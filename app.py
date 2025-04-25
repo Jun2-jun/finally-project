@@ -62,6 +62,11 @@ def notice():
 def ai_chatbot():
     return render_template('AI/chatbot.html', now=datetime.now())  # 챗봇 HTML 템플릿
 
+@app.route('/qna/post/<int:post_id>')
+def qna_post_detail(post_id):
+    return render_template('qna_detail.html', post_id=post_id, now=datetime.now())
+
+
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
     if request.method == 'POST':

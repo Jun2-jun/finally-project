@@ -33,17 +33,16 @@
       <!-- Main Content -->
       <div class="col-md-10 p-4">
         <div class="mb-4">
-          <h4>{{ post.title }}</h4>
-          <p class="text-muted mb-1">작성일: {{ post.created_at }}</p>
-          <p class="text-muted">카테고리: {{ post.category }}</p>
+          <h4 id="post-title">제목을 불러오는 중...</h4>
+          <p id="post-created-at" class="text-muted mb-1">작성일: -</p>
           <hr>
-          <div class="border p-3" style="min-height: 200px;">
-            {{ post.content | safe }}
+          <div id="post-content" class="border p-3" style="min-height: 200px;">
+            내용을 불러오는 중입니다...
           </div>
         </div>
-
+        
         <div class="text-end">
-          <a href="{{ url_for('notice.notice_list') }}" class="btn btn-secondary">목록으로 돌아가기</a>
+          <a href="/notice" class="btn btn-secondary">목록으로 돌아가기</a>
         </div>
       </div>
     </div>
