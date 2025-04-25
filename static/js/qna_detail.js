@@ -1,34 +1,23 @@
-// qna_detail.js
 console.log("✅ qna_detail.js 로딩됨");
 
 document.addEventListener('DOMContentLoaded', function () {
-  // 사용자 정보 표시
+  const postId = window.location.pathname.split('/').pop();
+  let loggedInUsername = null;
+  let postAuthor = null;
+
+  // 1. 로그인 사용자 정보 확인
   fetch('http://192.168.219.189:5002/api/current-user', {
     method: 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    credentials: 'include'
   })
     .then(res => res.json())
     .then(data => {
       if (data.status === 'success') {
-        const userNameEl = document.getElementById('user-name');
-        const userEmailEl = document.getElementById('user-email');
-        const welcomeNameEl = document.getElementById('welcome-name');
-
-        if (userNameEl) userNameEl.innerText = data.user.username || 'USER';
-        if (userEmailEl) userEmailEl.innerText = data.user.email || 'test01@naver.com';
-        if (welcomeNameEl) welcomeNameEl.innerText = `${data.user.username || 'Test Name'}님!`;
+        loggedInUsername = data.user.username;
       }
-    })
-    .catch(err => {
-      console.error('사용자 정보 불러오기 실패:', err);
     });
 
-  const postId = window.location.pathname.split('/').pop();
-
-  // Q&A 상세 정보
+  // 2. 게시글 상세 정보 가져오기
   fetch(`http://192.168.219.189:5002/api/qna/${postId}`, {
     method: 'GET',
     credentials: 'include'
@@ -37,10 +26,17 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(data => {
       if (data.status === 'success') {
         const post = data.data;
+        postAuthor = post.writer;
+
         document.getElementById('post-title').innerText = post.title;
         document.getElementById('post-author').innerText = post.writer || '익명';
         document.getElementById('post-date').innerText = post.created_at;
         document.getElementById('post-content').innerHTML = post.comment;
+
+        // 3. 작성자와 로그인 사용자가 같으면 삭제 버튼 표시
+        if (loggedInUsername && loggedInUsername === postAuthor) {
+          document.getElementById('delete-button').classList.remove('d-none');
+        }
       } else {
         document.getElementById('post-title').innerText = '게시글이 없습니다.';
         document.getElementById('post-content').innerText = data.message || '';
@@ -55,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadComments(postId);
 });
 
-// ✅ 댓글 조회 함수
+// ✅ 댓글 불러오기
 function loadComments(postId) {
   fetch(`http://192.168.219.189:5002/api/qna/${postId}/comments`, {
     method: 'GET',
@@ -79,7 +75,7 @@ function loadComments(postId) {
     });
 }
 
-// ✅ 댓글 등록 함수
+// ✅ 댓글 등록
 function submitComment() {
   const comment = document.getElementById('comment-input').value.trim();
   const postId = window.location.pathname.split('/').pop();
@@ -109,5 +105,30 @@ function submitComment() {
     .catch(err => {
       console.error('댓글 등록 중 오류:', err);
       alert('서버 오류로 댓글을 등록할 수 없습니다.');
+    });
+}
+
+// ✅ 게시글 삭제 요청
+function deletePost() {
+  if (!confirm("정말 이 게시글을 삭제하시겠습니까?")) return;
+
+  const postId = window.location.pathname.split('/').pop();
+
+  fetch(`http://192.168.219.189:5002/api/qna/${postId}/delete`, {
+    method: 'POST',
+    credentials: 'include'
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        alert('게시글이 삭제되었습니다.');
+        window.location.href = '/qna';
+      } else {
+        alert(data.message || '삭제 실패');
+      }
+    })
+    .catch(err => {
+      console.error('삭제 요청 오류:', err);
+      alert('서버 오류로 삭제할 수 없습니다.');
     });
 }
