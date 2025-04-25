@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <title>닥터퓨쳐 - Q&A</title>
@@ -28,7 +28,7 @@
               <p class="mb-0 small">Today's Date</p>
               <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
             </div>
-            <img src="{{ url_for('static', filename='/img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
+            <img src="{{ url_for('static', filename='img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
           </div>
         </div>
 
@@ -64,14 +64,14 @@
                     {{ post.title }}
                   </a>
                 </td>
-                <td>{{ post.category }}</td>
+                <td>{{ post.writer or '알 수 없음' }}</td>  <!-- ✅ 작성자 -->
                 <td>{{ post.created_at }}</td>
-                <td>{{ post.views }}</td>
+                <td>{{ post.views or 0 }}</td>
               </tr>
               {% endfor %}
               {% else %}
               <tr>
-                <td colspan="5" class="text-muted py-4">질문이 없습니다.</td>
+                <td colspan="6" class="text-muted py-4">질문이 없습니다.</td>
               </tr>
               {% endif %}
             </tbody>
@@ -88,5 +88,6 @@
 
   <!-- 삭제 및 에디터 JS -->
   <script src="{{ url_for('static', filename='js/qna.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/userInfo.js') }}"></script>
 </body>
 </html>

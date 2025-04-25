@@ -27,9 +27,23 @@
         <label for="phone">연락처</label>
         <input type="tel" id="phone" name="phone" placeholder="010-1234-5678" required>
 
-        <label for="reservation_time">예약 시간</label>
-        <input type="datetime-local" id="reservation_time" name="reservation_time" required>
+        <label for="date">예약 날짜</label>
+        <input type="date" id="date" required>
         
+        <label for="time">예약 시간</label>
+        <select id="time" required>
+          {% for hour in range(9, 17) %}
+            {% for minute in ['00', '30'] %}
+              <option value="{{ "%02d" % hour }}:{{ minute }}">
+                {{ "%02d" % hour }}:{{ minute }}
+              </option>
+            {% endfor %}
+          {% endfor %}
+        </select>
+
+        <!-- 백엔드로 넘길 실제 필드 -->
+        <input type="hidden" id="reservation_time" name="reservation_time">
+
         <label for="message">요청 사항</label>
         <textarea id="message" name="message" rows="4" placeholder="특이사항을 입력해주세요."></textarea>
         
