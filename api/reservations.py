@@ -56,7 +56,8 @@ def create_reservation_api():
         }), 400
 
     try:
-        # "2025-04-30 15:00" 형식만 허용
+        # T → 공백으로 변환 후, 형식 확인
+        reservation_time_str = reservation_time_str.replace("T", " ")
         reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
     except ValueError:
         return jsonify({
@@ -99,6 +100,7 @@ def create_reservation_api():
             'status': 'fail',
             'message': f'예약 생성 중 오류가 발생했습니다: {str(e)}'
         }), 500
+
 
 # 3. 대시보드용 최근 예약 목록
 @reservations_bp.route('/upcoming', methods=['GET'])
