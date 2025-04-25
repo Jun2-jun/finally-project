@@ -53,10 +53,46 @@
                     <i class="fas fa-home me-2"></i> 홈 화면으로 돌아가기
                 </a>
             </div>
+            <!-- 탈퇴하기 텍스트 (클릭 시 모달 열림) -->
+            <div class="text-center mt-2">
+                <span class="withdraw-link" onclick="openModal()">탈퇴하기</span>
+            </div>
+
+            <div id="withdrawModal" class="modal-overlay">
+                <div class="modal-content text-center">
+                  
+                  <!-- 닫기 버튼 -->
+                  <button class="modal-close-btn" onclick="closeModal()">x</button>
+                  
+                  <!-- 문구 -->
+                  <p class="mb-3 fw-bold" style="font-size: 22px;">정말 탈퇴하시겠습니까?</p>
+                  
+                  <!-- 비밀번호 입력 -->
+                  <input type="password" id="withdrawPassword" class="form-control mb-2" placeholder="비밀번호 입력">
+              
+                  <!-- 에러 메시지 -->
+                  <p id="withdrawError" class="text-start" style="display: none; font-size: 14px; margin-bottom: 10px; color: #999;">비밀번호가 일치하지 않습니다.</p>
+                  
+              
+                  <!-- 탈퇴하기 버튼 -->
+                  <a href="#" class="withdraw-link text-danger" onclick="submitWithdraw()" style="margin-top: 30px;">탈퇴하기</a>
+                    
+                </div>
+              </div>
+              
 
         </form>
     </div>
-
+    <!-- 다이얼로그 띄우기 및 사라지기 -->
+    <script>
+        function openModal() {
+          document.getElementById("withdrawModal").style.display = "flex";
+        }
+        function closeModal() {
+          document.getElementById("withdrawModal").style.display = "none";
+        }
+      </script>
+      
     <!-- 분리된 JS 파일 로드 -->
     <script src="{{ url_for('static', filename='js/mypage.js') }}"></script>
 </body>
