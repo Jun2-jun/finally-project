@@ -1,9 +1,9 @@
-# api/users.py
-
 from flask import Blueprint, request, jsonify, session
 from models.user import get_all_users, create_user, verify_user, delete_user, update_user_info, get_user_by_id, change_user_password
 from utils.auth import login_required, admin_required
 from flask_cors import cross_origin
+from utils.auth import hash_password
+from utils.auth import check_password
 
 # ✅ users 전용 Blueprint 생성
 users_bp = Blueprint('users', __name__, url_prefix='/api/users')
@@ -46,6 +46,7 @@ def api_register():
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'회원가입 중 오류: {str(e)}'}), 500
 
+# 3. 로그인
 @users_bp.route('/login', methods=['POST', 'OPTIONS'])
 @cross_origin(origins=[
     "http://localhost:5000",
@@ -72,7 +73,6 @@ def api_login():
         session['user_id'] = user_data.get('id')
         session['username'] = user_data.get('username')
 
-        # ✅ admin이면 /admin으로 리다이렉트 포함
         response = {
             'status': 'success',
             'message': '로그인 성공',
@@ -88,7 +88,6 @@ def api_login():
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'로그인 오류: {str(e)}'}), 500
 
-
 # 4. 로그아웃
 @users_bp.route('/logout', methods=['POST'])
 def api_logout():
@@ -99,23 +98,47 @@ def api_logout():
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'로그아웃 오류: {str(e)}'}), 500
 
-# 5. 회원 탈퇴 (DELETE & POST 지원)
-@users_bp.route('/withdraw', methods=['DELETE', 'POST'])
+# 5. 회원 탈퇴
+@users_bp.route('/withdraw', methods=['POST', 'OPTIONS'])
+@cross_origin(origins=["http://192.168.219.189:5000"], supports_credentials=True)
+@login_required
 def withdraw_account():
+    if request.method == 'OPTIONS':
+        return '', 204
+
     try:
+        data = request.get_json(force=True)
+        print("[DEBUG] 탈퇴 요청 데이터:", data)
+
+        if not data or 'password' not in data:
+            return jsonify({'success': False, 'message': "'password' 키가 없습니다.", 'debug': str(data)}), 400
+
+        input_password = data['password']
         user_id = session.get('user_id')
-        if not user_id:
-            return jsonify({'status': 'fail', 'message': '로그인이 필요합니다.'}), 401
+        print("[DEBUG] 현재 user_id:", user_id)
+
+        # 🔥 여기서 None 확인 추가!
+        user = get_user_by_id(user_id)
+        if not user:
+            return jsonify({'success': False, 'message': '사용자 정보를 찾을 수 없습니다.'}), 404
+
+        if not check_password(user['password'], input_password):
+            return jsonify({'success': False, 'message': '비밀번호가 일치하지 않습니다.'}), 400
 
         success = delete_user(user_id)
         if success:
             session.pop('user_id', None)
             session.pop('username', None)
-            return jsonify({'status': 'success', 'message': '회원 탈퇴 완료'}), 200
+            return jsonify({'success': True, 'message': '회원 탈퇴 완료'}), 200
         else:
-            return jsonify({'status': 'fail', 'message': '회원 탈퇴 처리 중 오류 발생'}), 400
+            return jsonify({'success': False, 'message': '회원 탈퇴 처리 중 오류 발생'}), 400
+
     except Exception as e:
-        return jsonify({'status': 'fail', 'message': f'탈퇴 중 오류: {str(e)}'}), 500
+        print("[ERROR] 탈퇴 중 예외 발생:", str(e))
+        return jsonify({'success': False, 'message': f"탈퇴 중 오류: {str(e)}"}), 500
+
+
+
 
 # 6. 사용자 정보 수정
 @users_bp.route('/update', methods=['POST'])
@@ -125,26 +148,24 @@ def update_user_information():
         user_id = session.get('user_id')
         if not user_id:
             return jsonify({'status': 'fail', 'message': '로그인이 필요합니다.'}), 401
-        
+
         data = request.get_json()
         email = data.get('email')
         birthdate = data.get('birthdate')
         phone = data.get('phone')
         address = data.get('address')
         address_detail = data.get('address_detail')
-        
-        # 이메일은 필수 항목으로 처리
+
         if not email:
             return jsonify({'status': 'fail', 'message': '이메일은 필수 입력 항목입니다.'}), 400
-        
+
         success, error = update_user_info(user_id, email, birthdate, phone, address, address_detail)
-        
+
         if not success:
             return jsonify({'status': 'fail', 'message': error}), 400
-            
-        # 업데이트된 사용자 정보 가져오기
+
         updated_user = get_user_by_id(user_id)
-            
+
         return jsonify({
             'status': 'success',
             'message': '사용자 정보가 성공적으로 수정되었습니다.',
@@ -152,7 +173,7 @@ def update_user_information():
         }), 200
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'정보 수정 중 오류: {str(e)}'}), 500
-    
+
 # 7. 비밀번호 변경
 @users_bp.route('/change-password', methods=['POST'])
 @login_required
@@ -162,15 +183,12 @@ def change_password():
         data = request.get_json()
         current_password = data.get('current_password')
         new_password = data.get('new_password')
-        
+
         success, error = change_user_password(user_id, current_password, new_password)
-        
+
         if not success:
             return jsonify({'status': 'fail', 'message': error}), 400
-            
-        return jsonify({
-            'status': 'success',
-            'message': '비밀번호가 변경되었습니다.'
-        }), 200
+
+        return jsonify({'status': 'success', 'message': '비밀번호가 변경되었습니다.'}), 200
     except Exception as e:
         return jsonify({'status': 'fail', 'message': str(e)}), 500

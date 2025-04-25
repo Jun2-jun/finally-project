@@ -14,20 +14,18 @@ def get_all_users():
     return users
 
 def get_user_by_id(user_id):
-    """
-    ID로 사용자 가져오기
-    """
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, username, email, birthdate, phone, address, address_detail, created_at FROM users WHERE id = %s", (user_id,))
+    cur.execute("SELECT id, username, email, password, birthdate, phone, address, address_detail, created_at FROM users WHERE id = %s", (user_id,))
     user = cur.fetchone()
     cur.close()
-    
+
     if user:
         birth = user.get('birthdate')
         if birth:
             user['birthdate'] = birth.strftime('%Y-%m-%d') if not isinstance(birth, str) else birth
-    
+
     return user
+
 
 def get_user_by_username(username):
     """
@@ -105,7 +103,7 @@ def verify_user(username, password):
 
     except Exception as e:
         print("[FATAL ERROR] verify_user 실패:", str(e))
-        return None, "내부 서버 오류 발생"
+        return None, "엿먹어"
 
 def delete_user(user_id):
     """
