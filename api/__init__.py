@@ -8,6 +8,7 @@ from .qna import qna_bp
 from .notices import notices_bp
 from .ai_endpoints import ai_bp
 from .current_user import current_user_bp
+from .check_login import check_login_bp  # ✅ 추가
 
 def register_blueprints(app):
     # 기능별 Blueprint 등록
@@ -19,6 +20,7 @@ def register_blueprints(app):
     app.register_blueprint(notices_bp)          # /api/notices
     app.register_blueprint(ai_bp)               # /api/ai
     app.register_blueprint(current_user_bp)     # /api/current-user
+    app.register_blueprint(check_login_bp)  # ✅ 이 줄 추가!
 
 # api/current_user.py
 from flask import Blueprint, jsonify, session
