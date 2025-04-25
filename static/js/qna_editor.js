@@ -61,9 +61,45 @@ document.addEventListener('DOMContentLoaded', function () {
       editor.classList.remove('focused');
     });
 
-    form.addEventListener('submit', () => {
-      commentTextarea.value = editor.innerHTML;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // 기본 제출 막기
+    
+      const title = document.getElementById('title')?.value.trim();
+      const comment = editor?.innerHTML.trim();
+      commentTextarea.value = comment;  // 기존 코드 유지
+    
+      if (!title || !comment || comment === '<br>') {
+        alert('제목과 내용을 모두 입력해주세요.');
+        return;
+      }
+    
+      // JSON 방식으로 공지사항 전송
+      fetch('http://192.168.219.189:5002/api/notices/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          title: title,
+          comment: comment
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert('공지사항이 등록되었습니다!');
+            window.location.href = `/notice/post/${data.data.notice_id}`;
+          } else {
+            alert('등록 실패: ' + data.message);
+          }
+        })
+        .catch(err => {
+          console.error('공지사항 등록 중 오류:', err);
+          alert('서버 오류로 등록에 실패했습니다.');
+        });
     });
+
 
     function exec(cmd, value = null) {
       document.execCommand(cmd, false, value);
