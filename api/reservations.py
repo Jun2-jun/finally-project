@@ -32,6 +32,8 @@ def get_reservations():
 # 2. 예약 생성 (사용자 or 비회원)
 @reservations_bp.route('/', methods=['POST'])
 def create_reservation_api():
+    print("받은 요청 데이터:", data)
+    print("name:", name, "| phone:", phone, "| hospital:", hospital, "| address:", address)
     data = request.get_json()
     name = data.get('name')
     phone = data.get('phone')
