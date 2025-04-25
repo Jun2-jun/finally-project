@@ -64,7 +64,7 @@ def ai_chatbot():
 
 @app.route('/qna/post/<int:post_id>')
 def qna_post_detail(post_id):
-    return render_template('qna/qna_detail.html', post_id=post_id, now=datetime.now())
+    return f"게시물 ID: {post_id} 페이지입니다."
 
 @app.route('/qna/post/test')
 def qna_test():
