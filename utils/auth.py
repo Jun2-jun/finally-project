@@ -26,15 +26,17 @@ def login_required(f):
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
+        if 'username' not in session:
             return jsonify({
                 'status': 'fail',
                 'message': '로그인이 필요합니다.'
             }), 401
-        
-        # 여기에 관리자 체크 로직 추가
-        # 예: 사용자가 관리자 역할을 가지고 있는지 확인
-        # 데이터베이스 쿼리를 통해 사용자 역할 확인 필요
-        
+
+        if session['username'] != 'admin':
+            return jsonify({
+                'status': 'fail',
+                'message': '관리자 권한이 필요합니다.'
+            }), 403
+
         return f(*args, **kwargs)
     return decorated_function
