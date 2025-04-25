@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const button = document.getElementById('edit-btn');
     const form = document.getElementById('mypage-form');
 
-    // 🔥 사용자 정보 불러오기
+    // 🔥 1. 사용자 정보 불러오기
     fetch('http://192.168.219.189:5002/api/current-user', {
         method: 'GET',
         credentials: 'include'
@@ -26,17 +26,51 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('API 호출 실패:', error);
     });
 
-    // ✏️ 수정 버튼 로직
-    button.addEventListener('click', () => {
+    // ✅ 2. 수정 버튼 동작 처리
+    button.addEventListener('click', async () => {
         const isReadOnly = editables[0].hasAttribute('readonly');
 
         if (isReadOnly) {
-            // 수정 가능하게
+            // 입력 가능 상태로 전환
             editables.forEach(input => input.removeAttribute('readonly'));
             button.innerText = '수정완료';
         } else {
-            // 제출
-            form.submit();
+            // 수정 완료 → 서버에 정보 업데이트
+            const email = document.querySelector('[name="email"]').value;
+            const birthdate = document.querySelector('[name="birthdate"]').value;
+            const phone = document.querySelector('[name="phone"]').value;
+            const address = document.querySelector('[name="address"]').value;
+            const detail_address = document.querySelector('[name="detail_address"]').value;
+
+            try {
+                const response = await fetch('http://192.168.219.189:5002/api/users/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        email,
+                        birthdate,
+                        phone,
+                        address,
+                        address_detail: detail_address
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert('정보가 성공적으로 수정되었습니다.');
+                    editables.forEach(input => input.setAttribute('readonly', true));
+                    button.innerText = '수정하기';
+                } else {
+                    alert(`수정 실패: ${result.message}`);
+                }
+            } catch (err) {
+                alert('서버 요청 중 오류가 발생했습니다.');
+                console.error(err);
+            }
         }
     });
 });
