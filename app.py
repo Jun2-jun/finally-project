@@ -66,6 +66,10 @@ def ai_chatbot():
 def qna_post_detail(post_id):
     return render_template('qna_detail.html', post_id=post_id, now=datetime.now())
 
+@app.route('/qna/post/test')
+def qna_test():
+    return '라우트는 작동 중입니다.'
+
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
