@@ -25,6 +25,7 @@ app.register_blueprint(submit_bp)
 app.register_blueprint(qna_bp, url_prefix='/api/qna')
 app.register_blueprint(notice_bp, url_prefix='/api/notice')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
+app.config['SESSION_COOKIE_PATH'] = '/'
 
 @app.route('/')
 def home():
@@ -33,7 +34,7 @@ def home():
 
     if 'user_id' in session:
         current_app.logger.info("✅ 로그인된 사용자입니다. /api/dashboard로 이동합니다.")
-        return redirect('/api/dashboard')
+        return redirect('http://192.168.219.189/api/dashboard')
     else:
         current_app.logger.info("🔒 로그인되지 않은 사용자입니다. index.html 렌더링.")
         return render_template("index.html")
