@@ -5,9 +5,6 @@ from flask_cors import CORS
 import os
 from api import register_blueprints  # ✅ 이것만 있으면 됨
 
-app = Flask(__name__)
-app.secret_key = 'yougayoung123'
-
 def create_app(config_name='default'):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
