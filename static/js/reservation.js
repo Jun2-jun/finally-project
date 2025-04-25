@@ -4,7 +4,7 @@
  */
 
 // API 서버 기본 URL
-const API_BASE_URL = 'http://192.168.219.189:5002/api/reservations';
+const API_BASE_URL = 'http://192.168.219.189:5002/api';
 
 /**
  * 예약 정보를 API 서버로 전송하는 함수
@@ -15,7 +15,7 @@ async function sendReservationToAPI(reservationData) {
     try {
         console.log('API 서버로 예약 데이터 전송 시도:', reservationData);
         
-        const response = await fetch(`${API_BASE_URL}/reservations`, {
+        const response = await fetch(`${API_BASE_URL}/reservations/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,9 +75,9 @@ function cleanReservationData(data) {
     if (cleanedData.reservation_time && typeof cleanedData.reservation_time === 'string') {
         // 이미 적절한 형식인지 확인 (YYYY-MM-DD HH:MM)
         if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}(:\d{2})?$/.test(cleanedData.reservation_time)) {
-            // 날짜 형식이 맞지 않으면 현재 시간으로 설정
-            const now = new Date();
-            cleanedData.reservation_time = now.toISOString().slice(0, 16).replace('T', ' ');
+            // ISO 형식으로 변환 (YYYY-MM-DDTHH:MM:SS)
+            const dateStr = cleanedData.reservation_time.replace(' ', 'T');
+            cleanedData.reservation_time = dateStr;
         }
     }
     
