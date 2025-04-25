@@ -28,3 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
   
+  function logout() {
+    fetch('/logout', {
+      method: 'POST', // or GET depending on your server route
+      credentials: 'include'
+    })
+    .then(res => {
+      alert("로그아웃 되었습니다.");
+      window.location.href = "/login";
+    });
+  }
