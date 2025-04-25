@@ -70,6 +70,61 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+document.addEventListener('DOMContentLoaded', () => {
+  // 사용자 정보 불러오기
+  fetch('http://192.168.219.189:5002/api/current-user', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'success') {
+        document.getElementById('user-name').innerText = data.user.username || 'USER';
+        document.getElementById('user-email').innerText = data.user.email || 'test01@naver.com';
+        document.getElementById('welcome-name').innerText = `${data.user.username || 'Test Name'}님!`;
+      }
+    });
+
+  // Q&A 목록 불러오기
+  fetch('http://192.168.219.189:5002/api/qna/?page=1&per_page=10', {
+    method: 'GET',
+    credentials: 'include'
+  })
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.querySelector('.notice-table tbody');
+      tbody.innerHTML = ''; // 기존 내용 초기화
+
+      if (data.status === 'success' && data.data.results.length > 0) {
+        data.data.results.forEach((post, idx) => {
+          const row = document.createElement('tr');
+          row.classList.add('clickable-row');
+          row.setAttribute('data-no', post.id);  // 또는 post.no
+
+          row.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${post.title}</td>
+            <td>${post.category || '일반'}</td>
+            <td>${post.created_at}</td>
+            <td>${post.views || 0}</td>
+          `;
+
+          row.addEventListener('click', () => {
+            window.location.href = `/qna/post/${post.id}`;
+          });
+
+          tbody.appendChild(row);
+        });
+      } else {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-muted py-4">질문이 없습니다.</td></tr>`;
+      }
+    })
+    .catch(err => {
+      console.error('Q&A 목록 불러오기 실패:', err);
+    });
+});
+
+  
   // ✅ Q&A 작성 submit 처리
   const form = document.getElementById('content-form');
   if (form) {
