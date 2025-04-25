@@ -11,6 +11,8 @@ qna_html = dedent("""
   <link rel="stylesheet" href="{{ url_for('static', filename='css/qna.css') }}">
   <script src="{{ url_for('static', filename='js/checkLogin.js') }}"></script>
   <script src="{{ url_for('static', filename='js/userInfo.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/qna_load.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/qna.js') }}"></script>
 </head>
 <body>
   <div class="container-fluid">
@@ -60,7 +62,6 @@ qna_html = dedent("""
       </div>
     </div>
   </div>
-  <script src="{{ url_for('static', filename='js/qna.js') }}"></script>
 </body>
 </html>
 """)
