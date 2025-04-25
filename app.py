@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify
+from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app
 from modules.connection import mysql, init_db
 from routes.auth import auth_bp
 from datetime import datetime
@@ -28,9 +28,15 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허
 
 @app.route('/')
 def home():
+    # 디버깅: 콘솔에 세션 내용 출력
+    current_app.logger.info(f"세션 정보: {session}")
+
     if 'user_id' in session:
-        return redirect(url_for('dashboard.dashboard_info'))  # 블루프린트 이름에 맞게 수정
-    return render_template("index.html")
+        current_app.logger.info("✅ 로그인된 사용자입니다. /api/dashboard로 이동합니다.")
+        return redirect('/api/dashboard')
+    else:
+        current_app.logger.info("🔒 로그인되지 않은 사용자입니다. index.html 렌더링.")
+        return render_template("index.html")
 
 @app.route('/login')
 def login():
