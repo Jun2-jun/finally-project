@@ -12,6 +12,8 @@ from routes.qna import qna_bp
 from routes.notice import notice_bp
 import requests
 from flask_cors import CORS
+from flask_session import Session
+from redis import Redis
 
 
 app = Flask(__name__)
@@ -25,6 +27,14 @@ app.register_blueprint(submit_bp)
 app.register_blueprint(qna_bp, url_prefix='/api/qna')
 app.register_blueprint(notice_bp, url_prefix='/api/notice')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
+
+# 세션 Redis 설정 추가
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
+app.config['SESSION_COOKIE_DOMAIN'] = '192.168.219.189'
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # 또는 'None'
+app.config['SESSION_COOKIE_SECURE'] = False    # 로컬이라면 False
+Session(app)  # 세션 객체 초기화
 
 @app.route('/')
 def home():
