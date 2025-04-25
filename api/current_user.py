@@ -32,7 +32,7 @@ def get_current_user():
     }), 200
 
 # ✅ 로그인 상태 체크용 엔드포인트
-@current_user_bp.route('/users/check-login', methods=['GET'])
+@current_user_bp.route('/check-login', methods=['GET'])
 @login_required
 def check_login_status():
     return jsonify({'status': 'success', 'message': '로그인 상태입니다.'}), 200
