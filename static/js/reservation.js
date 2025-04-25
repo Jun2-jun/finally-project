@@ -19,13 +19,12 @@ async function sendReservationToAPI(reservationData) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                // CORS 이슈 해결을 위한 추가 헤더
-                'Access-Control-Allow-Origin': '*'
+                'Accept': 'application/json'
             },
-            mode: 'cors', // CORS 모드 명시적 설정
-            credentials: 'include', // 필요시 'include'로 변경
-            body: JSON.stringify(cleanReservationData(reservationData))
+            body: JSON.stringify(reservationData),
+            mode: 'cors',  // CORS 모드 명시적 설정
+            credentials: 'include',  // 쿠키 포함 (필요한 경우)
+            cache: 'no-cache'  // 캐시 사용 안 함
         });
 
         const data = await response.json();
