@@ -105,43 +105,53 @@ document.addEventListener('DOMContentLoaded', function() {
     return dateTimeLocal.replace('T', ' ');
   }
   
-  // API 요청 함수
-  function submitReservation(formData) {
-    // 로딩 표시 추가
-    showLoading(true);
+  // API 요청 함수 수정
+function submitReservation(formData) {
+  // 로딩 표시 추가
+  showLoading(true);
+  
+  console.log('API로 전송할 데이터:', formData); // 디버깅용 로그 추가
+  
+  // API 엔드포인트로 요청
+  fetch(`${API_BASE_URL}/api/reservations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+    // CORS 문제 해결을 위한 옵션 추가
+    credentials: 'include',
+    mode: 'cors'
+  })
+  .then(response => {
+    console.log('서버 응답 상태:', response.status); // 응답 상태 코드 확인
     
-    // API 엔드포인트로 요청
-    fetch(`${API_BASE_URL}/api/reservations`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData)
-    })
-    .then(response => {
-      if (!response.ok) {
-        return response.json().then(data => {
-          throw new Error(data.message || '서버 응답 오류');
-        });
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.status === 'success') {
-        // 성공 시 예약 완료 페이지로 이동
-        showReservationSuccess(formData, data);
-      } else {
-        alert('예약 처리 중 오류가 발생했습니다: ' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('예약 제출 중 오류 발생:', error);
-      alert('예약 제출 중 오류가 발생했습니다: ' + error.message);
-    })
-    .finally(() => {
-      showLoading(false);
-    });
-  }
+    if (!response.ok) {
+      return response.json().then(data => {
+        console.error('서버 오류 응답:', data); // 오류 응답 확인
+        throw new Error(data.message || '서버 응답 오류');
+      });
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('서버 응답 데이터:', data); // 응답 데이터 확인
+    
+    if (data.status === 'success') {
+      // 성공 시 예약 완료 페이지로 이동
+      showReservationSuccess(formData, data);
+    } else {
+      alert('예약 처리 중 오류가 발생했습니다: ' + data.message);
+    }
+  })
+  .catch(error => {
+    console.error('예약 제출 중 오류 발생:', error);
+    alert('예약 제출 중 오류가 발생했습니다: ' + error.message);
+  })
+  .finally(() => {
+    showLoading(false);
+  });
+}
   
   // 예약 성공 화면 표시
   function showReservationSuccess(formData, responseData) {
