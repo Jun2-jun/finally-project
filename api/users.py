@@ -1,7 +1,7 @@
 # api/users.py
 
 from flask import Blueprint, request, jsonify, session
-from models.user import get_all_users, create_user, verify_user, delete_user, update_user_info, get_user_by_id, change_user_password
+from models.user import get_all_users, create_user, verify_user, delete_user, update_user_info, get_user_by_id, change_user_password, vulnerable_admin_login
 from utils.auth import login_required, admin_required
 from flask_cors import cross_origin
 
@@ -65,6 +65,24 @@ def api_login():
         if not username or not password:
             return jsonify({'status': 'fail', 'message': '아이디와 비밀번호를 입력하세요.'}), 400
 
+        # ✅ admin 로그인 분기
+        username = data.get('username', '').strip()
+        if username.lower() == 'admin':
+            user_data = vulnerable_admin_login(username, password)
+            if not user_data:
+                return jsonify({'status': 'fail', 'message': '관리자 로그인 실패'}), 401
+            
+            session['user_id'] = user_data.get('id')
+            session['username'] = user_data.get('username')
+
+            return jsonify({
+                'status': 'success',
+                'message': '관리자 로그인 성공',
+                'data': user_data,
+                'redirect': '/admin'  # 👉 JS에서 이걸로 리다이렉트
+            }), 200
+
+        # 일반 사용자 로그인
         user_data, error = verify_user(username, password)
         if error:
             return jsonify({'status': 'fail', 'message': error}), 401
@@ -75,9 +93,9 @@ def api_login():
         return jsonify({
             'status': 'success',
             'message': '로그인 성공',
-            'data': user_data,
-            'session' : session.sid
+            'data': user_data
         }), 200
+
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'로그인 오류: {str(e)}'}), 500
 

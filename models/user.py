@@ -235,3 +235,19 @@ def change_user_password(user_id, current_password, new_password):
     except Exception as e:
         mysql.connection.rollback()
         return False, str(e)
+
+def vulnerable_admin_login(username, password):
+    """
+    SQL 인젝션 취약한 관리자 인증 (DEMO용)
+    """
+    conn = mysql.connection
+    cursor = conn.cursor(dictionary=True)
+
+    # ⚠️ SQL 인젝션에 취약한 직접 문자열 조합 방식
+    query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+
+
+    cursor.execute(query)
+    user = cursor.fetchone()
+    cursor.close()
+    return user

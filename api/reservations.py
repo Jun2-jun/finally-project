@@ -31,6 +31,14 @@ def get_reservations():
 # 2. 예약 생성 (사용자 or 비회원)
 @reservations_bp.route('/', methods=['POST'])
 def create_reservation_api():
+    print("✅ 예약 라우터 진입", flush=True)
+
+    try:
+        data = request.get_json(force=True)  # 강제로 JSON 파싱 시도
+        print("받은 데이터:", data, flush=True)
+    except Exception as e:
+        print("❌ JSON 파싱 실패:", str(e), flush=True)
+        return jsonify({'status': 'fail', 'message': '요청 형식 오류 (JSON 아님)'}), 400
     data = request.get_json()
     name = data.get('name')
     phone = data.get('phone')
