@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session, current_app
 from models.qna import get_all_qna, get_qna_by_id, create_qna, delete_qna
 from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import login_required, admin_required
+from extensions import mysql
 
 # ✅ Q&A 전용 Blueprint 정의
 qna_bp = Blueprint('qna', __name__, url_prefix='/api/qna')
@@ -104,3 +105,37 @@ def get_posts():
 @qna_bp.route('/posts', methods=['POST'])
 def create_post():
     return create_qna_api()
+
+#댓글등록
+@qna_bp.route('/<int:qna_id>/comments', methods=['POST'])
+def add_comment(qna_id):
+    if 'user_id' not in session:
+        return jsonify({'status': 'fail', 'message': '로그인 필요'}), 401
+
+    comment = request.form.get('comment')
+    user_id = session['user_id']
+
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        INSERT INTO qna_comments (qna_id, user_id, comment)
+        VALUES (%s, %s, %s)
+    """, (qna_id, user_id, comment))
+    mysql.connection.commit()
+    cur.close()
+
+    return jsonify({'status': 'success', 'message': '댓글 등록 완료'})
+
+#댓글조회
+@qna_bp.route('/<int:qna_id>/comments', methods=['GET'])
+def get_comments(qna_id):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        SELECT qc.comment, qc.created_at, u.username
+        FROM qna_comments qc
+        JOIN users u ON qc.user_id = u.id
+        WHERE qc.qna_id = %s
+        ORDER BY qc.created_at ASC
+    """, (qna_id,))
+    comments = cur.fetchall()
+    cur.close()
+    return jsonify(comments)
