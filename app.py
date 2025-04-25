@@ -30,7 +30,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허
 def home():
     # 디버깅: 콘솔에 세션 내용 출력
     current_app.logger.info(f"세션 정보: {session}")
-
+    print(request.cookies)
     if 'user_id' in session:
         current_app.logger.info("✅ 로그인된 사용자입니다. /api/dashboard로 이동합니다.")
         return redirect('/dashboard')
