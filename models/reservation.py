@@ -16,7 +16,6 @@ def get_all_reservations():
     # 날짜 형식 변환
     for res in reservations:
         res['created_at'] = format_datetime(res.get('created_at'))
-        # res['reservation_time'] = format_datetime(res.get('reservation_time'))
     
     return reservations
 
@@ -36,7 +35,6 @@ def get_upcoming_reservations(limit=5):
     
     for reservation in reservations:
         reservation['created_at'] = format_datetime(reservation.get('created_at'))
-        # reservation['reservation_time'] = format_datetime(reservation.get('reservation_time'))
     
     return reservations
 
