@@ -14,9 +14,9 @@ def submit_reservation():
     message = request.form.get('message')
     email = request.form.get('email')
 
-    if reservation_time_str:
-        reservation_time_str = reservation_time_str.replace('T', ' ')
-        reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
+    # if reservation_time_str:
+    #     reservation_time_str = reservation_time_str.replace('T', ' ')
+    #     reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
 
     return render_template("submit_reservation.html",
                            hospital=hospital,

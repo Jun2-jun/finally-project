@@ -28,6 +28,7 @@ body {
   input[type="text"],
   input[type="email"],
   input[type="tel"],
+  input[type="reservation_time"],
   textarea {
     width: 100%;
     padding: 10px 12px;
