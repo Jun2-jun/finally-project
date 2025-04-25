@@ -23,7 +23,7 @@ def get_current_user():
         'user': {
             'username': user['username'],
             'email': user['email'],
-            'birthdate': user['birthdate'].strftime('%Y-%m-%d') if user['birthdate'] else '',
+            'birthdate': user['birthdate'],
             'phone': user['phone'],
             'address': user['address'],
             'address_detail': user['address_detail']
