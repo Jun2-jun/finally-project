@@ -14,13 +14,11 @@ def submit_reservation():
     time = request.form.get('time')      # 예: '09:30'
     message = request.form.get('message')
     email = request.form.get('email')
+    reservation_time = request.form.get('reservation_time')
 
-    # 날짜와 시간 합치기
-    reservation_str = f"{date} {time}"   # '2025-04-30 09:30'
-    try:
-        reservation_time = datetime.strptime(reservation_str, "%Y-%m-%d %H:%M")
-    except ValueError:
-        return "잘못된 날짜/시간 형식입니다.", 400
+    # if reservation_time_str:
+    #     reservation_time_str = reservation_time_str.replace('T', ' ')
+    #     reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%d %H:%M')
 
     return render_template("submit_reservation.html",
                            hospital=hospital,
