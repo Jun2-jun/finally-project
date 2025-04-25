@@ -22,7 +22,9 @@ def get_user_by_id(user_id):
     cur.close()
     
     if user:
-        user['birthdate'] = format_datetime(user.get('birthdate'))
+        birth = user.get('birthdate')
+        if birth:
+            user['birthdate'] = birth.strftime('%Y-%m-%d') if not isinstance(birth, str) else birth
     
     return user
 
