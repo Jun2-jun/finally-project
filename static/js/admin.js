@@ -549,48 +549,48 @@ function submitNotice() {
       return;
     }
     
-    // 이미지 파일이 있으면 FormData를 사용하여 멀티파트 요청 생성
-    if (imageFiles.length > 0) {
-      const formData = new FormData();
-      formData.append('title', title.trim());
-      formData.append('comment', content.trim());
-      
-      // 여러 이미지 파일 추가
-      for (let i = 0; i < imageFiles.length; i++) {
-        formData.append('images', imageFiles[i]);
-      }
-      
-      fetch(`${API_BASE_URL}/notices`, {
-        method: 'POST',
-        credentials: 'include', // 쿠키를 포함시킴
-        body: formData
-      })
-      .then(handleResponse)
-      .then(handleSuccess)
-      .catch(handleError);
-    } 
-    // 이미지 파일이 없으면 JSON 요청 생성
-    else {
-      const noticeData = {
-        title: title.trim(),
-        comment: content.trim()
-      };
-      
-      fetch(`${API_BASE_URL}/notices`, {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include', // 쿠키를 포함시킴
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(noticeData)
-      })
-      .then(handleResponse)
-      .then(handleSuccess)
-      .catch(handleError);
+    // 로딩 표시
+    const noticeContainer = document.getElementById('notice-data');
+    noticeContainer.innerHTML = '<p class="loading">공지사항을 등록하는 중입니다...</p>';
+    
+    // 이미지 파일이 있든 없든 FormData를 사용 (일관된 방식)
+    const formData = new FormData();
+    formData.append('title', title.trim());
+    formData.append('comment', content.trim());
+    
+    // 여러 이미지 파일 추가 (있는 경우에만)
+    for (let i = 0; i < imageFiles.length; i++) {
+      formData.append('images', imageFiles[i]);
     }
-  }
+    
+    // 이미지가 없는 경우에도 FormData를 사용하여 요청
+    fetch(`${API_BASE_URL}/notices`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include', // 쿠키를 포함시킴
+      body: formData
+    })
+      .then(response => {
+        if (!response.ok) {
+          console.error('서버 응답 에러:', response.status, response.statusText);
+          throw new Error(`공지사항 등록에 실패했습니다. 상태 코드: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === 'success') {
+          alert('공지사항이 성공적으로 등록되었습니다.');
+          loadNotices(); // 목록으로 돌아가기
+        } else {
+          throw new Error(data.message || '공지사항 등록에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        alert(`오류가 발생했습니다: ${error.message}`);
+        console.error('공지사항 등록 오류:', error);
+        loadNotices(); // 오류 발생 시 목록으로 돌아가기
+      });
+}
   
   /**
    * 응답 처리
