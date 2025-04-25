@@ -238,10 +238,38 @@ def change_user_password(user_id, current_password, new_password):
         return False, str(e)
 
 def vulnerable_admin_login(username, password):
-    query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+    """
+    SQL 인젝션 취약한 관리자 로그인 함수 (bcrypt 없이 평문 비교)
+    """
+    try:
+        print("[DEBUG] 관리자 로그인 시도:", username)
 
-    cursor = mysql.connection.cursor(DictCursor)
-    cursor.execute(query)
-    user = cursor.fetchone()
-    cursor.close()
-    return user
+        # 취약한 쿼리: SQL 인젝션 가능
+        query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+        print("[DEBUG] 실행 쿼리:", query)
+
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(query)
+        user = cursor.fetchone()
+        cursor.close()
+
+        if not user:
+            print("[DEBUG] 관리자 계정 조회 실패")
+            return None, "관리자 로그인 실패"
+
+        user_data = {
+            'id': user.get('id'),
+            'username': user.get('username'),
+            'email': user.get('email'),
+            'birthdate': format_datetime(user.get('birthdate')),
+            'phone': user.get('phone'),
+            'address': user.get('address'),
+            'address_detail': user.get('address_detail')
+        }
+
+        print("[DEBUG] 관리자 로그인 성공:", user_data)
+        return user_data, None
+
+    except Exception as e:
+        print("[FATAL ERROR] vulnerable_admin_login 실패:", str(e))
+        return None, "관리자 로그인 중 오류 발생"
