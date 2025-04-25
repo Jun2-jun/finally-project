@@ -29,12 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   function logout() {
-    fetch('/logout', {
-      method: 'POST', // or GET depending on your server route
-      credentials: 'include'
-    })
-    .then(res => {
+  fetch('http://http://192.168.219.189:5002/api/users/logout', {
+    method: 'POST',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then(result => {
+    if (result.status === 'success') {
       alert("로그아웃 되었습니다.");
       window.location.href = "/login";
-    });
-  }
+    } else {
+      alert("로그아웃 실패: " + result.message);
+    }
+  })
+  .catch(err => {
+    console.error("로그아웃 중 오류:", err);
+    alert("로그아웃 요청 실패");
+  });
+}
