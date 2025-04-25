@@ -1,6 +1,6 @@
 // checkLogin.js
 document.addEventListener('DOMContentLoaded', () => {
-    fetch("http://192.168.219.189:5002/api/users/check-login", {
+    fetch("http://192.168.219.189:5002/api/check-login", {
       method: "GET",
       credentials: "include"
     })
