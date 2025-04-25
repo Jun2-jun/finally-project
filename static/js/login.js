@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(data => {
       if (data.status === 'success') {
-        // 사용자 정보 로컬 스토리지에 저장 (선택)
-        localStorage.setItem('username', data.data.username);
 
         // ✅ admin 전용 redirect 우선
         if (data.redirect) {
