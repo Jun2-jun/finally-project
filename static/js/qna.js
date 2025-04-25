@@ -102,12 +102,20 @@ document.addEventListener('DOMContentLoaded', () => {
           row.setAttribute('data-no', post.id);  // 또는 post.no
 
           row.innerHTML = `
+            <td class="delete-checkbox-column" style="display: none;">
+              <input type="checkbox" class="delete-checkbox" value="${post.id}">
+            </td>
             <td>${idx + 1}</td>
-            <td>${post.title}</td>
-            <td>${post.category || '일반'}</td>
+            <td>
+              <a href="/qna/post/${post.id}" style="text-decoration: none; color: inherit;">
+                ${post.title}
+              </a>
+            </td>
+            <td>${post.writer || '알 수 없음'}</td>
             <td>${post.created_at}</td>
             <td>${post.views || 0}</td>
           `;
+
 
           row.addEventListener('click', () => {
             window.location.href = `/qna/post/${post.id}`;
