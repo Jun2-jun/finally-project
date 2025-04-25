@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     
       // JSON 방식으로 공지사항 전송
-      fetch('http://192.168.219.189:5002/api/notices/', {
+      fetch('http://192.168.219.189:5002/api/qna/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
