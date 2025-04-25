@@ -1,3 +1,6 @@
+from textwrap import dedent
+
+qna_html = dedent("""
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,10 +15,7 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-
       {% include 'sidebar/sidebar.html' %}
-
-      <!-- Main Body -->
       <div class="col-md-10 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h4>Q&A</h4>
@@ -24,7 +24,7 @@
               <p class="mb-0 small">Today's Date</p>
               <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
             </div>
-            <img src="{{ url_for('static', filename='img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
+            <img src="{{ url_for('static', filename='img/icons/cc.svg') }}" alt="calendar" width="40" height="40">
           </div>
         </div>
 
@@ -34,9 +34,8 @@
           <p>Q&A 게시판입니다!</p>
         </div>
 
-        <!-- Q&A 테이블 -->
         <div class="qna-wrapper">
-          <table class="table table-bordered text-center align-middle">
+          <table class="table table-bordered text-center align-middle notice-table">
             <thead class="table-light">
               <tr>
                 <th class="delete-checkbox-column" style="display:none;">선택</th>
@@ -48,28 +47,8 @@
               </tr>
             </thead>
             <tbody>
-              {% if posts %}
-              {% for post in posts %}
-              <tr data-no="{{ post.no }}">
-                <td class="delete-checkbox-column" style="display:none;">
-                  <input type="checkbox" class="delete-checkbox" value="{{ post.no }}">
-                </td>
-                <td>{{ post.no }}</td>
-                <td>
-                  <a href="{{ url_for('qna.qna_post_detail', post_id=post.no) }}" style="text-decoration: none; color: inherit;">
-                    {{ post.title }}
-                  </a>
-                </td>
-                <td>{{ post.writer or '알 수 없음' }}</td>  <!-- ✅ 작성자 -->
-                <td>{{ post.created_at }}</td>
-                <td>{{ post.views or 0 }}</td>
-              </tr>
-              {% endfor %}
-              {% else %}
-              <tr>
-                <td colspan="6" class="text-muted py-4">질문이 없습니다.</td>
-              </tr>
-              {% endif %}
+              <!-- JS로 동적 생성됨 -->
+              <tr><td colspan="6" class="text-muted py-4">불러오는 중...</td></tr>
             </tbody>
           </table>
 
@@ -81,9 +60,9 @@
       </div>
     </div>
   </div>
-
-  <!-- 삭제 및 에디터 JS -->
   <script src="{{ url_for('static', filename='js/qna.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/userInfo.js') }}"></script>
 </body>
 </html>
+""")
+
+qna_html[:1000]  # show preview
