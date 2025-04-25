@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tbody) return;
 
     tbody.innerHTML = '';
-    if (data.status === 'success' && data.data && data.data.results.length > 0) {
-      data.data.results.forEach((post, idx) => {
+    if (data.status === 'success' && data.data?.items && data.data.items.length > 0) {
+      data.data.items.forEach((post, idx) => {
         const row = document.createElement('tr');
         row.classList.add('clickable-row');
         row.setAttribute('data-no', post.id);
