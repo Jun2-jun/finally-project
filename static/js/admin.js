@@ -335,7 +335,7 @@ function loadNoticesPage(page) {
  /**
  * QnA 페이지네이션 처리
  */
-function loadQnAPage(page) {
+window.loadQnAPage = function(page) {
     const qnaContainer = document.getElementById('qna-data');
     qnaContainer.innerHTML = '<p class="loading">QnA를 불러오는 중입니다...</p>';
     
@@ -388,13 +388,14 @@ function loadQnAPage(page) {
                 <th>이미지</th>
                 <th>작성자</th>
                 <th>작성일</th>
+                <th>관리</th>
               </tr>
             </thead>
             <tbody>
         `;
         
         if (items.length === 0) {
-          tableHTML += '<tr><td colspan="7" style="text-align: center;">등록된 QnA가 없습니다.</td></tr>';
+          tableHTML += '<tr><td colspan="8" style="text-align: center;">등록된 QnA가 없습니다.</td></tr>';
         } else {
           items.forEach(qna => {
             tableHTML += `
@@ -406,6 +407,9 @@ function loadQnAPage(page) {
                 <td>${qna.image_urls || ''}</td>
                 <td>${qna.writer || ''}</td>
                 <td>${qna.created_at ? new Date(qna.created_at).toLocaleDateString() : ''}</td>
+                <td>
+                  <button onclick="deleteQnA(${qna.id})" class="btn btn-danger">삭제</button>
+                </td>
               </tr>
             `;
           });
@@ -419,7 +423,7 @@ function loadQnAPage(page) {
           
           // 이전 페이지 버튼
           if (currentPage > 1) {
-            tableHTML += `<button onclick="adminApp.loadQnAPage(${currentPage - 1})" class="btn">이전</button> `;
+            tableHTML += `<button onclick="window.loadQnAPage(${currentPage - 1})" class="btn">이전</button> `;
           }
           
           // 페이지 번호 버튼
@@ -427,13 +431,13 @@ function loadQnAPage(page) {
             if (i === currentPage) {
               tableHTML += `<button class="btn" style="background-color: #555;">${i}</button> `;
             } else {
-              tableHTML += `<button onclick="adminApp.loadQnAPage(${i})" class="btn">${i}</button> `;
+              tableHTML += `<button onclick="window.loadQnAPage(${i})" class="btn">${i}</button> `;
             }
           }
           
           // 다음 페이지 버튼
           if (currentPage < totalPages) {
-            tableHTML += `<button onclick="adminApp.loadQnAPage(${currentPage + 1})" class="btn">다음</button>`;
+            tableHTML += `<button onclick="window.loadQnAPage(${currentPage + 1})" class="btn">다음</button>`;
           }
           
           tableHTML += '</div>';
@@ -445,7 +449,56 @@ function loadQnAPage(page) {
         qnaContainer.innerHTML = `<p>오류가 발생했습니다: ${error.message}</p>`;
         console.error('Error:', error);
       });
+}
+
+/**
+ * QnA 삭제 처리
+ * @param {number} qnaId - 삭제할 QnA의 ID
+ */
+window.deleteQnA = function(qnaId) {
+  if (!confirm(`정말로 ${qnaId}번 QnA를 삭제하시겠습니까?`)) {
+    return; // 사용자가 취소를 누른 경우
   }
+  
+  // 로딩 표시
+  const qnaContainer = document.getElementById('qna-data');
+  qnaContainer.innerHTML = '<p class="loading">QnA를 삭제하는 중입니다...</p>';
+  
+  fetch(`${API_BASE_URL}/qna/${qnaId}`, {
+    method: 'DELETE',
+    mode: 'cors',
+    credentials: 'include', // 관리자 인증 쿠키 포함
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`서버에서 QnA 삭제에 실패했습니다. 상태 코드: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(responseData => {
+      // 서버 응답 확인
+      if (responseData.status !== 'success') {
+        throw new Error(responseData.message || '서버에서 QnA 삭제에 실패했습니다.');
+      }
+      
+      // 성공 메시지 표시
+      alert(responseData.message || `${qnaId}번 QnA가 성공적으로 삭제되었습니다.`);
+      
+      // 현재 페이지 다시 로드
+      loadQnAPage(1); // 첫 페이지로 돌아가거나, 현재 페이지 상태를 저장하여 해당 페이지 로드
+    })
+    .catch(error => {
+      alert(`오류가 발생했습니다: ${error.message}`);
+      console.error('QnA 삭제 오류:', error);
+      
+      // 현재 QnA 목록 다시 로드
+      loadQnAPage(1);
+    });
+}
     
  /**
      * 공지사항 작성 폼 열기
