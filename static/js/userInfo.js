@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   function logout() {
-  fetch('http://http://192.168.219.189:5002/api/users/logout', {
+  fetch('http://192.168.219.189:5002/api/users/logout', {
     method: 'POST',
     credentials: 'include'
   })
