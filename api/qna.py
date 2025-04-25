@@ -106,7 +106,7 @@ def create_post():
     return create_qna_api()
 
 #댓글등록
-@qna_bp.route('/api/qna/<int:qna_id>/comments', methods=['POST'])
+@qna_bp.route('/<int:qna_id>/comments', methods=['POST'])
 def add_comment(qna_id):
     if 'user_id' not in session:
         return jsonify({'status': 'fail', 'message': '로그인 필요'}), 401
@@ -125,7 +125,7 @@ def add_comment(qna_id):
     return jsonify({'status': 'success', 'message': '댓글 등록 완료'})
 
 #댓글조회
-@qna_bp.route('/api/qna/<int:qna_id>/comments', methods=['GET'])
+@qna_bp.route('/<int:qna_id>/comments', methods=['GET'])
 def get_comments(qna_id):
     cur = mysql.connection.cursor()
     cur.execute("""
