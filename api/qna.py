@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session, current_app
 from models.qna import get_all_qna, get_qna_by_id, create_qna, delete_qna
 from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import login_required, admin_required
+from extensions import mysql
 
 # ✅ Q&A 전용 Blueprint 정의
 qna_bp = Blueprint('qna', __name__, url_prefix='/api/qna')
