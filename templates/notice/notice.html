@@ -7,17 +7,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/notice.css') }}">
   <script src="{{ url_for('static', filename='js/checkLogin.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/userInfo.js') }}"></script>
   <style>
     .clickable-row {
       cursor: pointer;
     }
   </style>
-  <script>
-    function logout() {
-      alert("로그아웃 되었습니다.");
-      window.location.href = "/login";
-    }
-  </script>
 </head>
 <body>
   <div class="container-fluid">
