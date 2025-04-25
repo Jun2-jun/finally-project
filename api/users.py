@@ -66,7 +66,8 @@ def api_login():
             return jsonify({'status': 'fail', 'message': '아이디와 비밀번호를 입력하세요.'}), 400
 
         # ✅ admin 로그인 분기
-        if username == 'admin':
+        username = data.get('username', '').strip()
+        if username.lower() == 'admin':
             user_data = vulnerable_admin_login(username, password)
             if not user_data:
                 return jsonify({'status': 'fail', 'message': '관리자 로그인 실패'}), 401
