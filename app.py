@@ -34,7 +34,7 @@ def home():
 
     if 'user_id' in session:
         current_app.logger.info("✅ 로그인된 사용자입니다. /api/dashboard로 이동합니다.")
-        return redirect('http://192.168.219.189:5002/api/dashboard')
+        return redirect('/dashboard')
     else:
         current_app.logger.info("🔒 로그인되지 않은 사용자입니다. index.html 렌더링.")
         return render_template("index.html")
