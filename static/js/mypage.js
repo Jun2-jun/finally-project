@@ -102,3 +102,36 @@ function submitWithdraw() {
       errorText.style.display = 'block';
     });
   }
+
+  function submitWithdraw() {
+    const password = document.getElementById('withdrawPassword').value;
+    const errorMsg = document.getElementById('withdrawError');
+  
+    fetch('/api/users/check-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: password })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        errorMsg.style.display = 'none';
+  
+        // 실제 탈퇴 요청
+        fetch('/api/users/withdraw', {
+          method: 'POST'
+        }).then(() => {
+          document.querySelector('.modal-body').style.display = 'none';
+          document.getElementById('withdrawSuccess').style.display = 'block';
+        });
+      } else {
+        errorMsg.textContent = data.message || '비밀번호가 일치하지 않습니다.';
+        errorMsg.style.display = 'block';
+      }
+    })
+    .catch(err => {
+      console.error('에러:', err);
+      errorMsg.textContent = '서버 오류가 발생했습니다.';
+      errorMsg.style.display = 'block';
+    });
+  }

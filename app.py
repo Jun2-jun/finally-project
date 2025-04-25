@@ -54,9 +54,9 @@ def admin():
 def chage_password():
     return render_template("change_password.html", now=datetime.now())
 
-@app.route('/notice')
-def notice():
-    return render_template("notice.html", now=datetime.now())
+#@app.route('/notice')
+#def notice():
+#    return render_template("notice.html", now=datetime.now())
 
 @app.route('/ai')
 def ai_chatbot():
@@ -76,7 +76,7 @@ def qna_list():
 
 @app.route('/notice/')
 def notice():
-    return render_template("notice.html", now=datetime.now())
+    return render_template("notice/notice.html", now=datetime.now())
     
 @app.route('/notice/post/<int:post_id>')
 def notice_detail(post_id):
