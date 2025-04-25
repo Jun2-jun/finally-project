@@ -88,14 +88,14 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(res => res.json())
         .then(data => {
           if (data.status === 'success') {
-            alert('공지사항이 등록되었습니다!');
-            window.location.href = `/notice/post/${data.data.notice_id}`;
+            alert('qna가 등록되었습니다!');
+            window.location.href = `/qna`;
           } else {
             alert('등록 실패: ' + data.message);
           }
         })
         .catch(err => {
-          console.error('공지사항 등록 중 오류:', err);
+          console.error('qna 등록 중 오류:', err);
           alert('서버 오류로 등록에 실패했습니다.');
         });
     });

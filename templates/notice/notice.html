@@ -39,8 +39,7 @@
           <p>공지사항 입니다.</p>
         </div>
 
-        <!-- 공지사항 테이블 -->
-        <table class="table table-bordered table-hover text-center mt-4">
+        <table id="noticeTable" class="table table-bordered table-hover text-center mt-4">
           <thead class="table-light">
             <tr>
               <th style="width: 5%;">No</th>
@@ -50,28 +49,11 @@
               <th style="width: 10%;">조회수</th>
             </tr>
           </thead>
-          <tbody>
-            {% if posts %}
-              {% for post in posts %}
-              <tr class="clickable-row" data-no="{{ post.no }}">
-                <td>{{ post.no }}</td>
-                <td><span class="notice-title">{{ post.title }}</span></td>
-                <td>{{ post.writer or '관리자' }}</td>
-                <td>{{ post.created_at }}</td>
-                <td>{{ post.views }}</td>
-              </tr>
-              {% endfor %}
-            {% else %}
-              <tr>
-                <td colspan="5" class="text-muted py-4">공지사항이 없습니다.</td>
-              </tr>
-            {% endif %}
+          <tbody id="noticeTableBody">
+            <!-- JS가 여기다 데이터 집어넣음 -->
           </tbody>
         </table>
-
-        <div class="text-end mt-3">
-          <a href="/notice/notice_write" class="btn btn-primary">공지사항 작성</a>
-        </div>
+        
       </div>
     </div>
   </div>
