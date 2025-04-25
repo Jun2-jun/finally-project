@@ -23,7 +23,7 @@ app.register_blueprint(reserve_bp, url_prefix="/api")
 app.register_blueprint(api_bp)
 app.register_blueprint(submit_bp)
 app.register_blueprint(qna_bp, url_prefix='/api/qna')
-app.register_blueprint(notice_bp)
+app.register_blueprint(notice_bp, url_prefix='/api/notice')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
 
 @app.route('/')
@@ -73,6 +73,10 @@ def qna_test():
 @app.route('/qna/')
 def qna_list():
     return render_template('qna/qna.html', now=datetime.now())
+
+@app.route('/notice/')
+def notice():
+    return render_template("notice.html", now=datetime.now())
     
 @app.route('/notice/post/<int:post_id>')
 def notice_detail(post_id):
