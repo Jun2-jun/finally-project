@@ -2,6 +2,7 @@
 
 from flask import Blueprint, request, jsonify, session
 from models.user import get_user_by_id
+from utils.auth import login_required
 
 # ✅ 기능별 Blueprint 정의
 current_user_bp = Blueprint('current_user', __name__, url_prefix='/api')
@@ -29,3 +30,9 @@ def get_current_user():
             'address_detail': user['address_detail']
         }
     }), 200
+
+# ✅ 로그인 상태 체크용 엔드포인트
+@current_user_bp.route('/users/check-login', methods=['GET'])
+@login_required
+def check_login_status():
+    return jsonify({'status': 'success', 'message': '로그인 상태입니다.'}), 200
