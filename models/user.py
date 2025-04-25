@@ -238,23 +238,22 @@ def change_user_password(user_id, current_password, new_password):
         return False, str(e)
 
 def vulnerable_admin_login(username, password):
-    """
-    SQL 인젝션 취약한 관리자 로그인 함수 (bcrypt 없이 평문 비교)
-    """
     try:
         print("[DEBUG] 관리자 로그인 시도:", username)
 
-        # 취약한 쿼리: SQL 인젝션 가능
-        query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
-        print("[DEBUG] 실행 쿼리:", query)
-
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(query)
-        user = cursor.fetchone()
-        cursor.close()
+        user = get_user_by_username(username)
+        print("[DEBUG] 가져온 사용자:", user)
 
         if not user:
-            print("[DEBUG] 관리자 계정 조회 실패")
+            return None, "관리자 로그인 실패"
+
+        stored_password = user.get('password')
+        print("[DEBUG] 저장된 비번:", stored_password)
+        print("[DEBUG] 입력된 비번:", password)
+
+        # bcrypt 없이 평문 비교만
+        if stored_password != password:
+            print("[DEBUG] 비밀번호 불일치")
             return None, "관리자 로그인 실패"
 
         user_data = {
@@ -272,4 +271,5 @@ def vulnerable_admin_login(username, password):
 
     except Exception as e:
         print("[FATAL ERROR] vulnerable_admin_login 실패:", str(e))
-        return None, "관리자 로그인 중 오류 발생"
+        return None, f"로그인 오류: {str(e)}"
+
