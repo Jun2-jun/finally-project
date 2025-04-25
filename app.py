@@ -76,7 +76,7 @@ def qna_list():
     
 @app.route('/notice/post/<int:post_id>')
 def notice_detail(post_id):
-    return render_template("notice_detail.html")
+    return render_template("notice/notice_detail.html")
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
