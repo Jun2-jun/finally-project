@@ -79,6 +79,7 @@ def api_login():
                 'status': 'success',
                 'message': '관리자 로그인 성공',
                 'data': user_data,
+                'session': session.sid,
                 'redirect': '/admin'  # 👉 JS에서 이걸로 리다이렉트
             }), 200
 
@@ -93,7 +94,8 @@ def api_login():
         return jsonify({
             'status': 'success',
             'message': '로그인 성공',
-            'data': user_data
+            'data': user_data,
+            'session': session.sid
         }), 200
 
     except Exception as e:
