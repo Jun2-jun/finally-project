@@ -3,7 +3,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from models.user import get_user_by_id
 
-# ✅ URL prefix 명시적으로 부여
+# URL prefix 명시적으로 부여
 mypage_bp = Blueprint('mypage', __name__, url_prefix='/mypage')
 
 @mypage_bp.route('/', methods=['GET'])

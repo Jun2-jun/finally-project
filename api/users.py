@@ -5,7 +5,7 @@ from flask_cors import cross_origin
 from utils.auth import hash_password
 from utils.auth import check_password
 
-# ✅ users 전용 Blueprint 생성
+#users 전용 Blueprint 생성
 users_bp = Blueprint('users', __name__, url_prefix='/api/users')
 
 # 1. 사용자 목록 (관리자용)

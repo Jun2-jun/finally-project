@@ -5,7 +5,7 @@ from models.reservation import get_reservation_stats
 from models.user import get_all_users
 from utils.auth import admin_required
 
-# ✅ 기능별 Blueprint 생성
+# 기능별 Blueprint 생성
 dashboard_bp = Blueprint('dashboard', __name__, url_prefix='/api/dashboard')
 
 # 관리자 전용 대시보드 정보

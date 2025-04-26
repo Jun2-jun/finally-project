@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify
 from utils.ai import call_gemini_api
 import os
 
-# ✅ AI 전용 Blueprint 생성
+# AI 전용 Blueprint 생성
 ai_bp = Blueprint('ai', __name__, url_prefix='/api/ai')
 
 # POST /api/ai

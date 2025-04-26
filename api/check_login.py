@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from utils.auth import login_required  # 기존 데코레이터 import
 
-# ✅ /api/users prefix로 분리된 Blueprint
+# /api/users prefix로 분리된 Blueprint
 check_login_bp = Blueprint('check_login', __name__, url_prefix='/api/users')
 
 @check_login_bp.route('/check-login', methods=['GET'])

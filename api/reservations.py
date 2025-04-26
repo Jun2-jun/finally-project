@@ -10,7 +10,7 @@ from models.reservation import (
 from utils.auth import admin_required
 from utils.email import send_reservation_confirmation
 
-# ✅ 기능별 Blueprint 정의
+# 기능별 Blueprint 정의
 reservations_bp = Blueprint('reservations', __name__, url_prefix='/api/reservations')
 
 # 1. 관리자용 예약 전체 조회
@@ -32,7 +32,7 @@ def get_reservations():
 # 2. 예약 생성 (사용자 or 비회원)
 @reservations_bp.route('/', methods=['POST'])
 def create_reservation_api():
-    print("✅ 예약 라우터 진입", flush=True)
+    print(" 예약 라우터 진입", flush=True)
     try:
         data = request.get_json(force=True)
         print("받은 데이터:", data, flush=True)
@@ -50,10 +50,10 @@ def create_reservation_api():
     
     # 세션에서 user_id를 가져옴 (로그인된 경우)
     user_id = session.get('user_id')
-    print(f"✅ 세션에서 가져온 user_id: {user_id}", flush=True)
+    print(f"세션에서 가져온 user_id: {user_id}", flush=True)
     
     # 로그 추가
-    print(f"✅ 파싱된 데이터: 이름={name}, 전화번호={phone}, 병원={hospital}, 시간={reservation_time}", flush=True)
+    print(f"파싱된 데이터: 이름={name}, 전화번호={phone}, 병원={hospital}, 시간={reservation_time}", flush=True)
     
     if not all([name, phone, hospital, address, reservation_time]):
         missing = []

@@ -5,7 +5,7 @@ from models.notice import get_all_notices, get_notice_by_id, create_notice, dele
 from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import admin_required
 
-# ✅ Blueprint 정의
+# Blueprint 정의
 notices_bp = Blueprint('notices', __name__, url_prefix='/api/notices')
 
 # 1. 공지사항 전체 목록 조회

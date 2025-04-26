@@ -4,7 +4,7 @@ from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import login_required, admin_required
 from extensions import mysql
 
-# ✅ Q&A 전용 Blueprint 정의
+# Q&A 전용 Blueprint 정의
 qna_bp = Blueprint('qna', __name__, url_prefix='/api/qna')
 
 # 1. Q&A 목록 조회
@@ -42,9 +42,9 @@ def create_qna_api():
         writer = session.get('username') or session.get('user', {}).get('username', '익명')
 
         # 🔍 디버깅용 로그 출력
-        print("✅ [QNA] 세션 사용자 ID:", user_id)
-        print("✅ [QNA] 세션 작성자 이름:", writer)
-        print("✅ [QNA] 세션 전체 내용:", dict(session))
+        print(" [QNA] 세션 사용자 ID:", user_id)
+        print(" [QNA] 세션 작성자 이름:", writer)
+        print(" [QNA] 세션 전체 내용:", dict(session))
 
         if request.is_json:
             data = request.get_json()
