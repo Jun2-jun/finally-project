@@ -6,32 +6,41 @@
 ## 디렉토리 구조
 
 ```
-doctor_future/
-├── app.py                  # 메인 애플리케이션 진입점
-├── config.py               # 환경설정
-├── extensions.py           # Flask 확장 초기화
-├── utils/                  # 유틸리티 함수
+finally-project-api/
+├── api/
+│   ├── __init__.py                  # Blueprint 등록 등 API 모듈 초기화
+│   ├── ai_endpoints.py              # AI 관련 API 엔드포인트
+│   ├── auth.py                      # 인증/로그인 관련 API
+│   ├── check_login.py               # 로그인 체크 API
+│   ├── current_user.py              # 현재 로그인 유저 정보 제공
+│   ├── dashboard.py                 # 대시보드 관련 API
+│   ├── mypage.py                    # 마이페이지 관련 API
+│   ├── notices.py                   # 공지사항 관련 API
+│   ├── qna.py                       # QnA 관련 API
+│   ├── reservations.py              # 예약 관리 API
+│   └── users.py                     # 회원가입, 회원 정보 API
+│
+├── models/
+│   ├── __init__.py                  # 모델 초기화
+│   ├── notice.py                    # 공지사항 모델
+│   ├── qna.py                       # QnA 모델
+│   ├── reservation.py               # 예약 모델
+│   └── user.py                      # 유저 모델
+│
+├── static/                          # 정적 파일 폴더 (이미지 등)
+│
+├── utils/
 │   ├── __init__.py
-│   ├── email.py            # 이메일 유틸리티 함수
-│   ├── auth.py             # 인증 유틸리티
-│   ├── helpers.py          # 일반 헬퍼 함수
-│   └── ai.py               # AI API 통합
-├── api/                    # API 엔드포인트
-│   ├── __init__.py         # API Blueprint 초기화
-│   ├── users.py            # 사용자 관련 엔드포인트
-│   ├── reservations.py     # 예약 관련 엔드포인트
-│   ├── dashboard.py        # 대시보드 관련 엔드포인트
-│   ├── qna.py              # Q&A 관련 엔드포인트
-│   ├── notices.py          # 공지사항 관련 엔드포인트
-│   └── ai_endpoints.py     # AI 관련 엔드포인트
-├── models/                 # 데이터베이스 모델 함수
-│   ├── __init__.py
-│   ├── user.py             # 사용자 모델 함수
-│   ├── reservation.py      # 예약 모델 함수
-│   ├── qna.py              # Q&A 모델 함수
-│   └── notice.py           # 공지사항 모델 함수
-└── static/
-    └── uploads/            # 파일 업로드 디렉토리
+│   ├── ai.py                        # AI 기능 유틸
+│   ├── auth.py                      # 인증 관련 유틸 함수
+│   ├── email.py                     # 이메일 전송 유틸
+│   ├── helpers.py                   # 공통 도우미 함수
+│
+├── app.py                           # 앱 실행 및 Flask 앱 생성
+├── config.py                        # 환경별 설정 (development, production 등)
+├── extensions.py                    # DB, 메일, 세션 등 확장 기능 초기화
+├── requirements.txt                 # 프로젝트 의존 패키지 목록
+└── README.md                        # 프로젝트 설명 문서
 ```
 
 ## 각 파일의 역할
