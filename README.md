@@ -65,12 +65,19 @@ finally-project-api/
 
 ### API 엔드포인트 (api/)
 각 엔드포인트 그룹별로 파일을 분리했습니다:
-1. **users.py**: 사용자 관리(로그인, 회원가입 등) API
-2. **reservations.py**: 예약 관련 API
-3. **dashboard.py**: 관리자 대시보드 API
-4. **qna.py**: Q&A 게시판 API
-5. **notices.py**: 공지사항 API
-6. **ai_endpoints.py**: AI 관련 API
+1. **POST /api/users/register** : 회원가입
+2. **POST /api/users/login** : 로그인 (세션 기반)
+3. **POST /api/users/logout** :	로그아웃
+4. **GET /api/users/**	: 사용자 목록 조회 (관리자용)
+5. **POST /api/users/update** :	사용자 정보 수정
+6. **POST /api/users/change-password** :	비밀번호 변경
+7. **POST /api/users/check-password** :	비밀번호 일치 여부 확인
+8. **GET /api/qna/** :	Q&A 게시판 목록 조회
+9. **POST /api/qna/** :	Q&A 게시글 작성
+10. **GET /api/qna/<id>** :	특정 Q&A 게시글 조회
+11. **DELETE /api/qna/<id>** :	Q&A 게시글 삭제 (관리자)
+12. **GET /api/notices/**	: 공지사항 목록 조회
+13. **POST /api/reservations/** :	예약 등록
 
 ## 실행 방법
 
