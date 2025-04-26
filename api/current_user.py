@@ -7,6 +7,7 @@ from utils.auth import login_required
 # 기능별 Blueprint 정의
 current_user_bp = Blueprint('current_user', __name__, url_prefix='/api')
 
+# 현재 사용자 정보 확인 엔드포인트
 @current_user_bp.route('/current-user', methods=['GET'])
 def get_current_user():
     user_id = session.get('user_id')
