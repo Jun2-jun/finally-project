@@ -28,7 +28,7 @@ def get_current_user():
             'birthdate': user['birthdate'],
             'phone': user['phone'],
             'address': user['address'],
-            'address_detail': user['address_detail']
+            'address_detail': user['address_detail']   
         }
     }), 200
 
