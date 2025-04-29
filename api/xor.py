@@ -1,25 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 from utils.auth import login_required  # 기존 데코레이터 import
 from extensions import mysql  # Flask-MySQLdb를 사용한다고 가정
-import base64
-
-# XOR 암호화용 간단 함수
-def xor_encrypt(plain_text, key):
-    encrypted = []
-    key_len = len(key)
-    for i, c in enumerate(plain_text):
-        encrypted.append(chr(ord(c) ^ ord(key[i % key_len])))
-    return ''.join(encrypted)
-
-def xor_decrypt(cipher_text, key):
-    return xor_encrypt(cipher_text, key)
-
-# 간단화를 위해 Base64 인코딩/디코딩 추가 (암호문 저장시 깨짐 방지용)
-def encode_base64(text):
-    return base64.b64encode(text.encode()).decode()
-
-def decode_base64(text):
-    return base64.b64decode(text.encode()).decode()
+from utils.xor import xor_encrypt, xor_decrypt, encode_base64, decode_base64
 
 # Blueprint 생성
 patient_info_bp = Blueprint('patient_info', __name__, url_prefix='/api/patient')
