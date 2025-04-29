@@ -37,24 +37,13 @@ def get_db_connection():
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
+        if 'username' not in session:
             return jsonify({
                 'status': 'fail',
                 'message': '로그인이 필요합니다.'
             }), 401
 
-        user_id = session['user_id']
-
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-
-        cursor.execute('SELECT admin FROM users WHERE id = %s', (user_id,))
-        user = cursor.fetchone()
-
-        cursor.close()
-        conn.close()
-
-        if not user or user['admin'] != 1:
+        if session['username'] != 'admin':
             return jsonify({
                 'status': 'fail',
                 'message': '관리자 권한이 필요합니다.'
