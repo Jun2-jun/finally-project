@@ -1,16 +1,16 @@
-import bcrypt
+import hashlib
 from functools import wraps
 from flask import session, jsonify, request
 #import mysql.connector
 #from config import Config
 
-# 비밀번호 해싱 함수
+# 비밀번호 해싱 함수 (SHA-256)
 def hash_password(password):
-    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
 # 비밀번호 검증 함수
 def check_password(hashed_password, password):
-    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+    return hashed_password == hashlib.sha256(password.encode('utf-8')).hexdigest()
 
 # 로그인 필요한 경로를 위한 데코레이터
 def login_required(f):
