@@ -51,14 +51,19 @@ def gemini_api():
 
                 # 🔥 민감정보를 기반으로 AI에 질문
                 personalized_prompt = (
-                    f"당신은 전문 의료 상담 AI입니다. 다음 환자의 건강 정보를 기반으로 비대면 진단을 제공하세요.\n\n"
-                    f"혈액형: {patient_info['blood_type']}\n"
-                    f"키: {patient_info['height_cm']} cm\n"
-                    f"몸무게: {patient_info['weight_kg']} kg\n"
-                    f"알레르기: {patient_info['allergy_info']}\n"
-                    f"기존 질병 이력: {patient_info['past_illnesses']}\n"
-                    f"만성질환: {patient_info['chronic_diseases']}\n\n"
-                    "환자에게 현재 필요한 조치나 주의사항을 알려주세요."
+                    "당신은 전문 의료 상담 AI입니다.\n"
+                    "아래 환자 정보를 주의 깊게 읽고, 이 정보를 기반으로 비대면 진단을 제공하세요.\n\n"
+                    "🔵 [환자 건강 정보]\n"
+                    f"- 혈액형: {patient_info['blood_type']}\n"
+                    f"- 키: {patient_info['height_cm']} cm\n"
+                    f"- 몸무게: {patient_info['weight_kg']} kg\n"
+                    f"- 알레르기: {patient_info['allergy_info']}\n"
+                    f"- 기존 질병 이력: {patient_info['past_illnesses']}\n"
+                    f"- 만성질환: {patient_info['chronic_diseases']}\n\n"
+                    "✅ 환자의 건강 정보를 고려하여 가능한 건강 상태를 추정하고,\n"
+                    "✅ 필요한 경우 즉시 의사의 진료가 필요한지 여부를 판단하며,\n"
+                    "✅ 생활습관이나 주의사항, 권장 조치사항을 함께 제시하세요.\n"
+                    "✅ 가능한 경우 진단은 조심스럽게, 권장사항은 구체적으로 작성하세요."
                 )
 
                 # 🔥 Gemini API 호출
