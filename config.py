@@ -40,7 +40,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False  # ✅ 로컬에선 False!
     SESSION_COOKIE_SAMESITE = 'Lax'  # ✅ 또는 'None' (CORS 환경이면)
-    SESSION_COOKIE_DOMAIN = '192.168.219.189'
+    SESSION_COOKIE_DOMAIN = '192.168.219.131'
     
 
 class ProductionConfig(Config):

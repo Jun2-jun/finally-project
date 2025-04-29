@@ -1,8 +1,8 @@
 import bcrypt
 from functools import wraps
 from flask import session, jsonify, request
-import mysql.connector
-from config import Config
+#import mysql.connector
+#from config import Config
 
 # 비밀번호 해싱 함수
 def hash_password(password):
@@ -24,7 +24,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def get_db_connection():
+#def get_db_connection():
     conn = mysql.connector.connect(
         host=Config.MYSQL_HOST,
         user=Config.MYSQL_USER,
