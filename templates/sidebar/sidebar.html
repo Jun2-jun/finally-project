@@ -12,22 +12,22 @@
   <ul class="nav flex-column">
     <li class="nav-item">
       <a href="/dashboard" class="nav-link {% if request.path.startswith('/dashboard') %}active{% endif %}">
-        <img src="{{ url_for('static', filename='img/icons/home.svg') }}" class="icon"> Home
+        <img src="{{ url_for('static', filename='img/icons/home.svg') }}" class="icon"> 예약확인
       </a>
     </li>
     <li class="nav-item">
       <a href="/find" class="nav-link {% if request.path.startswith('/find') %}active{% endif %}">
-        <img src="{{ url_for('static', filename='img/icons/doctors.svg') }}" class="icon"> reservations
+        <img src="{{ url_for('static', filename='img/icons/doctors.svg') }}" class="icon"> 병원찾기
       </a>
     </li>
     <li class="nav-item">
       <a href="/notice" class="nav-link {% if request.path.startswith('/notice') %}active{% endif %}">
-        <img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> Notice
+        <img src="{{ url_for('static', filename='img/icons/session.svg') }}" class="icon"> 공지사항
       </a>
     </li>
     <li class="nav-item">
       <a href="/qna" class="nav-link {% if request.path.startswith('/qna') %}active{% endif %}">
-        <img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> Q&A
+        <img src="{{ url_for('static', filename='img/icons/book.svg') }}" class="icon"> 자주묻는질문
       </a>
     </li>
     <li class="nav-item">
