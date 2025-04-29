@@ -82,7 +82,16 @@ python app.py
 
 
 
-
+CREATE TABLE PatientSensitiveInfo (
+    user_id INT PRIMARY KEY,                     -- users.id를 참조하는 FK
+    blood_type VARCHAR(10),                      -- 혈액형 (예: A+, O-)
+    height_cm DECIMAL(5,2),                      -- 키 (cm, 소수점 둘째자리까지)
+    weight_kg DECIMAL(5,2),                      -- 몸무게 (kg, 소수점 둘째자리까지)
+    allergy_info TEXT,                           -- 알레르기 정보
+    past_illnesses TEXT,                         -- 기존 질병 이력
+    chronic_diseases TEXT,                       -- 만성질환 정보
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
 
 
 
