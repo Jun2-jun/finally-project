@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // ✅ 사용자 정보 불러오기
-    fetch('http://192.168.219.189:5002/api/current-user', {
+    fetch('http://192.168.219.131:5002/api/current-user', {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const postId = window.location.pathname.split('/').pop();
   
     // ✅ 공지사항 상세 데이터 불러오기
-    fetch(`http://192.168.219.189:5002/api/notices/${postId}`, {
+    fetch(`http://192.168.219.131:5002/api/notices/${postId}`, {
       method: 'GET',
       credentials: 'include',
     })

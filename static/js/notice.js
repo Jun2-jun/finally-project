@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // ✅ 사용자 정보 표시에만 사용
-  fetch('http://192.168.219.189:5002/api/current-user', {
+  fetch('http://192.168.219.131:5002/api/current-user', {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
   // ✅ 공지사항 목록 불러오기 (읽기 전용)
-  fetch('http://192.168.219.189:5002/api/notices?page=1&per_page=10', {
+  fetch('http://192.168.219.131:5002/api/notices?page=1&per_page=10', {
     method: 'GET',
     credentials: 'include',
   })

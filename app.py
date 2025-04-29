@@ -31,7 +31,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허
 # 세션 Redis 설정 추가
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
-app.config['SESSION_COOKIE_DOMAIN'] = '192.168.219.189'
+app.config['SESSION_COOKIE_DOMAIN'] = '192.168.219.131'
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # 또는 'None'
 app.config['SESSION_COOKIE_SECURE'] = False    # 로컬이라면 False
 Session(app)  # 세션 객체 초기화
@@ -42,10 +42,10 @@ def home():
     current_app.logger.info(f"세션 정보: {session}")
     print(request.cookies)
     if 'user_id' in session:
-        current_app.logger.info("✅ 로그인된 사용자입니다. /api/dashboard로 이동합니다.")
+        current_app.logger.info("로그인된 사용자입니다. /api/dashboard로 이동합니다.")
         return redirect('/dashboard')
     else:
-        current_app.logger.info("🔒 로그인되지 않은 사용자입니다. index.html 렌더링.")
+        current_app.logger.info("로그인되지 않은 사용자입니다. index.html 렌더링.")
         return render_template("index.html")
 
 @app.route('/login')
@@ -91,6 +91,10 @@ def qna_test():
 @app.route('/qna/')
 def qna_list():
     return render_template('qna/qna.html', now=datetime.now())
+
+@app.route('/doctor')
+def doctor():
+    return render_template('doctor.html')
 
 @app.route('/notice/')
 def notice():

@@ -6,7 +6,7 @@
 // 즉시 실행 함수로 전역 네임스페이스 오염 방지
 const adminApp = (function() {
     // API 기본 URL
-    const API_BASE_URL = 'http://192.168.219.189:5002/api';
+    const API_BASE_URL = 'http://192.168.219.131:5002/api';
     
     // 초기화 함수
     function init() {

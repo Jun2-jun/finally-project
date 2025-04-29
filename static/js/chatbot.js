@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     input.value = '';
 
     try {
-      const response = await fetch('http://192.168.219.189:5002/api/ai', {
+      const response = await fetch('http://192.168.219.131:5002/api/ai', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

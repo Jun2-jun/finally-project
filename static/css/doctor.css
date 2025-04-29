@@ -1,0 +1,164 @@
+/* 기본 설정 */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  
+  /* Header */
+  .header {
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .header:hover {
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    height: 70px;
+    box-sizing: border-box;
+  }
+  
+  /* Logo */
+  .logo img {
+    height: 150px;
+    width: auto;
+  }
+  
+  /* Navigation */
+  .nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav ul li {
+    position: relative;
+  }
+  
+  .nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+  
+  /* 헤더 hover 시 메뉴 색상 변경 */
+  .header:hover .nav ul li a {
+    color: #333;
+  }
+  
+  /* 활성 메뉴 항목 강조 */
+  .nav ul li a.active,
+  .header:hover .nav ul li a:hover {
+    color: #007BFF;
+  }
+  
+  /* Dropdown */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .dropdown-content a {
+    color: #333;
+    padding: 10px;
+    display: block;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  /* Download Button */
+  .download-button button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .download-button button:hover {
+    background-color: #e65c00;
+  }
+  
+  /* Main Visual */
+  .main-visual {
+    background: url('/static/img/background.jpg') no-repeat center center / cover;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+  }
+  
+  .main-visual h1 {
+    font-size: 64px;
+    margin-bottom: 20px;
+  }
+  
+  .main-visual p {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .scroll-down {
+    font-size: 18px;
+    color: white;
+    text-decoration: underline;
+  }
+  
+  /* Services */
+  .services {
+    padding: 50px 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    background: white;
+    padding: 30px;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Footer */
+  .footer {
+    background: #333;
+    color: #ccc;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+  }
+  
+  
