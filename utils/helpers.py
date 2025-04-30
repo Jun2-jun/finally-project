@@ -12,7 +12,7 @@ def format_datetime(dt):
 # 파일 업로드 헬퍼
 def save_uploaded_files(files, upload_folder):
     """
-    업로드된 파일을 저장하고 파일 경로 목록 반환
+    업로드된 파일을 저장하고 웹 경로 리스트로 반환
     """
     file_paths = []
     
@@ -21,8 +21,9 @@ def save_uploaded_files(files, upload_folder):
             filename = secure_filename(file.filename)
             filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
-            # 웹 URL 형식으로 반환
-            file_paths.append('/' + filepath.replace('\\', '/'))
+
+            # ✅ 웹에서 접근 가능한 상대 경로로 저장
+            file_paths.append(f'/uploads/{filename}')
     
     return file_paths
 
