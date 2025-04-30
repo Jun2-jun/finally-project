@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // ✅ 사용자 정보 불러오기
-    fetch('http://192.168.219.126:5002/api/current-user', {
+    fetch(`본인 IP:포트/api/current-user`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const postId = window.location.pathname.split('/').pop();
   
     // ✅ 공지사항 상세 데이터 불러오기
-    fetch(`http://192.168.219.126:5002/api/notices/${postId}`, {
+    fetch(`본인 IP:포트/api/notices/${postId}`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -33,8 +33,25 @@ document.addEventListener('DOMContentLoaded', function () {
         if (data.status === 'success') {
           const post = data.data;
           document.getElementById('post-title').innerText = post.title;
-          document.getElementById('post-created-at').innerText = `작성일: ${post.created_at}`;
-          document.getElementById('post-content').innerHTML = post.comment; // HTML 포함 가능
+          const postContent = document.getElementById('post-content');
+          
+          if (Array.isArray(post.image_urls) && post.image_urls.length > 0) {
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('mt-3');
+            post.image_urls.forEach(url => {
+              const img = document.createElement('img');
+              img.src = url;
+              img.classList.add('img-thumbnail', 'me-2', 'mb-2');
+              img.style.maxWidth = '800px';
+              imageContainer.appendChild(img);
+            });
+            postContent.appendChild(imageContainer);
+          }
+
+          const textDiv = document.createElement('div');
+          textDiv.innerHTML = post.comment;
+          postContent.appendChild(textDiv);
+          
         } else {
           document.getElementById('post-content').innerHTML = `<p class="text-danger">공지사항을 불러올 수 없습니다.</p>`;
         }
