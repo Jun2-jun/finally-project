@@ -13,8 +13,10 @@ notices_bp = Blueprint('notices', __name__, url_prefix='/api/notices')
 def get_notices_api():
     try:
         page = int(request.args.get('page', 1))
-        per_page = int(request.args.get('per_page', 10))
-        notices, total_count = get_all_notices(page, per_page)
+        per_page = int(request.args.get('per_page', 10))        
+        keyword = request.args.get('keyword', '', type=str)
+
+        notices, total_count = get_all_notices(page, per_page, keyword)
 
         return jsonify({
             'status': 'success',
