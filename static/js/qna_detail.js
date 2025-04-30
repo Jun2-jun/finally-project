@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let postAuthor = null;
 
   // 1. 로그인 사용자 정보 확인
-  fetch('http://192.168.29.134:5002/api/current-user', {
+  fetch('http://192.168.219.126:5002/api/current-user', {
     method: 'GET',
     credentials: 'include'
   })
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
   // 2. 게시글 상세 정보 가져오기
-  fetch(`http://192.168.29.134:5002/api/qna/${postId}`, {
+  fetch(`http://192.168.219.126:5002/api/qna/${postId}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -114,7 +114,7 @@ function deletePost() {
 
   const postId = window.location.pathname.split('/').pop();
 
-  fetch(`http://192.168.29.134:5002/api/qna/${postId}/delete`, {
+  fetch(`http://192.168.219.131:5002/api/qna/${postId}/delete`, {
     method: 'POST',
     credentials: 'include'
   })

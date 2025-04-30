@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('mypage-form');
 
     // 🔥 1. 사용자 정보 불러오기
-    fetch('http://192.168.219.131:5002/api/current-user', {
+    fetch('http://192.168.219.126:5002/api/current-user', {
         method: 'GET',
         credentials: 'include'
     })
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const detail_address = document.querySelector('[name="detail_address"]').value;
 
             try {
-                const response = await fetch('http://192.168.219.131:5002/api/users/update', {
+                const response = await fetch('http://192.168.219.126:5002/api/users/update', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

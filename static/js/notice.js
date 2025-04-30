@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // ✅ 사용자 정보 표시에만 사용
-  fetch('http://192.168.219.131:5002/api/current-user', {
+  fetch('http://192.168.219.126:5002/api/current-user', {
     method: 'GET',
     credentials: 'include',
     headers: {

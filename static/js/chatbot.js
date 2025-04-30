@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     sendButton.disabled = true;
 
     try {
-      const response = await fetch('http://192.168.219.131:5002/api/ai', {
+      const response = await fetch('http://192.168.219.126:5002/api/ai', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
