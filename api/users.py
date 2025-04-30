@@ -5,6 +5,9 @@ from flask_cors import cross_origin
 from utils.auth import hash_password
 from utils.auth import check_password
 from utils.decrypt_util import decrypt_request_json
+from flask_mail import Mail, Message
+import random, string
+from extensions import mail
 
 #users 전용 Blueprint 생성
 users_bp = Blueprint('users', __name__, url_prefix='/api/users')
@@ -139,9 +142,6 @@ def withdraw_account():
         print("[ERROR] 탈퇴 중 예외 발생:", str(e))
         return jsonify({'success': False, 'message': f"탈퇴 중 오류: {str(e)}"}), 500
 
-
-
-
 # 6. 사용자 정보 수정
 @users_bp.route('/update', methods=['POST'])
 @login_required
@@ -182,6 +182,11 @@ def update_user_information():
 def change_password():
     try:
         user_id = session.get('user_id')
+
+        # 이메일 인증 여부 확인
+        if not session.get('email_verified'):
+            return jsonify({'status': 'fail', 'message': '이메일 인증이 필요합니다.'}), 403
+
         data = request.get_json()
         current_password = data.get('current_password')
         new_password = data.get('new_password')
@@ -191,10 +196,51 @@ def change_password():
         if not success:
             return jsonify({'status': 'fail', 'message': error}), 400
 
+        # 인증 완료 후 세션 값 제거 (선택)
+        session.pop('email_verified', None)
+
         return jsonify({'status': 'success', 'message': '비밀번호가 변경되었습니다.'}), 200
     except Exception as e:
         return jsonify({'status': 'fail', 'message': str(e)}), 500
 
+# 7-1. 2차인증메일
+@users_bp.route('/send_verification_code', methods=['POST'])
+def send_verification_code():
+    email = request.form.get("email")
+
+    if not email:
+        return jsonify({"success": False, "message": "이메일 주소가 필요합니다."}), 400
+
+    verification_code = str(random.randint(100000, 999999))
+    session['verification_code'] = verification_code
+    print(f"[DEBUG] 세션에 저장된 인증번호: {session['verification_code']}")
+
+    msg = Message("닥터퓨처 이메일 인증번호", recipients=[email])
+    msg.body = f"인증번호는 {verification_code} 입니다."
+
+    try:
+        mail.send(msg)
+        return jsonify({"success": True, "message": "인증번호가 전송되었습니다."})
+    except Exception as e:
+        return jsonify({"success": False, "message": f"이메일 전송 실패: {str(e)}"}), 500
+
+# 7-2. 인증번호 검증
+@users_bp.route('/verify_code', methods=['POST'])
+def verify_code():
+    input_code = request.form.get('code')
+    saved_code = session.get('verification_code')
+
+    print("[DEBUG] 입력된 인증번호:", input_code)
+    print("[DEBUG] 세션에 저장된 인증번호:", saved_code)
+
+    if not saved_code or input_code != saved_code:
+        return jsonify({'success': False, 'message': '인증번호가 일치하지 않습니다.'})
+
+    # 검증 성공 → 인증 표시
+    session['email_verified'] = True
+    session.pop('verification_code', None)
+
+    return jsonify({'success': True, 'message': '이메일 인증 성공!'})
 
 # 8. 모바일 E2E 로그인
 @users_bp.route('/E2E_login', methods=['POST', 'OPTIONS'])
