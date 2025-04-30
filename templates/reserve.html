@@ -13,6 +13,9 @@
   <div class="container">
     <h2>병원 예약하기</h2>
     <form method="POST" action="/submit_reservation">
+      <!-- CSRF 토큰 추가 -->
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      
       <div class="info-box">
         <label for="hospital">병원 이름</label>
         <input type="text" id="hospital" name="hospital" value="{{ hospital_name }}" readonly>
