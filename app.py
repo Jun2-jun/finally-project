@@ -42,10 +42,10 @@ def home():
     current_app.logger.info(f"세션 정보: {session}")
     print(request.cookies)
     if 'user_id' in session:
-        current_app.logger.info("로그인된 사용자입니다. /api/dashboard로 이동합니다.")
+        current_app.logger.info("✅ 로그인된 사용자입니다. /api/dashboard로 이동합니다.")
         return redirect('/dashboard')
     else:
-        current_app.logger.info("로그인되지 않은 사용자입니다. index.html 렌더링.")
+        current_app.logger.info("🔒 로그인되지 않은 사용자입니다. index.html 렌더링.")
         return render_template("index.html")
 
 @app.route('/login')
@@ -66,7 +66,12 @@ def find():
 
 @app.route('/admin')
 def admin():
-    return render_template("admin.html", now=datetime.now())
+    print("[DEBUG] 현재 세션 상태:", dict(session))    
+    if 'admin' in session and session['admin'] == 1:
+        return render_template("admin.html", now=datetime.now())
+    else:
+        print("❌ 관리자만 접근할 수 있습니다.")
+        return render_template("index.html")
 
 @app.route('/change_password')
 def chage_password():
