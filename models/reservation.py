@@ -1,10 +1,11 @@
 from extensions import mysql
 from utils.helpers import format_datetime
 from datetime import datetime
+import html
 
 def get_all_reservations():
     """
-    모든 예약 가져오기 (관리자 기능)
+    모든 예약 가져오기 (관리자 기능) - 이미 엔티티로 변환된 값을 다시 복원 (의도적 취약)
     """
     cur = mysql.connection.cursor()
     cur.execute("""
@@ -14,10 +15,16 @@ def get_all_reservations():
     reservations = cur.fetchall()
     cur.close()
     
-    # 날짜 형식 변환
+    # 날짜 형식 변환 및 HTML 엔티티 복원
     for res in reservations:
         res['created_at'] = format_datetime(res.get('created_at'))
-    
+        res['reservation_time'] = format_datetime(res.get('reservation_time'))
+
+        # 엔티티 → 원래 HTML 복원 (의도적 XSS 가능하게)
+        for key in ['name', 'phone', 'hospital', 'address', 'message', 'email']:
+            if res.get(key):
+                res[key] = html.unescape(res[key])
+
     return reservations
  
 def get_upcoming_reservations(limit=5):
