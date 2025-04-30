@@ -72,6 +72,7 @@ def api_login():
 
         session['user_id'] = user_data.get('id')
         session['username'] = user_data.get('username')
+        session['admin'] = user_data.get('admin')
 
         response = {
             'status': 'success',
