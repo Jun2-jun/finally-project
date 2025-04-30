@@ -7,48 +7,42 @@ def get_all_qna(page=1, per_page=10, keyword=''):
     cur = mysql.connection.cursor()
 
     if keyword:
-        # ✅ 검색어 있을 때 (취약하게)
-        keyword_pattern = f"%{keyword}%"
-
-        # 문자열 직접 삽입 (매우 위험)
-        query_count = f"""
-            SELECT COUNT(*) as count
+        # 인코딩된 keyword가 곧바로 SQL로 들어감
+        # 예: %' UNION SELECT ... --
+        query = f"""
+            SELECT id, user_id, title, comment, image_urls, writer, created_at
             FROM qna
-            WHERE title LIKE '{keyword_pattern}' OR comment LIKE '{keyword_pattern}'
-        """
-        cur.execute(query_count)
-        total_count = cur.fetchone()['count']
-
-        query_list = f"""
-            SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.writer, q.created_at
-            FROM qna q
-            WHERE q.title LIKE '{keyword_pattern}' OR q.comment LIKE '{keyword_pattern}'
-            ORDER BY q.created_at DESC
+            WHERE title LIKE '%{keyword}%'
+            ORDER BY created_at DESC
             LIMIT {per_page} OFFSET {offset}
         """
-        cur.execute(query_list)
+        print(f"[DEBUG] SQL 쿼리:\n{query}")
+        cur.execute(query)
+
+        qna_list = cur.fetchall()
+
+        # 총 개수는 페이로드가 이미 LIMIT 포함하므로 생략하거나 가짜값
+        total_count = len(qna_list)
+
     else:
         cur.execute("SELECT COUNT(*) as count FROM qna")
         total_count = cur.fetchone()['count']
 
         cur.execute(f"""
-            SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.writer, q.created_at
-            FROM qna q
-            ORDER BY q.created_at DESC
+            SELECT id, user_id, title, comment, image_urls, writer, created_at
+            FROM qna
+            ORDER BY created_at DESC
             LIMIT {per_page} OFFSET {offset}
         """)
-        
-    qna_list = cur.fetchall()
+        qna_list = cur.fetchall()
 
-    # ✅ 디버깅: 전체 게시글 리스트 출력
-    print("✅ [DEBUG] 가져온 Q&A 목록:")
+    # 정리 및 반환
     for item in qna_list:
         item['created_at'] = format_datetime(item.get('created_at'))
         item['image_urls'] = parse_image_urls(item.get('image_urls'))
-        print(f" - ID: {item['id']}, Title: {item['title']}, Writer: {item.get('writer')}")
-
     cur.close()
     return qna_list, total_count
+
 
 def get_qna_by_id(post_id):
     """
