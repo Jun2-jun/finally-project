@@ -1,7 +1,9 @@
+/*메인*/
 body {
     margin: 0;
     font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
-    background-color: #f7f9fb;
+    background: url("../img/1234.png") no-repeat center center fixed;
+    background-size: cover;
   }
   
   .search-bar {
@@ -15,7 +17,7 @@ body {
   .search-bar input[type="text"] {
     width: 300px;
     padding: 10px 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffff;
     border-radius: 20px;
     font-size: 16px;
     transition: 0.3s ease;
@@ -206,9 +208,11 @@ body {
     background-size: cover;
     background-position: center;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: #ffff;
   }
   
+  /* 예약목록*/
+
   .status-box {
     padding: 1rem;
     text-align: center;
