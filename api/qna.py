@@ -13,7 +13,9 @@ def get_qna_api():
     try:
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 10))
-        qna_list, total_count = get_all_qna(page, per_page)
+        keyword = request.args.get('keyword', '', type=str)
+
+        qna_list, total_count = get_all_qna(page, per_page, keyword)
 
         return jsonify({
             'status': 'success',
