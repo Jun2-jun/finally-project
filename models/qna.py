@@ -2,24 +2,42 @@ from extensions import mysql
 from utils.helpers import format_datetime, parse_image_urls
 import json
 
-def get_all_qna(page=1, per_page=10):
-    """
-    페이지네이션이 적용된 모든 Q&A 게시물 가져오기
-    """
+def get_all_qna(page=1, per_page=10, keyword=''):
     offset = (page - 1) * per_page
     cur = mysql.connection.cursor()
 
-    # 전체 개수 조회
-    cur.execute("SELECT COUNT(*) as count FROM qna")
-    total_count = cur.fetchone()['count']
+    if keyword:
+        # ✅ 검색어 있을 때 (취약하게)
+        keyword_pattern = f"%{keyword}%"
 
-    # Q&A 목록 조회 (writer 포함)
-    cur.execute("""
-        SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.writer, q.created_at
-        FROM qna q
-        ORDER BY q.created_at DESC
-        LIMIT %s OFFSET %s
-    """, (per_page, offset))
+        # 문자열 직접 삽입 (매우 위험)
+        query_count = f"""
+            SELECT COUNT(*) as count
+            FROM qna
+            WHERE title LIKE '{keyword_pattern}' OR comment LIKE '{keyword_pattern}'
+        """
+        cur.execute(query_count)
+        total_count = cur.fetchone()['count']
+
+        query_list = f"""
+            SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.writer, q.created_at
+            FROM qna q
+            WHERE q.title LIKE '{keyword_pattern}' OR q.comment LIKE '{keyword_pattern}'
+            ORDER BY q.created_at DESC
+            LIMIT {per_page} OFFSET {offset}
+        """
+        cur.execute(query_list)
+    else:
+        cur.execute("SELECT COUNT(*) as count FROM qna")
+        total_count = cur.fetchone()['count']
+
+        cur.execute(f"""
+            SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.writer, q.created_at
+            FROM qna q
+            ORDER BY q.created_at DESC
+            LIMIT {per_page} OFFSET {offset}
+        """)
+        
     qna_list = cur.fetchall()
 
     # ✅ 디버깅: 전체 게시글 리스트 출력
