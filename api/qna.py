@@ -3,8 +3,6 @@ from models.qna import get_all_qna, get_qna_by_id, create_qna, delete_qna
 from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import login_required, admin_required
 from extensions import mysql
-from flask_mysqldb import MySQLdb
-from collections import defaultdict
 
 # Q&A 전용 Blueprint 정의
 qna_bp = Blueprint('qna', __name__, url_prefix='/api/qna')
@@ -27,7 +25,7 @@ def get_qna_api():
         return jsonify({'status': 'fail', 'message': f'Q&A 목록 오류: {str(e)}'}), 500
 
 # 2. Q&A 상세 조회
-@qna_bp.route('/<int:post_id>', methods=['GET'])
+@qna_bp.route('/<path:post_id>', methods=['GET'])
 def get_qna_detail_api(post_id):
     try:
         qna = get_qna_by_id(post_id)
@@ -124,106 +122,37 @@ def get_posts():
 def create_post():
     return create_qna_api()
 
-# 댓글 등록 (parent_id 지원)
+#댓글등록
 @qna_bp.route('/<int:qna_id>/comments', methods=['POST'])
 def add_comment(qna_id):
     if 'user_id' not in session:
         return jsonify({'status': 'fail', 'message': '로그인 필요'}), 401
 
     comment = request.form.get('comment')
-    parent_id = request.form.get('parent_id')  # FormData에서 받음
     user_id = session['user_id']
 
-    if not comment:
-        return jsonify({'status': 'fail', 'message': '댓글 내용이 없습니다'}), 400
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        INSERT INTO qna_comments (qna_id, user_id, comment)
+        VALUES (%s, %s, %s)
+    """, (qna_id, user_id, comment))
+    mysql.connection.commit()
+    cur.close()
 
-    # 빈 문자열을 None으로 처리
-    parent_id = int(parent_id) if parent_id not in [None, '', 'null'] else None
+    return jsonify({'status': 'success', 'message': '댓글 등록 완료'})
 
-    try:
-        cur = mysql.connection.cursor()
-        if parent_id is not None:
-            cur.execute("""
-                INSERT INTO qna_comments (qna_id, user_id, comment, parent_id)
-                VALUES (%s, %s, %s, %s)
-            """, (qna_id, user_id, comment, parent_id))
-        else:
-            cur.execute("""
-                INSERT INTO qna_comments (qna_id, user_id, comment)
-                VALUES (%s, %s, %s)
-            """, (qna_id, user_id, comment))
-        mysql.connection.commit()
-        cur.close()
-        return jsonify({'status': 'success', 'message': '댓글 등록 완료'})
-    except Exception as e:
-        return jsonify({'status': 'fail', 'message': str(e)}), 500
-
-# 댓글 조회 (DictCursor 사용)
+#댓글조회
 @qna_bp.route('/<int:qna_id>/comments', methods=['GET'])
 def get_comments(qna_id):
-    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur = mysql.connection.cursor()
     cur.execute("""
-        SELECT qc.id, qc.comment, qc.created_at, qc.parent_id, u.username
+        SELECT qc.comment, qc.created_at, u.username
         FROM qna_comments qc
         JOIN users u ON qc.user_id = u.id
         WHERE qc.qna_id = %s
         ORDER BY qc.created_at ASC
     """, (qna_id,))
-    rows = cur.fetchall()
+    comments = cur.fetchall()
     cur.close()
-
-    # 댓글을 id 기준으로 저장
-    comment_map = {}
-    for row in rows:
-        comment_map[row['id']] = {
-            'id': row['id'],
-            'comment': row['comment'],
-            'created_at': row['created_at'].strftime('%Y-%m-%d %H:%M'),
-            'parent_id': row['parent_id'],
-            'username': row['username'],
-            'replies': []
-        }
-
-    # 트리 구조 구성
-    comment_tree = []
-    for comment in comment_map.values():
-        parent_id = comment['parent_id']
-        if parent_id is None:
-            comment_tree.append(comment)  # 최상위 댓글
-        else:
-            # 부모 댓글이 존재하면 replies에 추가
-            parent = comment_map.get(parent_id)
-            if parent:
-                parent['replies'].append(comment)
-
-    return jsonify(comment_tree)
-
-# 대댓글
-@qna_bp.route('/comments/<int:comment_id>/replies', methods=['GET'])
-def get_replies(comment_id):
-    try:
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cur.execute("""
-            SELECT qc.id, qc.comment, qc.created_at, qc.parent_id, u.username
-            FROM qna_comments qc
-            JOIN users u ON qc.user_id = u.id
-            WHERE qc.parent_id = %s
-            ORDER BY qc.created_at ASC
-        """, (comment_id,))
-        rows = cur.fetchall()
-        cur.close()
-
-        replies = []
-        for row in rows:
-            replies.append({
-                'id': row['id'],
-                'comment': row['comment'],
-                'created_at': row['created_at'].strftime('%Y-%m-%d %H:%M'),
-                'parent_id': row['parent_id'],
-                'username': row['username'],
-            })
-
-        return jsonify({'status': 'success', 'data': replies})
-    except Exception as e:
-        return jsonify({'status': 'fail', 'message': f'대댓글 조회 오류: {str(e)}'}), 500
+    return jsonify(comments)
 
