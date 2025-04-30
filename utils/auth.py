@@ -24,7 +24,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-#def get_db_connection():
+def get_db_connection():
     conn = mysql.connector.connect(
         host=Config.MYSQL_HOST,
         user=Config.MYSQL_USER,
@@ -43,11 +43,46 @@ def admin_required(f):
                 'message': '로그인이 필요합니다.'
             }), 401
 
-        if session['username'] != 'admin':
+        username = session['username']
+
+        conn = None
+        cursor = None
+
+        try:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+
+            query = "SELECT admin FROM users WHERE username = %s"
+            cursor.execute(query, (username,))
+            result = cursor.fetchone()
+
+            if not result:
+                return jsonify({
+                    'status': 'fail',
+                    'message': '사용자가 존재하지 않습니다.'
+                }), 404
+
+            admin_value = result[0]
+
+            if admin_value != 1:
+                return jsonify({
+                    'status': 'fail',
+                    'message': '관리자 권한이 필요합니다.'
+                }), 403
+
+        except Exception as e:
+            print(f"DB 오류: {e}")
             return jsonify({
                 'status': 'fail',
-                'message': '관리자 권한이 필요합니다.'
-            }), 403
+                'message': '서버 오류가 발생했습니다.'
+            }), 500
+
+        finally:
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
 
         return f(*args, **kwargs)
+
     return decorated_function
