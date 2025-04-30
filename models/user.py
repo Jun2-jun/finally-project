@@ -32,7 +32,7 @@ def get_user_by_username(username):
     사용자명으로 사용자 가져오기
     """
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, username, password, email, birthdate, phone, address, address_detail FROM users WHERE username = %s", (username,))
+    cur.execute("SELECT id, username, password, email, birthdate, phone, address, address_detail, admin FROM users WHERE username = %s", (username,))
     user = cur.fetchone()
     cur.close()
     return user
@@ -95,7 +95,8 @@ def verify_user(username, password):
             'birthdate': format_datetime(user.get('birthdate')),
             'phone': user.get('phone'),
             'address': user.get('address'),
-            'address_detail' : user.get('address_detail')
+            'address_detail' : user.get('address_detail'),
+            'admin' : user.get('admin')
         }
 
         print("[DEBUG] 로그인 성공:", user_data)
