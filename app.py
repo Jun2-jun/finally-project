@@ -15,10 +15,16 @@ from flask_cors import CORS
 from flask_session import Session
 from redis import Redis
 import uuid
+from flask import send_from_directory
 
 app = Flask(__name__)
 app.secret_key = 'yougayoung123'
 init_db(app)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(basedir, 'static', 'uploads')
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(reserve_bp, url_prefix="/api")
@@ -96,6 +102,25 @@ def qna_test():
 @app.route('/qna/')
 def qna_list():
     return render_template('qna/qna.html', now=datetime.now())
+
+@app.route('/upload-image', methods=['POST'])
+def upload_image():
+    files = request.files.getlist('images')
+    upload_folder = current_app.config['UPLOAD_FOLDER']
+    file_paths = []
+
+    for file in files:
+        if file and file.filename != '':
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(upload_folder, filename)
+            file.save(filepath)
+            file_paths.append(f'/uploads/{filename}')
+    return jsonify({'status': 'success', 'paths':file_paths})
+
+@app.route('/uploads/<path:filename>')
+def serve_uploaded_file(filename):
+    return send_from_directory(os.path.join(app.root_path, 'static', 'uploads'), filename)
+
 
 @app.route('/doctor')
 def doctor():
