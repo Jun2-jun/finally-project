@@ -9,7 +9,7 @@ class Config:
     # MySQL 설정
     MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost')
     MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '1234')
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'doctor123!')
     MYSQL_DB = os.environ.get('MYSQL_DB', 'doctor_future')
     MYSQL_CURSORCLASS = 'DictCursor'
 
@@ -40,7 +40,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False  # ✅ 로컬에선 False!
     SESSION_COOKIE_SAMESITE = 'Lax'  # ✅ 또는 'None' (CORS 환경이면)
-    SESSION_COOKIE_DOMAIN = '192.168.219.131'
+    SESSION_COOKIE_DOMAIN = '192.168.219.62'
     
 
 class ProductionConfig(Config):

@@ -4,6 +4,7 @@ from utils.auth import login_required, admin_required
 from flask_cors import cross_origin
 from utils.auth import hash_password
 from utils.auth import check_password
+from utils.decrypt_util import decrypt_request_json
 
 #users 전용 Blueprint 생성
 users_bp = Blueprint('users', __name__, url_prefix='/api/users')
@@ -45,20 +46,19 @@ def api_register():
         }), 201
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'회원가입 중 오류: {str(e)}'}), 500
-
-# 3. 로그인
+#3. 로그인
 @users_bp.route('/login', methods=['POST', 'OPTIONS'])
 @cross_origin(origins=[
     "http://localhost:5000",
     "http://127.0.0.1:5000",
-    "http://192.168.219.131:5000"
+    "http://192.168.219.62:5000"
 ], supports_credentials=True)
 def api_login():
     if request.method == 'OPTIONS':
         return '', 204
 
     try:
-        data = request.get_json() or {}
+        data = request._decrypted_json
         username = data.get('username', '').strip()
         password = data.get('password')
 
@@ -87,6 +87,7 @@ def api_login():
 
     except Exception as e:
         return jsonify({'status': 'fail', 'message': f'로그인 오류: {str(e)}'}), 500
+
 
 # 4. 로그아웃
 @users_bp.route('/logout', methods=['POST'])
@@ -192,3 +193,45 @@ def change_password():
         return jsonify({'status': 'success', 'message': '비밀번호가 변경되었습니다.'}), 200
     except Exception as e:
         return jsonify({'status': 'fail', 'message': str(e)}), 500
+
+
+# 8. 모바일 E2E 로그인
+@users_bp.route('/E2E_login', methods=['POST', 'OPTIONS'])
+@decrypt_request_json
+def E2E_login():
+    if request.method == 'OPTIONS':
+        return '', 204
+
+    try:
+        from utils.decrypt_util import enable_response_encryption
+        enable_response_encryption()  # 🔐 응답 암호화 활성화
+
+        data = request._decrypted_json
+        username = data.get('username', '').strip()
+        password = data.get('password')
+
+        if not username or not password:
+            return jsonify({'status': 'fail', 'message': '아이디와 비밀번호를 입력하세요.'}), 400
+
+        user_data, error = verify_user(username, password)
+
+        if error:
+            return jsonify({'status': 'fail', 'message': error}), 401
+
+        session['user_id'] = user_data.get('id')
+        session['username'] = user_data.get('username')
+
+        response = {
+            'status': 'success',
+            'message': '로그인 성공',
+            'data': user_data,
+            'session': session.sid
+        }
+
+        if username.lower() == 'admin':
+            response['redirect'] = '/admin'
+
+        return jsonify(response), 200
+
+    except Exception as e:
+        return jsonify({'status': 'fail', 'message': f'로그인 오류: {str(e)}'}), 500

@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from config import config
+from utils.decrypt_util import encrypt_response
 from extensions import mysql, mail, session, init_upload_folder
 from flask_cors import CORS
 import os
@@ -26,13 +27,7 @@ def create_app(config_name='default'):
 
     current_ip = get_local_ip()  # ✅ 현재 IP 가져오기
 
-    CORS(app,
-         supports_credentials=True,
-         resources={r"/api/*": {"origins": [
-             "http://localhost:5000",
-             "http://127.0.0.1:5000",
-             "http://192.168.219.131:5000"  # ✅ 내 현재 IP 자동 추가
-         ]}})
+    CORS(app)
 
     mysql.init_app(app)
     mail.init_app(app)
@@ -40,6 +35,9 @@ def create_app(config_name='default'):
     init_upload_folder(app)
 
     register_blueprints(app)
+
+    # 응답 암호화 미들웨어 등록
+    app.after_request(encrypt_response)
 
     @app.route('/')
     def index():
