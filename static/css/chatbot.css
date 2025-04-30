@@ -3,8 +3,8 @@
     position: fixed;
     top: 260px;
     right: 40px;
-    width: 1530px;               /* 기존보다 넓게 */
-    max-height: 650px;          /* 높이도 증가 */
+    width: 1530px;
+    max-height: 650px;
     background: #ffffff;
     height: calc(100vh - 200px);
     border-radius: 18px;
@@ -19,7 +19,7 @@
 .chat-header {
     background-color: #6ca9ff;
     color: white;
-    padding: 16px 20px;         /* 더 여유 있는 padding */
+    padding: 16px 20px;
     font-weight: bold;
     font-size: 18px;
     display: flex;
@@ -54,6 +54,33 @@
     align-self: flex-end;
 }
 
+/* 추천 버튼 스타일 */
+.chat-suggestions {
+    display: none;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 16px;
+    background-color: #f7f9fc;
+    border-top: 1px solid #e0e6ef;
+}
+
+.suggestion-btn {
+    background-color: #e0eeff;
+    border: 1px solid #b0d0ff;
+    color: #3b82f6;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.suggestion-btn:hover {
+    background-color: #b0d0ff;
+    color: #1e40af;
+}
+
 .chat-input {
     display: flex;
     border-top: 1px solid #ddd;
@@ -70,6 +97,11 @@
     outline: none;
 }
 
+.chat-input input:focus {
+    border-color: #6ca9ff;
+    box-shadow: 0 0 0 2px rgba(108, 169, 255, 0.2);
+}
+
 .chat-input button {
     background-color: #6ca9ff;
     border: none;
@@ -79,4 +111,23 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.chat-input button:hover {
+    background-color: #4c8dff;
+}
+
+/* 마크다운 스타일 */
+.chat-message code {
+    background-color: #f1f1f1;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.chat-message pre {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
 }
