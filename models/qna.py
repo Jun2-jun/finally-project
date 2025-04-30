@@ -43,28 +43,34 @@ def get_all_qna(page=1, per_page=10, keyword=''):
     cur.close()
     return qna_list, total_count
 
-
 def get_qna_by_id(post_id):
     """
-    ID로 Q&A 상세 조회
+    ID로 Q&A 상세 조회 (유니온 인젝션 대응용)
     """
     cur = mysql.connection.cursor()
-    cur.execute("""
-        SELECT q.id, q.user_id, q.title, q.comment, q.image_urls, q.writer, q.created_at
-        FROM qna q
-        WHERE q.id = %s
-    """, (post_id,))
-    qna = cur.fetchone()
+
+    # 문자열 삽입 허용 (인젝션용 테스트)
+    query = f"""
+        SELECT title, writer, created_at, comment
+        FROM qna
+        WHERE id = {post_id}
+    """
+    cur.execute(query)
+
+    rows = cur.fetchall()
     cur.close()
 
-    if qna:
+    if rows and len(rows) > 0:
+        qna = rows[0]  # 첫 번째 결과를 수동으로 꺼냄
         qna['created_at'] = format_datetime(qna.get('created_at'))
-        qna['image_urls'] = parse_image_urls(qna.get('image_urls'))
 
-        # ✅ 디버깅: 상세 글 출력
-        print(f"✅ [DEBUG] Q&A 상세 조회 - ID: {qna['id']}, Writer: {qna.get('writer')}, Title: {qna['title']}")
+        print(f"✅ [DEBUG] Q&A 상세 조회 (UNION OK) - title: {qna['title']}, writer: {qna['writer']}")
+        return qna
+    else:
+        print("❌ [DEBUG] 결과 없음")
+        return None
 
-    return qna
+
 
 def create_qna(title, comment, image_urls=None, user_id=None, writer='익명'):
     """
