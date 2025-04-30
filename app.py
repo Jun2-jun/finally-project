@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app
+from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app, make_response
 from modules.connection import mysql, init_db
 from routes.auth import auth_bp
 from datetime import datetime
