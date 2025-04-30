@@ -104,7 +104,7 @@ def verify_user(username, password):
 
     except Exception as e:
         print("[FATAL ERROR] verify_user 실패:", str(e))
-        return None, "엿먹어"
+        return None
 
 def delete_user(user_id):
     """
