@@ -47,7 +47,7 @@ def create_notice_api():
             data = request.get_json()
             title = data.get('title')
             comment = data.get('comment')
-            image_urls = []
+            image_urls = data.get('image_urls', [])
         else:
             title = request.form.get('title')
             comment = request.form.get('comment')
