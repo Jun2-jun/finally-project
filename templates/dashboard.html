@@ -8,7 +8,7 @@
     <!-- 🧩 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
   
-    <!-- 🖌️ 내 프로젝트용 CSS -->
+    <!-- 🖌️ dashboard.css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
   
     <!-- 🎞️ Swiper 스타일 -->
@@ -17,148 +17,148 @@
     <!-- 🎞️ Swiper 스크립트 -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </head>
-<body class="bg-white text-gray-800">
-  {% include 'sidebar/sidebar.html' %}
+  <body class="bg-white text-gray-800">
+    {% include 'sidebar/sidebar.html' %}
 
-  <section class="max-w-7xl ml-[400px] px-4 py-10 ">
-    <!-- 헤더 -->
-    <div class="mb-8">
-      <h1 class="text-5xl font-light tracking-wide mb-2">Now</h1>
-      <p class="text-gray-500">건강하고 아름다운 삶의 동행 닥터퓨처와 함께하세요.</p>
-    </div>
+    <section class="max-w-7xl ml-[400px] px-4 py-10 ">
+      <!-- 헤더 -->
+      <div class="mb-8">
+        <h1 class="text-5xl font-light tracking-wide mb-2">Now</h1>
+        <p class="text-gray-500">건강하고 아름다운 삶의 동행 닥터퓨처와 함께하세요.</p>
+      </div>
 
-    <!-- 슬라이드 + 카드 -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- 슬라이드 영역 (좌측) -->
-    <div class="md:col-span-2 bg-gray-100 rounded-lg overflow-hidden shadow">
-      <!-- Swiper 슬라이드 컨테이너 -->
-      <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-          <!-- 슬라이드 1 -->
-          <div class="swiper-slide">
-            <div class="flex flex-col md:flex-row h-full">
-              <img src="{{ url_for('static', filename='img/bear.jpg') }}" class="w-full md:w-1/2 object-cover" alt="로봇수술1">
-              <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
-                <div>
-                  <p class="text-sm text-gray-500 mb-2">최신 로봇 수술 장비 도입</p>
-                  <h2 class="text-2xl font-semibold">정밀하고 안전한 수술</h2>
+      <!-- 슬라이드 + 카드 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 슬라이드 영역 (좌측) -->
+      <div class="md:col-span-2 bg-gray-100 rounded-lg overflow-hidden shadow">
+        <!-- Swiper 슬라이드 컨테이너 -->
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <!-- 슬라이드 1 -->
+            <div class="swiper-slide">
+              <div class="flex flex-col md:flex-row h-full">
+                <img src="{{ url_for('static', filename='img/bear.jpg') }}" class="w-full md:w-1/2 object-cover" alt="로봇수술1">
+                <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
+                  <div>
+                    <p class="text-sm text-gray-500 mb-2">최신 로봇 수술 장비 도입</p>
+                    <h2 class="text-2xl font-semibold">정밀하고 안전한 수술</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 슬라이드 2 -->
+            <div class="swiper-slide">
+              <div class="flex flex-col md:flex-row h-full">
+                <img src="{{ url_for('static', filename='img/bear2.jpg') }}" class="w-full md:w-1/2 object-cover" alt="로봇수술2">
+                <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
+                  <div>
+                    <p class="text-sm text-gray-500 mb-2">환자 맞춤 수술 솔루션 제공</p>
+                    <h2 class="text-2xl font-semibold">개인화된 치료계획</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 슬라이드 3 -->
+            <div class="swiper-slide">
+              <div class="flex flex-col md:flex-row h-full">
+                <img src="{{ url_for('static', filename='img/heart.jpg') }}" class="w-full md:w-1/2 object-cover" alt="로봇수술3">
+                <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
+                  <div>
+                    <p class="text-sm text-gray-500 mb-2">숙련된 전문 의료진</p>
+                    <h2 class="text-2xl font-semibold">믿을 수 있는 시술</h2>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- 슬라이드 2 -->
-          <div class="swiper-slide">
-            <div class="flex flex-col md:flex-row h-full">
-              <img src="{{ url_for('static', filename='img/bear2.jpg') }}" class="w-full md:w-1/2 object-cover" alt="로봇수술2">
-              <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
-                <div>
-                  <p class="text-sm text-gray-500 mb-2">환자 맞춤 수술 솔루션 제공</p>
-                  <h2 class="text-2xl font-semibold">개인화된 치료계획</h2>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- 네비게이션 / 페이지네이션 -->
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-pagination"></div>
+          
+        </div>
+      </div>
 
-          <!-- 슬라이드 3 -->
-          <div class="swiper-slide">
-            <div class="flex flex-col md:flex-row h-full">
-              <img src="{{ url_for('static', filename='img/heart.jpg') }}" class="w-full md:w-1/2 object-cover" alt="로봇수술3">
-              <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
-                <div>
-                  <p class="text-sm text-gray-500 mb-2">숙련된 전문 의료진</p>
-                  <h2 class="text-2xl font-semibold">믿을 수 있는 시술</h2>
-                </div>
-              </div>
-            </div>
+        <!-- 이미지 카드 (우측) -->
+        <div class="bg-gray-100 rounded-lg overflow-hidden shadow">
+          <img src="{{ url_for('static', filename='img/dashboard1.jpg') }}" alt="감상선암" class="w-full object-cover h-[250px]">
+          <div class="p-4">
+            <p class="text-xs text-gray-500">닥터퓨처</p>
+            <h3 class="font-semibold">실시간으로 예약하세요!</h3>
           </div>
         </div>
-
-        <!-- 네비게이션 / 페이지네이션 -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-pagination"></div>
-        
       </div>
-    </div>
 
-      <!-- 이미지 카드 (우측) -->
-      <div class="bg-gray-100 rounded-lg overflow-hidden shadow">
-        <img src="{{ url_for('static', filename='img/dashboard1.jpg') }}" alt="감상선암" class="w-full object-cover h-[250px]">
-        <div class="p-4">
-          <p class="text-xs text-gray-500">닥터퓨처</p>
-          <h3 class="font-semibold">실시간으로 예약하세요!</h3>
+      <!-- 아래 카드 리스트 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
+        <!-- 공지사항 -->
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center mb-4">
+            <span class="text-lg font-semibold mr-2">공지사항</span>
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <ul class="text-sm space-y-1">
+            <li>2019 핑크리본 유방암 건강강좌 - <span class="text-gray-500">2019.10.23</span></li>
+            <li>개인정보 처리방침 변경안내 - <span class="text-gray-500">2019.09.30</span></li>
+            <li>임상시험종사자 연구자교육 - <span class="text-gray-500">2019.09.10</span></li>
+            <li>호스피스 완화의료 교육 - <span class="text-gray-500">2019.09.18</span></li>
+          </ul>
+        </div>
+
+        <!-- 자주묻는질문 -->
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center mb-4">
+            <span class="text-lg font-semibold mr-2">자주묻는질문</span>
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <ul class="text-sm space-y-1">
+            <li>기공식 열려 - <span class="text-gray-500">2020.02.14</span></li>
+            <li>간호사 채용공고 - <span class="text-gray-500">2020.02.11</span></li>
+            <li>감상선암 외과 이태욱 교수 - <span class="text-gray-500">2020.02.05</span></li>
+            <li>차량용 방사선 장비 도입 - <span class="text-gray-500">2020.02.03</span></li>
+          </ul>
+        </div>
+
+        <!-- 건강매거진 -->
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center mb-4">
+            <span class="text-lg font-semibold mr-2">건강매거진</span>
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <ul class="text-sm space-y-1">
+            <li>간호사 채용공고 - <span class="text-gray-500">2020.02.17</span></li>
+            <li>간호사 시험공고 - <span class="text-gray-500">2020.02.18</span></li>
+            <li>연구코디네이터 채용 - <span class="text-gray-500">2020.02.12</span></li>
+            <li>데이터 분석 지원 - <span class="text-gray-500">2020.02.14</span></li>
+          </ul>
         </div>
       </div>
-    </div>
+    </section>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        cssMode: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        mousewheel: true,
+        keyboard: true,
+      });
+    </script>
 
-    <!-- 아래 카드 리스트 -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-      <!-- 공지사항 -->
-      <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex items-center mb-4">
-          <span class="text-lg font-semibold mr-2">공지사항</span>
-          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-        </div>
-        <ul class="text-sm space-y-1">
-          <li>2019 핑크리본 유방암 건강강좌 - <span class="text-gray-500">2019.10.23</span></li>
-          <li>개인정보 처리방침 변경안내 - <span class="text-gray-500">2019.09.30</span></li>
-          <li>임상시험종사자 연구자교육 - <span class="text-gray-500">2019.09.10</span></li>
-          <li>호스피스 완화의료 교육 - <span class="text-gray-500">2019.09.18</span></li>
-        </ul>
-      </div>
-
-      <!-- 자주묻는질문 -->
-      <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex items-center mb-4">
-          <span class="text-lg font-semibold mr-2">자주묻는질문</span>
-          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-        </div>
-        <ul class="text-sm space-y-1">
-          <li>기공식 열려 - <span class="text-gray-500">2020.02.14</span></li>
-          <li>간호사 채용공고 - <span class="text-gray-500">2020.02.11</span></li>
-          <li>감상선암 외과 이태욱 교수 - <span class="text-gray-500">2020.02.05</span></li>
-          <li>차량용 방사선 장비 도입 - <span class="text-gray-500">2020.02.03</span></li>
-        </ul>
-      </div>
-
-      <!-- 건강매거진 -->
-      <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex items-center mb-4">
-          <span class="text-lg font-semibold mr-2">건강매거진</span>
-          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-          </svg>
-        </div>
-        <ul class="text-sm space-y-1">
-          <li>간호사 채용공고 - <span class="text-gray-500">2020.02.17</span></li>
-          <li>간호사 시험공고 - <span class="text-gray-500">2020.02.18</span></li>
-          <li>연구코디네이터 채용 - <span class="text-gray-500">2020.02.12</span></li>
-          <li>데이터 분석 지원 - <span class="text-gray-500">2020.02.14</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-  <script>
-    var swiper = new Swiper(".mySwiper", {
-      cssMode: true,
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      mousewheel: true,
-      keyboard: true,
-    });
-  </script>
-
-</body>
+  </body>
 </html>

@@ -1,90 +1,133 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>닥터퓨처 - 마이페이지</title>
-    <link rel="icon" href="{{ url_for('static', filename='img/logo4.png') }}" type="image/png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/mypage.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <meta charset="UTF-8" />
+  <title>댓글 단 글</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <div class="container">
-        <h2>마이페이지</h2>
-        <form method="POST" action="/mypage" id="mypage-form">
-            <div class="form-group">
-                <i class="fas fa-user form-icon"></i>
-                <input type="text" class="form-control" name="userid" value="{{ user.userid }}" readonly>
-            </div>
+<body class="bg-gray-100 py-10 px-4">
+    {% include 'sidebar/sidebar.html' %}
+  <h2 class="text-2xl font-bold mb-8 text-gray-800 text-center">마이페이지</h2>
 
-            <div class="form-group">
-                <i class="fas fa-envelope form-icon"></i>
-                <input type="email" class="form-control editable" name="email" value="{{ user.email }}" readonly>
-            </div>
-
-            <div class="form-group">
-                <label class="mb-1">생년월일:</label>
-                <input type="date" class="form-control editable" name="birthdate" value="{{ user.birthdate }}" readonly>
-            </div>
-
-            <div class="form-group">
-                <i class="fas fa-phone form-icon"></i>
-                <input type="text" class="form-control editable" name="phone" value="{{ user.phone }}" readonly>
-            </div>
-
-            <div class="form-group">
-                <i class="fas fa-map-marker-alt form-icon"></i>
-                <input type="text" class="form-control editable" name="address" value="{{ user.address }}" readonly>
-                <button type="button" class="search-button"><i class="fas fa-search"></i></button>
-            </div>
-
-            <div class="form-group">
-                <input type="text" class="form-control editable" name="detail_address" value="{{ user.detail_address }}" readonly>
-            </div>
-
-            <div class="btn-wrap">
-                <a href="/change_password" class="btn btn-submit">비밀번호 변경</a>
-                <button type="button" class="btn btn-submit" id="edit-btn">수정하기</button>
-            </div>
-
-            <div class="mt-3">
-                <a href="/" class="btn btn-submit w-100">
-                    <i class="fas fa-home me-2"></i> 홈 화면으로 돌아가기
-                </a>
-            </div>
-
-            <div class="text-center mt-2">
-                <span class="withdraw-link" onclick="openModal()">탈퇴하기</span>
-            </div>
-
-            <div id="withdrawModal" class="modal-overlay">
-                <div class="modal-content text-center">
-                  <button class="modal-close-btn" onclick="closeModal()">x</button>
-                  <p class="mb-3 fw-bold" style="font-size: 22px;">정말 탈퇴하시겠습니까?</p>
-                  <div class="password-input-wrapper mb-2">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="withdrawPassword" placeholder="비밀번호 확인">
-                  </div>
-                  <p id="withdrawError" class="text-start" style="display: none; font-size: 14px; margin-bottom: 10px; color: #999;">비밀번호가 일치하지 않습니다.</p>
-                  <a href="#" class="withdraw-link text-danger" onclick="submitWithdraw()" style="margin-top: 30px;">탈퇴하기</a>
-                </div>
-              </div>
+  <div class="space-y-6 max-w-4xl mx-auto">
+    <!-- 카드 반복 시작 -->
+     
+    <!-- 내정보 테이블 -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+        <div class="flex justify-between items-center mb-6">
+        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">내정보</div>
+        <a href="/mypage/edit" class="text-sm text-green-500 hover:text-green-600 hover:underline">회원정보수정</a>
+        
+        </div>
+    
+        <form method="POST" action="/mypage" id="mypage-form" class="space-y-4">
+        <!-- ID -->
+        <div class="relative">
+            <i class="fas fa-user absolute left-3 top-2.5 text-gray-400"></i>
+            <input type="text" name="userid" value="{{ user.userid }}" readonly
+                   class="w-full pl-10 border border-gray-300 rounded-lg py-2 pr-4 bg-gray-50 text-gray-700 focus:outline-none">
+          </div>
+    
+        <!-- Email -->
+        <div class="relative">
+            <input type="email" name="email" value="{{ user.email }}" readonly
+                class="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-4 focus:outline-none bg-gray-50">
+            <i class="fas fa-envelope absolute left-3 top-2.5 text-gray-400"></i>
+        </div>
+    
+        <!-- 생년월일 -->
+        <div>
+            <label class="block text-sm mb-1 text-gray-600">생년월일</label>
+            <input type="date" name="birthdate" value="{{ user.birthdate }}" readonly
+                class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none">
+        </div>
+    
+        <!-- 전화번호 -->
+        <div class="relative">
+            <input type="text" name="phone" value="{{ user.phone }}" readonly
+                class="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-4 bg-gray-50 focus:outline-none">
+            <i class="fas fa-phone absolute left-3 top-2.5 text-gray-400"></i>
+        </div>
+    
+        <!-- 주소 -->
+        <div class="relative">
+            <input type="text" name="address" value="{{ user.address }}" readonly
+                class="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-12 bg-gray-50 focus:outline-none">
+            <i class="fas fa-map-marker-alt absolute left-3 top-2.5 text-gray-400"></i>
+            <button type="button" class="absolute right-2 top-1.5 bg-blue-500 text-white rounded px-2 py-1 text-sm hover:bg-blue-600">
+            <i class="fas fa-search"></i>
+            </button>
+        </div>
+    
+        <!-- 상세 주소 -->
+        <div>
+            <input type="text" name="detail_address" value="{{ user.detail_address }}" readonly
+                class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none">
+        </div>
         </form>
     </div>
-    <!-- 다이얼로그 띄우기 및 사라지기 -->
-    <script>
-        function openModal() {
-          document.getElementById("withdrawModal").style.display = "flex";
-        }
-        function closeModal() {
-          document.getElementById("withdrawModal").style.display = "none";
-        }
-      </script>
-      
-    <!-- 분리된 JS 파일 로드 -->
-    <script src="{{ url_for('static', filename='js/mypage.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/user_delete.js') }}"></script>
+
+
+    <!-- 예약목록 테이블 -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+      <div class="flex justify-between text-sm text-gray-500 mb-2">
+        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md mb-2">예약확인</div>
+        <span class="text-green-500 font-medium">예약취소</span>
+      </div>
+      <div class="text-lg font-semibold text-gray-800 mb-1">Duis aute irure</div>
+      <p class="text-gray-700 text-sm">테스트 댓글 내용입니다.</p>
+    </div>
+
+    <!-- 민감정보입력 테이블 -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+        <div class="flex justify-between text-sm text-gray-500 mb-2">
+          <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md mb-2">나의 건강 이력</div>
+          <span class="text-green-500 font-medium">회원정보수정</span>
+        </div>
+        <div class="text-lg font-semibold text-gray-800 mb-1">Duis aute irure</div>
+        <p class="text-gray-700 text-sm">테스트 댓글 내용입니다.</p>
+      </div>
+
+    <!-- 내 문의내역 테이블 -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+        <div class="flex justify-between text-sm text-gray-500 mb-2">
+          <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md mb-2">1:1문의사항</div>
+          <span class="text-green-500 font-medium">문의하기</span>
+        </div>
+        <div class="text-lg font-semibold text-gray-800 mb-1">Duis aute irure</div>
+        <p class="text-gray-700 text-sm">테스트 댓글 내용입니다.</p>
+      </div>
+  </div>
 </body>
+<script>
+    function toggleCard(headerEl, section) {
+      const allPanels = document.querySelectorAll('.accordion-panel');
+      const allIcons = document.querySelectorAll('[data-icon]');
+  
+      allPanels.forEach(panel => {
+        if (panel.dataset.section !== section) {
+          panel.style.maxHeight = null;
+        }
+      });
+  
+      allIcons.forEach(icon => {
+        if (icon.dataset.icon !== section) {
+          icon.classList.remove('rotate-180');
+        }
+      });
+  
+      const panel = document.querySelector(`[data-section="${section}"]`);
+      const icon = document.querySelector(`[data-icon="${section}"]`);
+  
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+        icon.classList.remove('rotate-180');
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+        icon.classList.add('rotate-180');
+      }
+    }
+  </script>
 </html>
