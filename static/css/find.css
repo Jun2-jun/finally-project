@@ -1,0 +1,54 @@
+.map-container {
+    display: flex;
+    gap: 16px;
+    height: 600px;
+  }
+  
+  #map {
+    flex: 2;
+    min-width: 400px;
+    height: 100%;
+    border-radius: 12px;
+  }
+  
+  #menu_wrap {
+    flex: 1;
+    overflow-y: auto;
+    height: 100%;
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  #placesList li {
+    list-style: none;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .reserve-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 13px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .reserve-btn:hover {
+    background-color: #45a049;
+  }
+  
+  #pagination a {
+    margin-right: 5px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  #pagination a.on {
+    font-weight: bold;
+    color: #007bff;
+  }

@@ -6,6 +6,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 py-10 px-4">
     {% include 'sidebar/sidebar.html' %}
@@ -15,7 +20,7 @@
     <!-- 카드 반복 시작 -->
      
     <!-- 내정보 테이블 -->
-    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+    <div id ="my-info" class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
         <div class="flex justify-between items-center mb-6">
         <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">내정보</div>
         <a href="/mypage/edit" class="text-sm text-green-500 hover:text-green-600 hover:underline">회원정보수정</a>
@@ -70,35 +75,141 @@
     </div>
 
 
-    <!-- 예약목록 테이블 -->
-    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
-      <div class="flex justify-between text-sm text-gray-500 mb-2">
-        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md mb-2">예약확인</div>
-        <span class="text-green-500 font-medium">예약취소</span>
-      </div>
-      <div class="text-lg font-semibold text-gray-800 mb-1">Duis aute irure</div>
-      <p class="text-gray-700 text-sm">테스트 댓글 내용입니다.</p>
+    <!-- 예약목록 카드 + 테이블 통합 -->
+    <div id="reservation-check" class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+        <!-- 카드 상단 -->
+        <div class="flex justify-between text-sm text-gray-500 mb-2">
+        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">예약확인</div>
+        <span class="text-green-500 font-medium hover:underline cursor-pointer">예약취소</span>
+        </div>
+
+        <!-- 예약 목록 테이블 -->
+        <div class="overflow-x-auto rounded-md border border-gray-200">
+        <table class="min-w-full text-sm text-left text-gray-700">
+            <thead class="bg-gray-50">
+            <tr>
+                <th class="px-4 py-2 border-b">번호</th>
+                <th class="px-4 py-2 border-b">병원이름</th>
+                <th class="px-4 py-2 border-b">날짜 & 시간</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white">
+            {% if reservations %}
+                {% for r in reservations %}
+                <tr class="border-t">
+                    <td class="px-4 py-2">{{ loop.index }}</td>
+                    <td class="px-4 py-2">{{ r.hospital }}</td>
+                    <td class="px-4 py-2">{{ r.date }} {{ r.time }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                <td colspan="3" class="text-center px-4 py-4 text-gray-500">불러오는 중...</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+        </div>
     </div>
 
     <!-- 민감정보입력 테이블 -->
-    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
-        <div class="flex justify-between text-sm text-gray-500 mb-2">
-          <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md mb-2">나의 건강 이력</div>
-          <span class="text-green-500 font-medium">회원정보수정</span>
+    <div id="health-history" class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+        <div class="flex justify-between text-sm text-gray-500 mb-4">
+        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">나의 건강 이력</div>
+        <button type="submit" class="text-green-500 font-medium hover:text-green-600 hover:underline">저장</button>
         </div>
-        <div class="text-lg font-semibold text-gray-800 mb-1">Duis aute irure</div>
-        <p class="text-gray-700 text-sm">테스트 댓글 내용입니다.</p>
-      </div>
+    
+        <form method="POST" action="/health-info" class="space-y-4">
+        <!-- 혈액형 -->
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">혈액형</label>
+            <div class="flex flex-wrap gap-4">
+            <label><input type="radio" name="blood_type" value="A"> A형</label>
+            <label><input type="radio" name="blood_type" value="B"> B형</label>
+            <label><input type="radio" name="blood_type" value="AB"> AB형</label>
+            <label><input type="radio" name="blood_type" value="O"> O형</label>
+            <label><input type="radio" name="blood_type" value="unknown"> 모름</label>
+            </div>
+        </div>
+    
+        <!-- 키 & 몸무게 -->
+        <div class="flex gap-4">
+            <div class="flex-1">
+            <label class="block text-sm text-gray-600 mb-1">키 (cm)</label>
+            <input type="number" name="height" class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none">
+            </div>
+            <div class="flex-1">
+            <label class="block text-sm text-gray-600 mb-1">몸무게 (kg)</label>
+            <input type="number" name="weight" class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none">
+            </div>
+        </div>
+    
+        <!-- 알레르기 정보 -->
+        <div>
+            <label class="block text-sm text-gray-600 mb-1">알레르기 정보</label>
+            <input type="text" name="allergy" placeholder="예: 땅콩, 계란 등" class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none">
+        </div>
+    
+        <!-- 기존 질병 이력 -->
+        <div>
+            <label class="block text-sm text-gray-600 mb-1">기존 질병 이력</label>
+            <textarea name="past_diseases" rows="2" class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none"></textarea>
+        </div>
+    
+        <!-- 만성질환 정보 -->
+        <div>
+            <label class="block text-sm text-gray-600 mb-1">만성질환 정보</label>
+            <textarea name="chronic_diseases" rows="2" class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none"></textarea>
+        </div>
+    
+        <!-- 복용 중인 약물 -->
+        <div>
+            <label class="block text-sm text-gray-600 mb-1">복용 중인 약물</label>
+            <input type="text" name="medications" class="w-full border border-gray-300 rounded-lg py-2 px-4 bg-gray-50 focus:outline-none">
+        </div>
+    
+        <!-- 흡연 여부 -->
+        <div>
+            <label class="block text-sm text-gray-600 mb-2">흡연 여부</label>
+            <div class="flex gap-4">
+            <label><input type="radio" name="smoking" value="none"> 비흡연자</label>
+            <label><input type="radio" name="smoking" value="current"> 현재 흡연 중</label>
+            <label><input type="radio" name="smoking" value="past"> 과거 흡연자</label>
+            </div>
+        </div>
+        </form>
+    </div>
 
     <!-- 내 문의내역 테이블 -->
-    <div class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
-        <div class="flex justify-between text-sm text-gray-500 mb-2">
-          <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md mb-2">1:1문의사항</div>
-          <span class="text-green-500 font-medium">문의하기</span>
+    <div id="inquiry" class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+        <div class="flex justify-between text-sm text-gray-500 mb-4">
+        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">1:1문의사항</div>
+        <a href="/inquiry/write" class="text-green-500 font-medium hover:text-green-600 hover:underline">문의하기</a>
         </div>
-        <div class="text-lg font-semibold text-gray-800 mb-1">Duis aute irure</div>
-        <p class="text-gray-700 text-sm">테스트 댓글 내용입니다.</p>
-      </div>
+  
+                <!-- 문의 목록 테이블 -->
+        <div class="overflow-x-auto rounded-md border border-gray-200">
+            <table class="min-w-full text-sm text-left text-gray-700">
+            <thead class="bg-gray-50">
+                <tr>
+                <th class="px-4 py-2 border-b">번호</th>
+                <th class="px-4 py-2 border-b">문의내용</th>
+                <th class="px-4 py-2 border-b">문의날짜</th>
+                <th class="px-4 py-2 border-b">답변상태</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                <tr class="border-t">
+                <td class="px-4 py-2 border-b">1</td>
+                <td class="px-4 py-2 border-b">회원가입 오류 문의</td>
+                <td class="px-4 py-2 border-b">2025-05-03</td>
+                <td class="px-4 py-2 border-b text-green-500">답변 완료</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
+  
   </div>
 </body>
 <script>

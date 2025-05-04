@@ -19,23 +19,6 @@
       <div class="col-md-10 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h4>예약하기</h4>
-          <div class="d-flex align-items-center gap-2">
-            <div class="text-end">
-              <p class="mb-0 small">Today's Date</p>
-              <strong>{{ now.strftime('%Y-%m-%d') if now else 'YYYY-MM-DD' }}</strong>
-            </div>
-            <img src="{{ url_for('static', filename='img/icons/cc.svg') }}" alt="calendar" width="40" height="40" class="calendar-icon">
-          </div>
-        </div>
-
-        <div class="banner-wrapper p-4 mb-4" style="background: url('/static/img/b8.jpg') left center / cover no-repeat; border-radius: 12px;">
-          <h5 class="fw-bold">안녕하세요</h5>
-          <h3 class="fw-bold" id="welcome-name">Test Name님!</h3>
-          <p>병원 예약페이지 입니다. 병원을 검색해주세요!</p>
-          <form class="input-group mb-3" onsubmit="searchPlaces(); return false;">
-            <input type="text" id="keyword" value="내과" class="form-control" placeholder="동네 및 병원을 입력하세요">
-            <button class="btn btn-primary" type="submit">검색</button>
-          </form>
         </div>
 
         <!-- 지도, 목록 -->
@@ -51,8 +34,18 @@
   </div>
 
   <!-- 외부 JS 연결 -->
-  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6be88c9794d7e1f9095b709637776b77&libraries=services"></script>
-  <script src="{{ url_for('static', filename='js/find.js') }}"></script>
+<!-- 1. 카카오맵 SDK 먼저 로드 -->
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=458c132615a80a795a0bdd31d60ce7c9&libraries=services"
+        onload="loadFindJS()"></script>
+
+<!-- 2. find.js는 kakao가 로드된 뒤에 실행 -->
+<script>
+  function loadFindJS() {
+    const script = document.createElement('script');
+    script.src = "{{ url_for('static', filename='js/find.js') }}";
+    document.body.appendChild(script);
+  }
+</script>
   <script src="{{ url_for('static', filename='js/userInfo.js') }}" defer></script>
 </body>
 </html>
