@@ -23,6 +23,7 @@ def get_current_user():
     return jsonify({
         'status': 'success',
         'user': {
+            'id':user_id,
             'username': user['username'],
             'email': user['email'],
             'birthdate': user['birthdate'],
