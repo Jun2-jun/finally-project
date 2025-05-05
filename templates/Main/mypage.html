@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>닥터퓨처 - 마이페이지</title>
+  <title>마이페이지</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -114,12 +114,12 @@
 
     <!-- 민감정보입력 테이블 -->
     <div id="health-history" class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
+        <form id="health-form" method="POST" action="/health-info" class="space-y-4">
         <div class="flex justify-between text-sm text-gray-500 mb-4">
-        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">나의 건강 이력</div>
-        <button type="submit" class="text-green-500 font-medium hover:text-green-600 hover:underline">저장</button>
+            <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">나의 건강 이력</div>
+            <button type="submit" class="text-green-500 font-medium hover:text-green-600 hover:underline">저장</button>
         </div>
     
-        <form method="POST" action="/health-info" class="space-y-4">
         <!-- 혈액형 -->
         <div>
             <label class="block text-sm text-gray-600 mb-2">혈액형</label>
@@ -179,11 +179,12 @@
         </div>
         </form>
     </div>
+    
 
     <!-- 내 문의내역 테이블 -->
     <div id="inquiry" class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
         <div class="flex justify-between text-sm text-gray-500 mb-4">
-        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">내 문의사항</div>
+        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">1:1문의사항</div>
         <a href="/inquiry/write" class="text-green-500 font-medium hover:text-green-600 hover:underline">문의하기</a>
         </div>
   
@@ -212,6 +213,7 @@
   
   </div>
 </body>
+<script src="{{ url_for('static', filename='js/test.js') }}" defer></script>
 <script>
     function toggleCard(headerEl, section) {
       const allPanels = document.querySelectorAll('.accordion-panel');
