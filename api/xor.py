@@ -1,74 +1,78 @@
 from flask import Blueprint, request, jsonify, session
-from utils.auth import login_required  # 기존 데코레이터 import
-from extensions import mysql  # Flask-MySQLdb를 사용한다고 가정
+from utils.auth import login_required
+from extensions import mysql
 from utils.xor import xor_encrypt, xor_decrypt, encode_base64, decode_base64
 
-# Blueprint 생성
 patient_info_bp = Blueprint('patient_info', __name__, url_prefix='/api/patient')
-
-# 암호화 키 (실제 운영시에는 환경변수로 관리해야 함)
 ENCRYPTION_KEY = 'secretkey'
 
+# POST: 민감정보 저장
 @patient_info_bp.route('/info', methods=['POST'])
 @login_required
 def save_patient_info():
     data = request.get_json()
-    
-    # 필수 필드 검사
-    required_fields = ['blood_type', 'height_cm', 'weight_kg', 'allergy_info', 'past_illnesses', 'chronic_diseases']
-    if not all(field in data for field in required_fields):
+
+    # 프론트 필드 → DB 필드 매핑
+    field_map = {
+        'blood_type': 'blood_type',
+        'height_cm': 'height_cm',
+        'weight_kg': 'weight_kg',
+        'allergy_info': 'allergy_info',
+        'past_illnesses': 'past_illnesses',
+        'chronic_diseases': 'chronic_diseases',
+        'medications': 'medications',
+        'smoking': 'smoking_status'
+    }
+
+    # 필수 필드 체크
+    if not all(data.get(field, '').strip() != '' for field in field_map):
         return jsonify({'status': 'fail', 'message': '모든 필드를 입력해야 합니다.'}), 400
 
-    # 🔥 여기 수정!
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({'status': 'fail', 'message': '로그인이 필요합니다.'}), 401
 
-    # XOR 암호화 + Base64 인코딩
+    # 암호화 및 base64 인코딩
     encrypted_data = {
-        field: encode_base64(xor_encrypt(str(data[field]), ENCRYPTION_KEY))
-        for field in required_fields
+        db_field: encode_base64(xor_encrypt(str(data[form_field]), ENCRYPTION_KEY))
+        for form_field, db_field in field_map.items()
     }
 
     cur = mysql.connection.cursor()
-
-    # 기존 데이터 존재 여부 확인
     cur.execute("SELECT user_id FROM PatientSensitiveInfo WHERE user_id = %s", (user_id,))
-    existing = cur.fetchone()
+    exists = cur.fetchone()
 
-    if existing:
-        # update
-        cur.execute("""
-            UPDATE PatientSensitiveInfo 
-            SET blood_type=%s, height_cm=%s, weight_kg=%s, allergy_info=%s, past_illnesses=%s, chronic_diseases=%s
-            WHERE user_id=%s
-        """, (encrypted_data['blood_type'], encrypted_data['height_cm'], encrypted_data['weight_kg'],
-              encrypted_data['allergy_info'], encrypted_data['past_illnesses'], encrypted_data['chronic_diseases'], user_id))
+    if exists:
+        update_fields = ', '.join([f"{field}=%s" for field in encrypted_data])
+        cur.execute(
+            f"UPDATE PatientSensitiveInfo SET {update_fields} WHERE user_id = %s",
+            list(encrypted_data.values()) + [user_id]
+        )
     else:
-        # insert
-        cur.execute("""
-            INSERT INTO PatientSensitiveInfo (user_id, blood_type, height_cm, weight_kg, allergy_info, past_illnesses, chronic_diseases)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (user_id, encrypted_data['blood_type'], encrypted_data['height_cm'], encrypted_data['weight_kg'],
-              encrypted_data['allergy_info'], encrypted_data['past_illnesses'], encrypted_data['chronic_diseases']))
-    
+        fields = ', '.join(encrypted_data.keys())
+        placeholders = ', '.join(['%s'] * len(encrypted_data))
+        cur.execute(
+            f"INSERT INTO PatientSensitiveInfo (user_id, {fields}) VALUES (%s, {placeholders})",
+            [user_id] + list(encrypted_data.values())
+        )
+
     mysql.connection.commit()
     cur.close()
 
-    return jsonify({'status': 'success', 'message': '환자 정보가 저장되었습니다.'}), 201
+    return jsonify({'status': 'success', 'message': '건강 정보가 저장되었습니다.'}), 201
 
-# 2. GET: 환자 민감정보 복호화 조회
+# GET: 민감정보 복호화 후 조회
 @patient_info_bp.route('/info', methods=['GET'])
 @login_required
 def get_patient_info():
-    # 🔥 세션에서 user_id 꺼내기
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({'status': 'fail', 'message': '로그인이 필요합니다.'}), 401
 
     cur = mysql.connection.cursor()
     cur.execute("""
-        SELECT blood_type, height_cm, weight_kg, allergy_info, past_illnesses, chronic_diseases
+        SELECT blood_type, height_cm, weight_kg, allergy_info,
+               past_illnesses, chronic_diseases, medications, smoking_status
         FROM PatientSensitiveInfo
         WHERE user_id = %s
     """, (user_id,))
@@ -78,12 +82,18 @@ def get_patient_info():
     if not row:
         return jsonify({'status': 'fail', 'message': '환자 정보를 찾을 수 없습니다.'}), 404
 
-    columns = ['blood_type', 'height_cm', 'weight_kg', 'allergy_info', 'past_illnesses', 'chronic_diseases']
-
-    decrypted_data = {
-        column: xor_decrypt(decode_base64(row[column]), ENCRYPTION_KEY)
-        for column in columns
-    }
-
+    try:
+        decrypted_data = {
+            'blood_type': xor_decrypt(decode_base64(row['blood_type']), ENCRYPTION_KEY) if row['blood_type'] else '',
+            'height_cm': xor_decrypt(decode_base64(row['height_cm']), ENCRYPTION_KEY) if row['height_cm'] else '',
+            'weight_kg': xor_decrypt(decode_base64(row['weight_kg']), ENCRYPTION_KEY) if row['weight_kg'] else '',
+            'allergy_info': xor_decrypt(decode_base64(row['allergy_info']), ENCRYPTION_KEY) if row['allergy_info'] else '',
+            'past_illnesses': xor_decrypt(decode_base64(row['past_illnesses']), ENCRYPTION_KEY) if row['past_illnesses'] else '',
+            'chronic_diseases': xor_decrypt(decode_base64(row['chronic_diseases']), ENCRYPTION_KEY) if row['chronic_diseases'] else '',
+            'medications': xor_decrypt(decode_base64(row['medications']), ENCRYPTION_KEY) if row['medications'] else '',
+            'smoking': xor_decrypt(decode_base64(row['smoking_status']), ENCRYPTION_KEY) if row['smoking_status'] else ''
+        }
+    except Exception as e:
+        return jsonify({'status': 'fail', 'message': f'복호화 실패: {str(e)}'}), 500
 
     return jsonify({'status': 'success', 'data': decrypted_data}), 200
