@@ -43,10 +43,10 @@ def home():
     print(request.cookies)
     if 'user_id' in session:
         current_app.logger.info("로그인된 사용자입니다. /api/dashboard로 이동합니다.")
-        return redirect('/dashboard')
+        return redirect('Main/dashboard')
     else:
         current_app.logger.info("로그인되지 않은 사용자입니다. index.html 렌더링.")
-        return render_template("index.html")
+        return render_template("Main/index.html")
 
 @app.route('/login')
 def login():
@@ -58,11 +58,11 @@ def register():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template("dashboard.html", now=datetime.now())
+    return render_template("Main/dashboard.html", now=datetime.now())
 
 @app.route('/find')
 def find():
-    return render_template("find.html", now=datetime.now())
+    return render_template("find/find.html", now=datetime.now())
 
 @app.route('/admin')
 def admin():
@@ -193,7 +193,7 @@ def mypage():
         session['phone'] = request.form.get('phone')
         session['address'] = request.form.get('address')
         session['detail_address'] = request.form.get('detail_address')
-        return redirect(url_for('mypage'))
+        return redirect(url_for('Main/mypage'))
 
     # 기본값 설정 + 날짜 형식 처리
     birthdate = session.get('birthdate', '2000-01-01')
@@ -214,7 +214,7 @@ def mypage():
         'detail_address': session.get('detail_address', '101동 1001호')
     }
 
-    return render_template("mypage.html", user=user_data, now=datetime.now())
+    return render_template("Main/mypage.html", user=user_data, now=datetime.now())
 
 
 # 챗봇 메시지 처리 엔드포인트
@@ -237,7 +237,99 @@ def chat():
 
     return jsonify({"reply": bot_reply})
 
-
+@app.route("/ent")
+def ent_page():
+    hospitals = [
+        {
+            'name': '센트럴이비인후과',
+            'status': '진료중',
+            'detail': '서울 중구',
+            'distance': 200,
+            'address': '서울 중구 퇴계로 10',
+            'rating': 4.5,
+            'review_count': 20,
+            'category': '이비인후과',
+            'image': None,
+        },
+        {
+            'name': '서울코이비인후과',
+            'status': '진료중',
+            'detail': '서울 강남구',
+            'distance': 150,
+            'address': '서울 강남구 논현로 123',
+            'rating': 4.8,
+            'review_count': 15,
+            'category': '이비인후과',
+            'image': None,
+        },
+        {
+            'name': '미소이비인후과',
+            'status': '진료중',
+            'detail': '서울 마포구',
+            'distance': 320,
+            'address': '서울 마포구 월드컵로 20',
+            'rating': 4.7,
+            'review_count': 30,
+            'category': '이비인후과',
+            'image': None,
+        },
+        {
+            'name': '참이비인후과',
+            'status': '진료중',
+            'detail': '서울 종로구',
+            'distance': 410,
+            'address': '서울 종로구 율곡로 55',
+            'rating': 4.2,
+            'review_count': 12,
+            'category': '이비인후과',
+            'image': None,
+        },
+        {
+            'name': '더웰이비인후과',
+            'status': '진료중',
+            'detail': '서울 송파구',
+            'distance': 500,
+            'address': '서울 송파구 송이로 88',
+            'rating': 4.9,
+            'review_count': 40,
+            'category': '이비인후과',
+            'image': None,
+        },
+        {
+            'name': '하늘이비인후과',
+            'status': '진료중',
+            'detail': '서울 영등포구',
+            'distance': 270,
+            'address': '서울 영등포구 선유로 30',
+            'rating': 4.3,
+            'review_count': 18,
+            'category': '이비인후과',
+            'image': None,
+        },
+        {
+            'name': '연세이비인후과',
+            'status': '진료중',
+            'detail': '서울 서초구',
+            'distance': 350,
+            'address': '서울 서초구 강남대로 240',
+            'rating': 4.6,
+            'review_count': 25,
+            'category': '이비인후과',
+            'image': None,
+        },
+        {
+            'name': '제일이비인후과',
+            'status': '진료중',
+            'detail': '서울 구로구',
+            'distance': 610,
+            'address': '서울 구로구 디지털로 300',
+            'rating': 4.4,
+            'review_count': 10,
+            'category': '이비인후과',
+            'image': None,
+        },
+    ]
+    return render_template("find/ent.html", hospitals=hospitals)
 
 
 if __name__ == '__main__':

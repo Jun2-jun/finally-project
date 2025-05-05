@@ -34,18 +34,8 @@
   </div>
 
   <!-- 외부 JS 연결 -->
-<!-- 1. 카카오맵 SDK 먼저 로드 -->
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=458c132615a80a795a0bdd31d60ce7c9&libraries=services"
-        onload="loadFindJS()"></script>
-
-<!-- 2. find.js는 kakao가 로드된 뒤에 실행 -->
-<script>
-  function loadFindJS() {
-    const script = document.createElement('script');
-    script.src = "{{ url_for('static', filename='js/find.js') }}";
-    document.body.appendChild(script);
-  }
-</script>
+  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=458c132615a80a795a0bdd31d60ce7c9&libraries=services"></script>
+  <script src="{{ url_for('static', filename='js/find.js') }}"></script>
   <script src="{{ url_for('static', filename='js/userInfo.js') }}" defer></script>
 </body>
 </html>
