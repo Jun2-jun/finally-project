@@ -27,7 +27,13 @@ def create_app(config_name='default'):
 
     current_ip = get_local_ip()  # ✅ 현재 IP 가져오기
 
-    CORS(app)
+    CORS(app,
+          supports_credentials=True,
+          resources={r"/api/*": {"origins": [
+              "http://localhost:5000",
+              "http://127.0.0.1:5000",
+              "http://192.168.219.131:5000"  # ✅ 내 현재 IP 자동 추가
+          ]}})
 
     mysql.init_app(app)
     mail.init_app(app)
