@@ -72,10 +72,6 @@ def admin():
 def chage_password():
     return render_template("change_password.html", now=datetime.now())
 
-#@app.route('/notice')
-#def notice():
-#    return render_template("notice.html", now=datetime.now())
-
 @app.route('/ai')
 def ai_chatbot():
     return render_template('AI/chatbot.html', now=datetime.now())  # 챗봇 HTML 템플릿
@@ -98,7 +94,22 @@ def doctor():
 
 @app.route('/notice/')
 def notice():
-    return render_template("notice/notice.html", now=datetime.now())
+    try:
+        # 실제 API 서버 주소로 변경: 포트번호 주의!
+        api_url = 'http://localhost:5002/api/notices?page=1&per_page=100'
+        res = requests.get(api_url)
+        result = res.json()
+
+        if result['status'] == 'success':
+            notices = result['data']['items']
+        else:
+            notices = []
+
+    except Exception as e:
+        print("API 호출 실패:", e)
+        notices = []
+
+    return render_template("notice/notice.html", now=datetime.now(), notices=notices)
     
 @app.route('/notice/post/<int:post_id>')
 def notice_detail(post_id):
