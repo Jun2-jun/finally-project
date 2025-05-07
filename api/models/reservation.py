@@ -129,3 +129,27 @@ def get_user_reservations(user_id):
         res['reservation_time'] = format_datetime(res.get('reservation_time'))
     
     return reservations
+
+def delete_reservation_by_id(reservation_id):
+    try:
+        cur = mysql.connection.cursor()
+        # 예약이 존재하는지 확인
+        cur.execute("SELECT id FROM reservations WHERE id = %s", (reservation_id,))
+        reservation = cur.fetchone()
+
+        if reservation:
+            # 예약 삭제
+            cur.execute("DELETE FROM reservations WHERE id = %s", (reservation_id,))
+            mysql.connection.commit()
+            cur.close()
+            print(f"예약 삭제 성공: ID={reservation_id}", flush=True)
+            return True
+        else:
+            cur.close()
+            print(f"예약 삭제 실패: 예약을 찾을 수 없습니다. ID={reservation_id}", flush=True)
+            return False
+    except Exception as e:
+        print(f"예약 삭제 중 오류: {str(e)}", flush=True)
+        import traceback
+        traceback.print_exc()  # 상세 에러 로그 출력
+        return False
