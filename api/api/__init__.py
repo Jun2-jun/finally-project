@@ -14,7 +14,7 @@ from .xor import patient_info_bp  # ✅ 추가
 def register_blueprints(app):
     # 기능별 Blueprint 등록
     app.register_blueprint(users_bp)            # /api/users
-    app.register_blueprint(mypage_bp)           # /mypage
+    app.register_blueprint(mypage_bp, url_prefix='/api/mypage')    # /mypage
     app.register_blueprint(reservations_bp)     # /api/reservations
     app.register_blueprint(dashboard_bp)        # /api/dashboard
     app.register_blueprint(qna_bp)              # /api/qna
