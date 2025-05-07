@@ -79,36 +79,39 @@
     <div id="reservation-check" class="bg-white rounded-2xl shadow-lg p-6 transition hover:shadow-xl">
         <!-- 카드 상단 -->
         <div class="flex justify-between text-sm text-gray-500 mb-2">
-        <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">예약확인</div>
-        <span class="text-green-500 font-medium hover:underline cursor-pointer">예약취소</span>
+            <div class="inline-block bg-gray-100 text-sm text-gray-600 px-3 py-1 rounded-md">예약확인</div>
         </div>
 
         <!-- 예약 목록 테이블 -->
         <div class="overflow-x-auto rounded-md border border-gray-200">
-        <table class="min-w-full text-sm text-left text-gray-700">
-            <thead class="bg-gray-50">
-            <tr>
-                <th class="px-4 py-2 border-b">번호</th>
-                <th class="px-4 py-2 border-b">병원이름</th>
-                <th class="px-4 py-2 border-b">날짜 & 시간</th>
-            </tr>
-            </thead>
-            <tbody class="bg-white">
-            {% if reservations %}
-                {% for r in reservations %}
-                <tr class="border-t">
-                    <td class="px-4 py-2">{{ loop.index }}</td>
-                    <td class="px-4 py-2">{{ r.hospital }}</td>
-                    <td class="px-4 py-2">{{ r.date }} {{ r.time }}</td>
-                </tr>
-                {% endfor %}
-            {% else %}
-                <tr>
-                <td colspan="3" class="text-center px-4 py-4 text-gray-500">불러오는 중...</td>
-                </tr>
-            {% endif %}
-            </tbody>
-        </table>
+            <table class="min-w-full text-sm text-left text-gray-700">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-2 border-b">번호</th>
+                        <th class="px-4 py-2 border-b">병원이름</th>
+                        <th class="px-4 py-2 border-b">날짜 & 시간</th>
+                        <th class="px-4 py-2 border-b">예약 취소</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    {% if reservations %}
+                        {% for r in reservations %}
+                        <tr class="border-t" data-id="{{ r.id }}">
+                            <td class="px-4 py-2">{{ loop.index }}</td>
+                            <td class="px-4 py-2">{{ r.hospital }}</td>
+                            <td class="px-4 py-2">{{ r.date }} {{ r.time }}</td>
+                            <td class="px-4 py-2">
+                                <button type="button" class="cancel-btn text-red-500 hover:text-red-700 text-xl">❌</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center px-4 py-4 text-gray-500">예약 정보가 없습니다.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
 
