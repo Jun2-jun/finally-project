@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let postAuthor = null;
 
   // 1. 로그인 사용자 정보 확인
-  fetch('http://192.168.219.126:5002/api/current-user', {
+  fetch('http://192.168.219.200:5002/api/current-user', {
     method: 'GET',
     credentials: 'include'
   })
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
   // 2. 게시글 상세 정보 가져오기
-  fetch(`http://192.168.219.126:5002/api/qna/${postId}`, {
+  fetch(`http://192.168.219.200:5002/api/qna/${postId}`, {
     method: 'GET',
     credentials: 'include'
   })

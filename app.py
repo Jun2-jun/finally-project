@@ -31,7 +31,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허
 # 세션 Redis 설정 추가
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
-app.config['SESSION_COOKIE_DOMAIN'] = '192.168.219.126'
+app.config['SESSION_COOKIE_DOMAIN'] = '192.168.219.200'
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # 또는 'None'
 app.config['SESSION_COOKIE_SECURE'] = False    # 로컬이라면 False
 Session(app)  # 세션 객체 초기화
@@ -334,6 +334,10 @@ def ent_page():
 @app.route('/faq')
 def faq_page():
     return render_template('faq.html')
+
+@app.route('/magazine')
+def magazine_page():
+    return render_template('magazine.html')
 
 
 if __name__ == '__main__':

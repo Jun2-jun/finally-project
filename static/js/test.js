@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     reservationTbody.innerHTML = '<tr><td colspan="3" class="text-center">불러오는 중...</td></tr>';
   
     // 1. 현재 사용자 정보 가져오기
-    fetch('http://172.30.1.39:5002/api/current-user', {
+    fetch('http://192.168.219.200:5002/api/current-user', {
       method: 'GET',
       credentials: 'include'
     })
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
   
           // 2. 예약정보 가져오기
-          return fetch(`http://172.30.1.39:5002/api/reservations/user/${userId}`, {
+          return fetch(`http://192.168.219.200:5002/api/reservations/user/${userId}`, {
             method: 'GET',
             credentials: 'include'
           });
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   
     // 3. 민감정보 조회
-    fetch('http://172.30.1.39:5002/api/patient/info', {
+    fetch('http://192.168.219.200:5002/api/patient/info', {
       method: 'GET',
       credentials: 'include'
     })
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log('[payload]', payload);
           
   
-        fetch('http://172.30.1.39:5002/api/patient/info', {
+        fetch('http://192.168.219.200:5002/api/patient/info', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
