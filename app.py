@@ -331,6 +331,10 @@ def ent_page():
     ]
     return render_template("find/ent.html", hospitals=hospitals)
 
+@app.route('/faq')
+def faq_page():
+    return render_template('faq.html')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
