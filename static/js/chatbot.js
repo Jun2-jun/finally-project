@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const suggestionContainer = document.getElementById('chat-suggestions');
   
   // 원래 URL을 다시 사용 (하드코딩)
-  const API_URL = 'http://172.30.1.39:5002/api/ai';
+  const API_URL = 'http://192.168.219.249:5002/api/ai';
   
   // 초기 추천 메시지 설정
   const suggestions = [
