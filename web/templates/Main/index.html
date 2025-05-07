@@ -1,0 +1,86 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>닥터퓨처 - 대한민국 2등 의료 예약시스템</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo4.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+  <style>
+    table { animation: transitionIn-Y-bottom 0.5s; }
+  </style>
+</head>
+<body>
+  <div class="full-height">
+    <center>
+      <table border="0">
+        <tr>
+          <td width="80%">
+            <font class="edoc-logo">닥터퓨쳐</font>
+            <font class="edoc-logo-sub">| Dr.Future: Online Appointment System</font>
+          </td>
+          <td width="10%">
+            <a href="{{ url_for('login') }}" class="non-style-link">
+              <p class="nav-item">로그인</p>
+            </a>
+          </td>
+          <td width="10%">
+            <a href="{{ url_for('register') }}" class="non-style-link">
+              <p class="nav-item" style="padding-right: 10px;">회원가입</p>
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3">
+            <p class="heading-text">불편함과 지연 없이, 간편하게!</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3">
+            <p class="sub-text2">
+              오늘 건강은 어떠신가요? 많이 힘드신가요?<br>
+              걱정 마세요. 닥터퓨쳐에서 병원을 쉽고 빠르게 찾고 원하는 시간에 편하게 예약하세요.<br>
+              지금 바로 무료 진료 예약 서비스를 이용해보세요!
+            </p>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3">
+            <center>
+              <div style="display: flex; justify-content: center; gap: 30px;">
+                <!-- 왼쪽 버튼도도 동일한 클래스와 스타일 -->
+                <button class="login-btn btn-primary btn"
+                        onclick="location.href='#'"
+                        style="padding: 10px 25px;">
+                  앱 다운로드
+                </button>
+              
+                <!-- 기존 오른쪽 버튼 -->
+                <button class="login-btn btn-primary btn"
+                        onclick="redirectToLogin()"
+                        style="padding: 10px 25px;">
+                  웹 예약하기
+                </button>
+              </div>
+            </center>
+          </td>
+        </tr>
+      </table>
+      <p class="sub-text2 footer-hashen">SK Shieldus Rookies</p>
+    </center>
+  </div>
+
+  <script>
+    function redirectToLogin() {
+      alert("로그인이 필요합니다. 로그인 페이지로 이동합니다.");
+      window.location.href = "{{ url_for('login') }}";
+    }
+  </script>
+  
+</body>
+</html>

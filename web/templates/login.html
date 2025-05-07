@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>닥터퓨처 - 로그인</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo4.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="login-form">
+      <h2 class="header-text">
+        <a href="{{ url_for('home') }}" class="home-link">Dr.Future</a>
+      </h2>
+      <p class="sub-text">로그인하고 편리한 서비스를 이용해보세요</p>
+
+      <form id="loginForm">
+        <label for="username" class="form-label">ID:</label>
+        <input type="text" id="username" name="username" placeholder="ID" required>
+
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
+        <button type="submit" class="login-btn">Login</button>
+        <p id="errorMessage" style="color: red; display: none;"></p>
+      </form>
+
+      <p class="register-link sub-text">
+        Don't have an account? <a href="{{ url_for('register') }}" class="hover-link1"> Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>닥터퓨처 - 예약 완료</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo4.png') }}" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/submit_reservation.css') }}">
+  <script src="{{ url_for('static', filename='js/reservation.js') }}"></script>
+  <script>
+    // 페이지 로드 시 API 서버에 예약 정보 전송
+    document.addEventListener('DOMContentLoaded', function() {
+      // 예약 정보 객체 생성
+      const reservationData = {
+        name: "{{ name }}",
+        phone: "{{ phone }}",
+        hospital: "{{ hospital }}",
+        address: "{{ address }}",
+        message: "{{ message }}",
+        email: "{{ email }}",
+        reservation_time: "{{ reservation_time }}"
+      };
+
+      // API 연결 상태 체크
+      testApiConnection()
+        .then(isConnected => {
+          if (!isConnected) {
+            console.warn('API 서버에 연결할 수 없습니다. 로컬 처리만 진행합니다.');
+            return;
+          }
+          
+          // 상태 표시 엘리먼트 생성
+          const statusElement = document.createElement('div');
+          statusElement.id = 'api-status';
+          statusElement.classList.add('api-status');
+          document.querySelector('.details').after(statusElement);
+          
+          statusElement.innerHTML = `
+            <i data-lucide="loader"></i>
+            <p>예약 정보를 서버에 저장 중입니다...</p>
+          `;
+          lucide.createIcons();
+
+          // API 서버로 예약 정보 전송
+          sendReservationToAPI(reservationData)
+            .then(response => {
+              console.log('예약 정보가 성공적으로 저장되었습니다:', response);
+              
+              // 성공 메시지 표시
+              statusElement.classList.add('success');
+              statusElement.innerHTML = `
+                <i data-lucide="check-circle"></i>
+                <p>예약 정보가 DB에 성공적으로 저장되었습니다.</p>
+                <p>예약 ID: ${response.data.reservation_id}</p>
+              `;
+              lucide.createIcons();
+            })
+            .catch(error => {
+              console.error('예약 DB 저장 실패:', error);
+              
+              // 실패 메시지 표시
+              statusElement.classList.add('error');
+              statusElement.innerHTML = `
+                <i data-lucide="alert-triangle"></i>
+                <p>예약 정보 저장 중 오류가 발생했습니다.</p>
+                <p>오류: ${error.message || '알 수 없는 오류'}</p>
+              `;
+              lucide.createIcons();
+            });
+        });
+    });
+
+    // 이메일 전송 폼 이벤트 처리
+    function handleEmailSubmit(event) {
+      event.preventDefault();
+      
+      // 이메일 전송 버튼 비활성화
+      const emailButton = document.querySelector('button[type="submit"]');
+      const originalText = emailButton.innerHTML;
+      emailButton.disabled = true;
+      emailButton.innerHTML = '<i data-lucide="loader"></i> 전송 중...';
+      lucide.createIcons();
+
+      // 폼 데이터 수집
+      const form = event.target;
+      const emailData = {
+        hospital: form.hospital.value,
+        address: form.address.value,
+        name: form.name.value,
+        phone: form.phone.value,
+        message: form.message.value,
+        email: form.email.value,
+        reservation_time: form.reservation_time.value
+      };
+
+      // API 호출
+      sendConfirmationEmail(emailData)
+        .then(response => {
+          alert('예약 확인 이메일이 성공적으로 전송되었습니다.');
+          emailButton.innerHTML = '<i data-lucide="check"></i> 전송 완료';
+          lucide.createIcons();
+        })
+        .catch(error => {
+          alert(`이메일 전송 실패: ${error.message || '알 수 없는 오류'}`);
+          emailButton.disabled = false;
+          emailButton.innerHTML = originalText;
+          lucide.createIcons();
+        });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 예약이 완료되었습니다! 🎉</h1>
+    
+    <div class="details">
+      <div class="detail-item"><strong>병원 이름</strong><span>{{ hospital }}</span></div>
+      <div class="detail-item"><strong>병원 주소</strong><span>{{ address }}</span></div>
+      <div class="detail-item"><strong>예약자 이름</strong><span>{{ name }}</span></div>
+      <div class="detail-item"><strong>연락처</strong><span>{{ phone }}</span></div>
+      <div class="detail-item"><strong>예약 시간</strong><span>{{ reservation_time }}</span></div>
+      <div class="detail-item"><strong>요청 사항</strong><span>{{ message or "없음" }}</span></div>
+      <div class="detail-item"><strong>이메일</strong><span>{{ email or "없음" }}</span></div>
+    </div>
+    
+    <div class="btn-group">
+      <a href="/dashboard" class="btn"><i data-lucide="home"></i> 홈으로</a>
+      <a href="/find" class="btn"><i data-lucide="calendar-plus"></i> 다시 예약</a>
+      <form method="POST" action="/send_email" onsubmit="handleEmailSubmit(event)">
+        <input type="hidden" name="hospital" value="{{ hospital }}">
+        <input type="hidden" name="address" value="{{ address }}">
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="phone" value="{{ phone }}">
+        <input type="hidden" name="reservation_time" value="{{ reservation_time }}">
+        <input type="hidden" name="message" value="{{ message }}">
+        <input type="hidden" name="email" value="{{ email }}">
+        <button type="submit" class="btn"><i data-lucide="mail"></i> 이메일 전송</button>
+      </form>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>닥터퓨처 - 병원 찾기</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo4.png') }}" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: url('/static/img/1234.png') center center / cover no-repeat fixed;
+      overflow-x: hidden;
+    }
+    
+    .container-fluid {
+      padding: 0;
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+    
+    .main-content {
+      margin-left: 16rem; /* 사이드바 너비 고려 */
+      padding: 1.5rem;
+      width: calc(100vw - 16rem); /* 전체 화면 너비에서 사이드바 너비 빼기 */
+      box-sizing: border-box;
+    }
+    
+    .search-form-container {
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* 아이콘과 입력 필드를 감싸는 컨테이너 */
+    .search-form {
+      display: flex;
+      align-items: center;
+      background-color: transparent;
+      position: relative;
+      border: none;
+    }
+
+    /* 검색 아이콘 컨테이너 */
+    .icon-container {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 2px;
+      z-index: 2;
+    }
+
+    /* 검색 버튼 */
+    .search-button {
+      background-color: transparent;
+      color: #aaaaaa;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-button:hover {
+      color: #777777;
+    }
+
+    .search-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* 입력 필드 */
+    .input-container {
+      flex: 1;
+      margin-left: 35px; /* 아이콘과의 간격 증가 (30px → 35px) */
+      border-bottom: 2px solid #aaaaaa;
+      padding-bottom: 0;
+    }
+
+    .search-input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 0.25rem 0;
+      margin-bottom: 0;
+      font-size: 16px;
+      color: #333;
+      outline: none;
+      line-height: 1;
+      padding-left: 5px; /* 왼쪽 패딩 추가하여 글자가 한 글자 정도 떨어지게 함 */
+    }
+
+    .search-input::placeholder {
+      color: #aaaaaa;
+      font-weight: 300;
+    }
+
+    /* 포커스 효과 */
+    .search-input:focus + .input-container {
+      border-color: #777777;
+    }
+    
+    .search-button {
+      background-color: transparent;
+      color: #4285F4;
+      border: none;
+      padding: 0 0.5rem 0.1rem 0.5rem;
+      margin-bottom: 0;
+      cursor: pointer;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .search-button:hover {
+      color: #3367D6;
+      background-color: transparent;
+    }
+    
+    .search-icon {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .map-container {
+      display: flex;
+      gap: 1rem;
+      height: calc(100vh - 10rem);
+      margin-top: 1rem;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 1rem;
+      border-radius: 8px;
+      max-width: 1100px;
+      width: 92%;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    #map {
+      flex: 3;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+      max-height: calc(100vh - 12rem);
+    }
+    
+    #menu_wrap {
+      flex: 1;
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      overflow-y: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      max-width: 280px;
+    }
+    
+    .list-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-top: 1rem;
+      max-width: 1100px;
+      width: 92%;
+      margin-left: auto;
+      margin-right: auto;
+      height: calc(100vh - 10rem);
+      overflow-y: auto;
+    }
+    
+    .category-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    
+    .hospital-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      max-width: 100%;
+    }
+    
+    .hospital-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      height: 180px;
+      overflow: hidden;
+      align-items: center;
+      padding-right: 10px; /* 오른쪽에 약간의 여백 추가 */
+    }
+
+    .hospital-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .hospital-info {
+      flex: 3; /* 정보 영역 비율 증가 */
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .hospital-image {
+      height: 110px; /* 더 작은 정사각형 (160px → 130px) */
+      width: 110px; /* 너비도 같이 줄임 */
+      flex-shrink: 0;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin-right: 5px;
+      border-radius: 4px; /* 살짝 둥글게 */
+    }
+    
+    .hospital-name {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    
+    .hospital-address {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .hospital-phone {
+      font-size: 0.8rem;
+      color: #4285F4;
+      margin-bottom: 0.5rem;
+    }
+    
+    .rating-container {
+      margin-bottom: 0.5rem;
+      font-size: 0.8rem;
+    }
+    
+    .star-rating {
+      color: #FFD700;
+      margin-right: 0.25rem;
+    }
+    
+    .reserve-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background-color 0.2s;
+      margin-top: auto;
+      width: fit-content;
+    }
+    
+    .reserve-btn:hover {
+      background-color: #45a049;
+    }
+    
+    .no-results {
+      padding: 2rem;
+      text-align: center;
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    #placesList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    #placesList li {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    #placesList li:hover {
+      background-color: #f5f8ff;
+    }
+    
+    #placesList strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 1rem;
+      color: #333;
+    }
+    
+    #placesList span {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.875rem;
+      color: #666;
+    }
+    
+    #pagination {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    
+    #pagination a {
+      display: inline-block;
+      margin: 0 0.25rem;
+      padding: 0.5rem 0.75rem;
+      color: #333;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    
+    #pagination a.on {
+      background-color: #4285F4;
+      color: white;
+      font-weight: bold;
+    }
+    
+    /* 반응형 디자인 */
+    @media (max-width: 1200px) {
+      .hospital-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    /* 모바일 화면 대응 */
+    @media (max-width: 768px) {
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+      }
+      
+      .map-container, .list-container {
+        max-width: 100%;
+        width: 95%;
+        flex-direction: column;
+        height: auto;
+      }
+      
+      #map {
+        flex: none;
+        width: 100%;
+        height: 50vh;
+        max-height: none;
+      }
+      
+      #menu_wrap {
+        flex: none;
+        width: 100%;
+        max-width: none;
+        margin-top: 1rem;
+      }
+      
+      .hospital-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .hospital-card {
+        height: auto;
+        min-height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row g-0">
+      <!-- Sidebar Include -->
+      {% include 'sidebar/sidebar.html' %}
+      
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="search-form-container">
+          <form class="search-form" onsubmit="searchPlaces(); return false;">
+            <div class="icon-container">
+              <button class="search-button" type="submit">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </button>
+            </div>
+            <div class="input-container">
+              <input type="text" id="keyword" class="search-input" value="내과" placeholder="지역, 진료과, 병원명 검색">
+            </div>
+          </form>
+        </div>
+        
+        <!-- 지도와 목록 표시 영역 -->
+        <div id="mapView" class="map-container">
+          <div id="map"></div>
+          <div id="menu_wrap">
+            <ul id="placesList"></ul>
+            <div id="pagination"></div>
+          </div>
+        </div>
+        
+        <!-- 목록만 표시 영역 (처음에는 숨김) -->
+        <div id="listView" class="list-container" style="display: none;">
+          <h2 id="categoryTitle" class="category-title">검색 결과</h2>
+          <div id="categoryList" class="hospital-cards"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 외부 JS 연결 -->
+  <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6be88c9794d7e1f9095b709637776b77&libraries=services"></script>
+  <script>
+    // 초기 변수 설정
+    let map;
+    let markers = [];
+    let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    let currentCategory = '';
+    
+    // URL에서 쿼리 파라미터 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    
+    // 페이지 로드 시 실행
+    window.onload = function() {
+      // URL에 카테고리 파라미터가 있으면 목록 뷰로 표시
+      if (categoryParam) {
+        currentCategory = decodeURIComponent(categoryParam);
+        document.getElementById('keyword').value = currentCategory;
+        showCategoryResults(currentCategory);
+      } else {
+        // 카테고리 파라미터가 없으면 기본 지도 표시
+        navigator.geolocation.getCurrentPosition(
+          function(pos) {
+            initMap(pos.coords.latitude, pos.coords.longitude);
+            searchPlaces();
+          },
+          function() {
+            // 위치 접근 실패 시 서울 좌표로 기본값 설정
+            initMap(37.5665, 126.9780);
+            searchPlaces();
+          }
+        );
+      }
+      
+      // 사이드바 링크에 이벤트 추가 (페이지 로드 후)
+      setTimeout(setupSidebarLinks, 500);
+    };
+    
+    // 지도 초기화
+    function initMap(lat, lng) {
+      map = new kakao.maps.Map(document.getElementById('map'), {
+        center: new kakao.maps.LatLng(lat, lng),
+        level: 5
+      });
+    }
+    
+    // 사이드바 링크에 이벤트 리스너 추가
+    function setupSidebarLinks() {
+      try {
+        // 이비인후과 링크
+        const entLink = document.querySelector('a[href="/ent"]');
+        if (entLink) {
+          entLink.href = "javascript:void(0)";
+          entLink.onclick = function() {
+            showCategoryResults('이비인후과');
+          };
+        }
+        
+        // 소아과 링크
+        const pediatricsLink = document.querySelector('a[href="/recommend"]');
+        if (pediatricsLink && pediatricsLink.textContent.includes('소아과')) {
+          pediatricsLink.href = "javascript:void(0)";
+          pediatricsLink.onclick = function() {
+            showCategoryResults('소아과');
+          };
+        }
+        
+        // 내과 링크
+        const internalLink = document.querySelector('a[href="/recommend"]');
+        if (internalLink && internalLink.textContent.includes('내과')) {
+          internalLink.href = "javascript:void(0)";
+          internalLink.onclick = function() {
+            showCategoryResults('내과');
+          };
+        }
+        
+        // 피부과 링크
+        const dermatologyLink = document.querySelector('a[href="/recommend"]');
+        if (dermatologyLink && dermatologyLink.textContent.includes('피부과')) {
+          dermatologyLink.href = "javascript:void(0)";
+          dermatologyLink.onclick = function() {
+            showCategoryResults('피부과');
+          };
+        }
+      } catch (error) {
+        console.error("사이드바 링크 설정 오류:", error);
+      }
+    }
+    
+    // 카테고리 결과 표시 함수
+    function showCategoryResults(category) {
+      currentCategory = category;
+      document.getElementById('keyword').value = category;
+      
+      // 지도 뷰 숨기고 목록 뷰 보이기
+      document.getElementById('mapView').style.display = 'none';
+      document.getElementById('listView').style.display = 'block';
+      
+      // 카테고리 제목 업데이트
+      document.getElementById('categoryTitle').textContent = category + ' 검색 결과';
+      
+      // 콘솔에 로그 추가
+      console.log('카테고리 검색 시작:', category);
+      
+      // 카테고리 검색 수행
+      const ps = new kakao.maps.services.Places();
+      ps.keywordSearch(category, function(data, status) {
+        console.log('검색 상태:', status);
+        console.log('검색 결과:', data);
+        
+        if (status === kakao.maps.services.Status.OK) {
+          displayCategoryList(data.slice(0, 9)); // 상위 9개 표시
+        } else {
+          document.getElementById('categoryList').innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
+          console.error('검색 실패:', status);
+        }
+      });
+    }
+    
+    // 지도 뷰로 전환하는 함수
+    function switchToMapView() {
+      document.getElementById('mapView').style.display = 'flex';
+      document.getElementById('listView').style.display = 'none';
+    }
+    
+    // 일반 검색 함수
+    function searchPlaces() {
+      const keyword = document.getElementById('keyword').value.trim();
+      if (!keyword) {
+        alert('검색어를 입력해주세요.');
+        return;
+      }
+      
+      // 검색 시 지도 뷰로 전환
+      switchToMapView();
+      
+      const ps = new kakao.maps.services.Places();
+      ps.keywordSearch(keyword, placesSearchCB, { location: map.getCenter() });
+    }
+    
+    // 일반 검색 콜백
+    function placesSearchCB(data, status, pagination) {
+      if (status === kakao.maps.services.Status.OK) {
+        displayPlaces(data);
+        displayPagination(pagination);
+      } else {
+        alert('검색 결과가 없습니다.');
+      }
+    }
+    
+    // 지도와 목록에 검색 결과 표시
+    function displayPlaces(places) {
+      const listEl = document.getElementById('placesList');
+      listEl.innerHTML = '';
+      removeMarkers();
+      const bounds = new kakao.maps.LatLngBounds();
+      
+      places.forEach((place) => {
+        const position = new kakao.maps.LatLng(place.y, place.x);
+        const marker = new kakao.maps.Marker({ position, map });
+        
+        kakao.maps.event.addListener(marker, 'click', () => {
+          infowindow.setContent(`<div style="padding:5px;font-size:12px;"><strong>${place.place_name}</strong></div>`);
+          infowindow.open(map, marker);
+        });
+        
+        markers.push(marker);
+        bounds.extend(position);
+        
+        const itemEl = document.createElement('li');
+        itemEl.innerHTML = `
+          <strong>${place.place_name}</strong>
+          <span>${place.road_address_name || place.address_name}</span>
+          <span style="color:#4285F4">${place.phone || '전화번호 없음'}</span>
+          <button class="reserve-btn">예약하기</button>
+        `;
+        
+        itemEl.onclick = () => {
+          map.setCenter(position);
+          infowindow.setContent(`<div style="padding:5px;font-size:12px;"><strong>${place.place_name}</strong></div>`);
+          infowindow.open(map, marker);
+        };
+        
+        const reserveBtn = itemEl.querySelector('.reserve-btn');
+        reserveBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/reserve';
+          
+          const nameInput = document.createElement('input');
+          nameInput.type = 'hidden';
+          nameInput.name = 'hospital_name';
+          nameInput.value = place.place_name;
+          
+          const addressInput = document.createElement('input');
+          addressInput.type = 'hidden';
+          addressInput.name = 'hospital_address';
+          addressInput.value = place.road_address_name || place.address_name;
+          
+          form.appendChild(nameInput);
+          form.appendChild(addressInput);
+          document.body.appendChild(form);
+          form.submit();
+        });
+        
+        listEl.appendChild(itemEl);
+      });
+      
+      if (places.length > 0) {
+        map.setBounds(bounds);
+      }
+    }
+    
+    // 카테고리 목록만 표시 (지도 없이)
+    function displayCategoryList(places) {
+      const listEl = document.getElementById('categoryList');
+      
+      // 목록 비우기
+      listEl.innerHTML = '';
+      
+      // 검색 결과가 없는 경우 처리
+      if (!places || places.length === 0) {
+        listEl.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
+        return;
+      }
+      
+      places.forEach((place, index) => {
+        // 이미지 번호 계산 (1~9)
+        const imgNumber = (index % 9) + 1;
+        
+        const cardEl = document.createElement('div');
+        cardEl.className = 'hospital-card';
+        
+        cardEl.innerHTML = `
+          <div class="hospital-info">
+            <div class="hospital-name">${place.place_name}</div>
+            <div class="hospital-address">${place.road_address_name || place.address_name}</div>
+            <div class="hospital-phone">${place.phone || '전화번호 없음'}</div>
+            <button class="reserve-btn">예약하기</button>
+          </div>
+          <div class="hospital-image" style="background-image: url('/static/img/b${imgNumber}.png');"></div>
+        `;
+        
+        const reserveBtn = cardEl.querySelector('.reserve-btn');
+        reserveBtn.addEventListener('click', () => {
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = '/reserve';
+          
+          const nameInput = document.createElement('input');
+          nameInput.type = 'hidden';
+          nameInput.name = 'hospital_name';
+          nameInput.value = place.place_name;
+          
+          const addressInput = document.createElement('input');
+          addressInput.type = 'hidden';
+          addressInput.name = 'hospital_address';
+          addressInput.value = place.road_address_name || place.address_name;
+          
+          form.appendChild(nameInput);
+          form.appendChild(addressInput);
+          document.body.appendChild(form);
+          form.submit();
+        });
+        
+        listEl.appendChild(cardEl);
+        
+        // 개발자 도구에서 확인하기 위한 로그
+        console.log('카드 추가:', place.place_name, index);
+      });
+      
+      // 카드가 추가되었는지 확인
+      console.log('총 카드 수:', places.length);
+    }
+    
+    // 마커 제거 함수
+    function removeMarkers() {
+      markers.forEach(marker => marker.setMap(null));
+      markers = [];
+    }
+    
+    // 페이지네이션 표시
+    function displayPagination(pagination) {
+      const paginationEl = document.getElementById('pagination');
+      paginationEl.innerHTML = '';
+      
+      for (let i = 1; i <= pagination.last; i++) {
+        const a = document.createElement('a');
+        a.href = '#';
+        a.innerText = i;
+        
+        if (i === pagination.current) {
+          a.className = 'on';
+        } else {
+          a.onclick = () => pagination.gotoPage(i);
+        }
+        
+        paginationEl.appendChild(a);
+      }
+    }
+  </script>
+</body>
+</html>

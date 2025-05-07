@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Tailwind Sidebar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--Tailwind CDN 포함 필수 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- sidebar.html 마지막 부분에 추가 -->
+  <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+
+</head>
+<body class="h-screen w-full bg-white dark:bg-[#1E2028]">
+
+  <!-- 그대로 붙여넣기 해도 문제 없음 -->
+  
+  <!-- ✅ 아래에 당신이 준 코드 전체 붙여넣기 -->
+  <div class="fixed left-0 top-0 h-full w-64 bg-gray-50 dark:bg-[#252731] border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+    <div class="h-screen w-full bg-white dark:bg-[#1E2028]">
+      <!-- Sidebar Container -->
+      <div class="fixed left-0 top-0 h-full w-64 bg-gray-50 dark:bg-[#252731] border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+      <!-- Logo Section -->
+      <div class="flex items-center h-16 px-4 border-b border-gray-200 dark:border-gray-700">
+        <img src="/static/img/logo.png" alt="Logo" class="w-8 h-8">
+        <a href="{{ url_for('dashboard') }}" class="ml-3 text-lg font-semibold text-black dark:text-white hover:underline">
+          닥터퓨처
+        </a>
+      </div>
+  
+          <!-- Navigation Menu -->
+          <nav class="p-4">       
+        
+              <!-- MyPage Section -->
+          <div class="mb-4">
+            <button onclick="toggleMenu('mypageMenu')" class="w-full flex items-center justify-between px-3 h-10 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+              <div class="flex items-center">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span class="ml-3">마이페이지</span>
+              </div>
+              <svg id="mypageMenuIcon" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div id="mypageMenu" class="hidden mt-2 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+              <a href="/mypage" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">내정보</a>
+              <a href="#reservation-check" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">예약확인</a>
+              <a href="#health-history" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">나의 건강 이력</a>
+              <a href="#inquiry" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">내 문의사항</a>
+            </div>
+          </div>
+              <div class="absolute bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-700">
+              <div class="p-4">
+                  <div class="flex items-center">
+                      <img src="https://cdn.startupful.io/img/main_page/profile1.png" alt="Profile" class="w-10 h-10 rounded-full">
+                      <div class="ml-3">
+                          <p class="text-sm font-medium text-black dark:text-white">John Doe</p>
+                          <p class="text-xs text-gray-500 dark:text-gray-400">john@example.com</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  
+              <!-- 병원찾기 Section -->
+              <div class="mb-4">
+                  <button onclick="toggleMenu('projectsMenu')" class="w-full flex items-center justify-between px-3 h-10 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                      <div class="flex items-center">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                          </svg>
+                          <span class="ml-3">병원찾기</span>
+                      </div>
+                      <svg id="projectsMenuIcon" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                  </button>
+                  <div id="projectsMenu" class="hidden mt-2 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+                      <a href="/find" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">직접예약</a>
+                      <a href="/ent" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">이비인후과</a>
+                      <a href="/recommend" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">소아과</a>
+                      <a href="/recommend" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">내과</a>
+                      <a href="/recommend" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">피부과</a>
+                  </div>
+              </div>
+  
+              <!-- 게시판 Section -->
+              <div class="mb-4">
+                  <button onclick="toggleMenu('teamMenu')" class="w-full flex items-center justify-between px-3 h-10 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                      <div class="flex items-center">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                          </svg>
+                          <span class="ml-3">게시판</span>
+                      </div>
+                      <svg id="teamMenuIcon" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                  </button>
+                  <div id="teamMenu" class="hidden mt-2 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+                      <a href="#" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">공지사항</a>
+                      <a href="/faq" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">자주묻는질문</a>
+                      <a href="#" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">자유게시판</a>
+                      <a href="/magazine" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">건강매거진</a>
+                  </div>
+              </div>
+  
+              <!-- AI비서 Section -->
+              <div class="mb-4">
+                  <button onclick="toggleMenu('settingsMenu')" class="w-full flex items-center justify-between px-3 h-10 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                      <div class="flex items-center">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                          </svg>
+                          <span class="ml-3">AI비서</span>
+                      </div>
+                      <svg id="settingsMenuIcon" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                  </button>
+                  <div id="settingsMenu" class="hidden mt-2 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+                      <a href="/ai" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">AI비서</a>
+                      <a href="#" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">비대면진료</a>
+                  </div>
+              </div>
+          </nav>
+          <!-- User Profile Section -->
+          
+      </div>
+  
+      <script>
+          function toggleMenu(menuId) {
+              const menu = document.getElementById(menuId);
+              const icon = document.getElementById(menuId + 'Icon');
+              
+              // Toggle menu visibility
+              menu.classList.toggle('hidden');
+              
+              // Rotate icon
+              if (menu.classList.contains('hidden')) {
+                  icon.style.transform = 'rotate(0deg)';
+              } else {
+                  icon.style.transform = 'rotate(180deg)';
+              }
+          }
+      </script>
+  </div>
+  </div>
+
+</body>
+</html>

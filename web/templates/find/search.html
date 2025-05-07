@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Custom CSS (필요시 연결) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <!-- 메인 컨테이너 -->
+  <div class="container mt-5" style="padding-left: 260px; padding-right: 40px;">
+    <!-- 검색 바 중앙정렬 -->
+    <div class="d-flex flex-column align-items-center mt-4 position-relative" style="z-index: 10; margin-left: 30px;">
+          <!-- 검색 바 -->
+          <div class="d-flex align-items-center gap-2" style="max-width: 600px; width: 100%;">
+            <i class="bi bi-search text-secondary fs-5"></i>
+            <input
+              type="text"
+              class="form-control border-0 border-bottom border-secondary-subtle rounded-0 shadow-none"
+              placeholder="검색어를 입력하세요"
+              style="background-color: transparent;"
+              onfocus="document.getElementById('keyword-box').style.display='block'"
+              onblur="setTimeout(() => document.getElementById('keyword-box').style.display='none', 200)"
+            />
+          </div>
+      
+        <!-- 추천 키워드 -->
+        <div id="keywordBox" class="search-keywords shadow rounded-4 bg-white p-4 mx-auto" 
+             style="width: 100%; max-width: 600px; display: none; position: absolute; top: 70px;">
+          <div class="fw-bold mb-3">추천 키워드</div>
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-calendar-event"></i> 공휴일 진료</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-calendar-check"></i> 일요일 진료</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-person-bounding-box"></i> 여의사</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-moon-stars"></i> 평일 야간 진료</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-clock-history"></i> 평일 24시간 진료</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-blockquote-left"></i> 토요일 진료</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-brightness-alt-high"></i> 주말 야간 진료</button>
+            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-clock"></i> 주말 24시간 진료</button>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+        const input = document.getElementById("searchInput");
+        const keywordBox = document.getElementById("keywordBox");
+      
+        input.addEventListener("focus", () => {
+          keywordBox.style.display = "block";
+        });
+      
+        input.addEventListener("blur", () => {
+          setTimeout(() => {
+            keywordBox.style.display = "none";
+          }, 150);
+        });
+      </script>
+      
+</body>
+</html>

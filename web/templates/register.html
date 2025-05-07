@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>닥터퓨처 - 회원가입</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/logo4.png') }}" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>회원가입</h2>
+    <form id="registerForm">
+      <div class="input-wrapper">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" id="username" placeholder="아이디" required>
+      </div>
+
+      <div class="input-wrapper">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" id="password" placeholder="비밀번호" required>
+      </div>
+
+      <div class="input-wrapper">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="confirm_password" id="confirm_password" placeholder="비밀번호 확인" required>
+      </div>
+      <div id="pwCheckMsg" class="check-message"></div>
+
+      <div class="input-wrapper">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" id="email" placeholder="이메일" required>
+      </div>
+
+      <label for="birthdate">생년월일:</label>
+      <div class="input-wrapper">
+        <i class="fas fa-calendar-alt"></i>
+        <input type="date" name="birthdate" id="birthdate" required>
+      </div>
+
+      <div class="input-wrapper">
+        <i class="fas fa-phone"></i>
+        <input type="tel" name="phone" id="phone" placeholder="전화번호 (예: 010-1234-5678)" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required>
+      </div>
+
+      <!-- 주소 + 검색 버튼 -->
+      <div class="address-wrapper">
+        <div class="input-wrapper">
+          <i class="fas fa-map-marker-alt"></i>
+          <input type="text" name="address" id="address" placeholder="주소" readonly required>
+        </div>
+        <button type="button" onclick="execDaumPostcode()" class="search-btn" title="주소 검색">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <!-- 상세 주소 입력 필드 -->
+      <div class="input-wrapper">
+        <i class="fas fa-map-pin"></i>
+        <input type="text" name="address_detail" id="address_detail" placeholder="상세 주소 입력" required>
+      </div>
+
+      <div id="errorMessage" class="check-message no-match" style="display:none;"></div>
+      <div id="successMessage" class="check-message match" style="display:none;"></div>
+
+      <button type="submit">가입하기</button>
+    </form>
+  </div>
+
+  <!-- 주소 검색 API -->
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+  <!-- 외부 JS 연결 -->
+  <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+</body>
+</html>
