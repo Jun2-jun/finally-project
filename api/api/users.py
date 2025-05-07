@@ -61,7 +61,7 @@ def api_login():
         return '', 204
 
     try:
-        data = request._decrypted_json
+        data = request.get_json() or {}
         username = data.get('username', '').strip()
         password = data.get('password')
 
