@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 사용자 정보 불러오기
-  fetch('http://192.168.219.200:5002/api/current-user', {
+  fetch('http://192.168.219.248:5002/api/current-user', {
     method: 'GET',
     credentials: 'include'
   })
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // QnA 목록 불러오기
-  fetch('http://192.168.219.200:5002/api/qna/?page=1&per_page=10', {
+  fetch('http://192.168.219.248:5002/api/qna/?page=1&per_page=10', {
     method: 'GET',
     credentials: 'include'
   })

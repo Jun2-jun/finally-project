@@ -15,7 +15,6 @@ from flask_cors import CORS
 from flask_session import Session
 from redis import Redis
 
-
 app = Flask(__name__)
 app.secret_key = 'yougayoung123'
 init_db(app)
@@ -31,7 +30,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허
 # 세션 Redis 설정 추가
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
-app.config['SESSION_COOKIE_DOMAIN'] = '192.168.219.200'
+app.config['SESSION_COOKIE_DOMAIN'] = '192.168.219.248'
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # 또는 'None'
 app.config['SESSION_COOKIE_SECURE'] = False    # 로컬이라면 False
 Session(app)  # 세션 객체 초기화
@@ -86,7 +85,23 @@ def qna_test():
 
 @app.route('/qna/')
 def qna_list():
-    return render_template('qna/qna.html', now=datetime.now())
+    try:
+        # 실제 API 서버 주소와 포트를 입력 (예: 5002)
+        api_url = 'http://localhost:5002/api/qna?page=1&per_page=100'
+        response = requests.get(api_url)
+        data = response.json()
+
+        if data['status'] == 'success':
+            qnas = data['data']['items']
+        else:
+            qnas = []
+
+    except Exception as e:
+        print("[ERROR] QnA API 호출 실패:", e)
+        qnas = []
+
+    return render_template('qna/qna.html', now=datetime.now(), qnas=qnas)
+
 
 @app.route('/doctor')
 def doctor():

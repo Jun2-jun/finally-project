@@ -5,7 +5,7 @@ import requests
 submit_bp = Blueprint('submit', __name__)
 
 # API 서버 기본 URL
-API_BASE_URL = 'http://192.168.219.189:5002/api/reservations'
+API_BASE_URL = 'http://192.168.219.248:5002/api/reservations'
 
 @submit_bp.route('/submit_reservation', methods=['POST'])
 def submit_reservation():
