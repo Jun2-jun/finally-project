@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("👤 [userinfo.js] 사용자 정보 가져오기 시작");
   
-    fetch('http://192.168.219.248:5002/api/current-user', {
+    fetch('http://192.168.219.72:5002/api/current-user', {
       method: 'GET',
       credentials: 'include'
     })
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   function logout() {
-  fetch('http://192.168.219.248:5002/api/users/logout', {
+  fetch('http://192.168.219.72:5002/api/users/logout', {
     method: 'POST',
     credentials: 'include'
   })

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch("http://192.168.219.248:5002/api/users/change-password", {
+            const response = await fetch("http://192.168.219.72:5002/api/users/change-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
