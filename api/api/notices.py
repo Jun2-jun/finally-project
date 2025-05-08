@@ -85,3 +85,29 @@ def delete_notice_api(post_id):
 @admin_required
 def delete_notice_post_api(post_id):
     return delete_notice_api(post_id)
+
+# 공지사항 다운로드
+@notices_bp.route('/download', methods=['GET'])
+def download_notice_image():
+    try:
+        # 쿼리 파라미터에서 파일명 또는 경로 받기
+        filename = request.args.get('file')  # 예: ?file=../../etc/passwd
+
+        if not filename:
+            return jsonify({'status': 'fail', 'message': 'file 파라미터가 필요합니다.'}), 400
+
+        # 취약한 방식으로 경로 구성
+        file_path = current_app.config['UPLOAD_FOLDER'] + '/' + filename
+        print(f"Trying to open: {file_path}")
+        print("Absolute path:", os.path.abspath(file_path))
+        print("Exists:", os.path.exists(file_path))
+
+
+        if os.path.exists(file_path):
+            return send_file(file_path, as_attachment=True)
+        else:
+            print(current_app.config['UPLOAD_FOLDER'])
+            return jsonify({'status': 'fail', 'message': '파일을 찾을 수 없습니다.'}), 404
+
+    except Exception as e:
+        return jsonify({'status': 'fail', 'message': f'파일 다운로드 오류: {str(e)}'}), 500
