@@ -33,16 +33,17 @@ body {
   box-sizing: border-box;
   width: 100%;
   max-width: 1000px;                    /* 필요에 따라 변경 */
-  margin: 100px auto 0;                 /* 상단 100px, 좌우 중앙정렬 */
+  margin: o.5rem; auto 0;                 /* 상단 100px, 좌우 중앙정렬 */
 }
 
 /*──────────────────────────────────────────
   4. 제목 & 메뉴
 ──────────────────────────────────────────*/
 .faq-title {
-  font-size: 1.5rem;    /* 24px */
+  font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;/* 24px */
+  margin-top: 3rem;
   text-align: center;
 }
 
@@ -72,7 +73,8 @@ body {
 ──────────────────────────────────────────*/
 .faq-search-wrapper {
   width: 100%;
-  margin-bottom: 1rem;  /* 조정 가능 */
+  margin-top: 5rem;
+  /* 조정 가능 */
 }
 
 .faq-search-wrapper .form-control {
@@ -85,7 +87,6 @@ body {
 ──────────────────────────────────────────*/
 .faq-table {
   width: 100%;
-  margin-top: 2rem;     /* 50px */
   border-collapse: collapse;
 }
 
@@ -139,7 +140,7 @@ body {
 }
 
 /*──────────────────────────────────────────
-  8. 배너 플레이스홀더 (스케치용)
+  8. 배너 플레이스홀더 
 ──────────────────────────────────────────*/
 .qr-banner-blue {
   width: 280px;
