@@ -275,214 +275,601 @@
   </nav>
 
   <!-- 메인 콘텐츠 -->
-  <section class="max-w-7xl ml-[400px] px-4 py-24 ">
-    <!-- 헤더 -->
-    <div class="mb-8">
-      <h1 class="text-5xl font-light tracking-wide mb-2">Now</h1>
-      <p class="text-gray-500">건강하고 아름다운 삶의 동행 닥터퓨처와 함께하세요.</p>
-    </div>
-
-    <!-- 아래 카드 리스트 -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 mb-10">
-      <!-- 공지사항 -->
-      <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex items-center mb-4">
-          <span class="text-lg font-semibold mr-2">공지사항</span>
-          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
+  <div class="flex mx-auto px-4 py-24 gap-6">
+    <!-- 의사 목록 섹션 -->
+    <section
+      class="doctors-list-section my-6 max-w-md border border-blue-200 rounded-lg shadow-md shadow-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+      <div class="p-4 bg-blue-600 text-white border-b border-blue-300 rounded-t-lg flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <div>
+          <h2 class="text-xl font-bold">추천 의사</h2>
+          <p class="text-sm text-blue-100">오늘 예약 가능한 의사</p>
         </div>
-        <ul class="text-sm space-y-1">
-          <li>2019 핑크리본 유방암 건강강좌 - <span class="text-gray-500">2019.10.23</span></li>
-          <li>개인정보 처리방침 변경안내 - <span class="text-gray-500">2019.09.30</span></li>
-          <li>임상시험종사자 연구자교육 - <span class="text-gray-500">2019.09.10</span></li>
-          <li>호스피스 완화의료 교육 - <span class="text-gray-500">2019.09.18</span></li>
-        </ul>
       </div>
 
-      <!-- 자주묻는질문 -->
-      <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex items-center mb-4">
-          <span class="text-lg font-semibold mr-2">자주묻는질문</span>
-          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <ul class="text-sm space-y-1">
-          <li>기공식 열려 - <span class="text-gray-500">2020.02.14</span></li>
-          <li>간호사 채용공고 - <span class="text-gray-500">2020.02.11</span></li>
-          <li>감상선암 외과 이태욱 교수 - <span class="text-gray-500">2020.02.05</span></li>
-          <li>차량용 방사선 장비 도입 - <span class="text-gray-500">2020.02.03</span></li>
-        </ul>
+      <ul class="flex flex-col">
+        <!-- 의사 1 -->
+        <li class="hover:bg-blue-100 transition-colors duration-200">
+          <a href="#">
+            <div class="relative flex items-center justify-between pr-[16px] pl-[24px]">
+              <div class="flex w-full flex-col gap-[12px] pt-[20px] pb-[24px]">
+                <div class="flex flex-col gap-[2px]">
+                  <p class="typography-ui-13r text-gray-400">행복내과의원</p>
+                  <div class="flex items-center gap-[8px]">
+                    <p class="typography-ui-19sb text-gray-900">홍길동 의사</p>
+                    <div class="flex items-center">
+                      <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
+                      <span class="typography-ui-13m text-gray-700">4.9</span>
+                      <span class="typography-ui-13r text-gray-400">(2000+)</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-[5px]">
+                    <p class="typography-ui-13m text-green-700">오늘 예약</p>
+                    <div class="h-[10px] w-[1px] bg-gray-50"></div>
+                    <span class="typography-ui-13r text-gray-400">(목) 08:40~18:20</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-[4px]">
+                  <span
+                    class="typography-ui-12m flex h-[20px] items-center rounded bg-gray-30 px-[4px] text-gray-500">내과
+                    전문의</span>
+                  <span
+                    class="typography-ui-12m flex h-[20px] items-center rounded bg-gray-30 px-[4px] text-gray-500">영상진료</span>
+                </div>
+              </div>
+              <div class="relative pb-[8px]">
+                <div
+                  class="flex items-center justify-center bg-blue-100 rounded-full h-[120px] w-[120px] transition-transform hover:scale-105">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="h-[1px] w-full bg-gray-30"></div>
+          </a>
+        </li>
+
+        <!-- 의사 2 -->
+        <li class="hover:bg-blue-100 transition-colors duration-200">
+          <a href="#">
+            <div class="relative flex items-center justify-between pr-[16px] pl-[24px]">
+              <div class="flex w-full flex-col gap-[12px] pt-[20px] pb-[24px]">
+                <div class="flex flex-col gap-[2px]">
+                  <p class="typography-ui-13r text-gray-400">미래소아과의원</p>
+                  <div class="flex items-center gap-[8px]">
+                    <p class="typography-ui-19sb text-gray-900">김철수 의사</p>
+                    <div class="flex items-center">
+                      <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
+                      <span class="typography-ui-13m text-gray-700">4.9</span>
+                      <span class="typography-ui-13r text-gray-400">(2000+)</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-[5px]">
+                    <p class="typography-ui-13m text-green-700">오늘 예약</p>
+                    <div class="h-[10px] w-[1px] bg-gray-50"></div>
+                    <span class="typography-ui-13r text-gray-400">(목) 07:30~18:10</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-[4px]">
+                  <span
+                    class="typography-ui-12m flex h-[20px] items-center rounded bg-gray-30 px-[4px] text-gray-500">소아과
+                    전문의</span>
+                </div>
+              </div>
+              <div class="relative pb-[8px]">
+                <div
+                  class="flex items-center justify-center bg-blue-100 rounded-full h-[120px] w-[120px] transition-transform hover:scale-105">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="h-[1px] w-full bg-gray-30"></div>
+          </a>
+        </li>
+
+        <!-- 의사 3 -->
+        <li class="hover:bg-blue-100 transition-colors duration-200">
+          <a href="#">
+            <div class="relative flex items-center justify-between pr-[16px] pl-[24px]">
+              <div class="flex w-full flex-col gap-[12px] pt-[20px] pb-[24px]">
+                <div class="flex flex-col gap-[2px]">
+                  <p class="typography-ui-13r text-gray-400">서울가정의학과의원</p>
+                  <div class="flex items-center gap-[8px]">
+                    <p class="typography-ui-19sb text-gray-900">이영희 의사</p>
+                    <div class="flex items-center">
+                      <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
+                      <span class="typography-ui-13m text-gray-700">4.9</span>
+                      <span class="typography-ui-13r text-gray-400">(1000+)</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-[5px]">
+                    <p class="typography-ui-13m text-green-700">오늘 예약</p>
+                    <div class="h-[10px] w-[1px] bg-gray-50"></div>
+                    <span class="typography-ui-13r text-gray-400">(목) 09:10~21:10</span>
+                  </div>
+                </div>
+              </div>
+              <div class="relative pb-[8px]">
+                <div
+                  class="flex items-center justify-center bg-blue-100 rounded-full h-[120px] w-[120px] transition-transform hover:scale-105">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="h-[1px] w-full bg-gray-30"></div>
+          </a>
+        </li>
+
+        <!-- 의사 4 -->
+        <li class="hover:bg-blue-100 transition-colors duration-200">
+          <a href="#">
+            <div class="relative flex items-center justify-between pr-[16px] pl-[24px]">
+              <div class="flex w-full flex-col gap-[12px] pt-[20px] pb-[24px]">
+                <div class="flex flex-col gap-[2px]">
+                  <p class="typography-ui-13r text-gray-400">강남이비인후과의원</p>
+                  <div class="flex items-center gap-[8px]">
+                    <p class="typography-ui-19sb text-gray-900">박지민 의사</p>
+                    <div class="flex items-center">
+                      <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
+                      <span class="typography-ui-13m text-gray-700">5.0</span>
+                      <span class="typography-ui-13r text-gray-400">(2000+)</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-[5px]">
+                    <p class="typography-ui-13m text-green-700">오늘 예약</p>
+                    <div class="h-[10px] w-[1px] bg-gray-50"></div>
+                    <span class="typography-ui-13r text-gray-400">(목) 10:00~19:00</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-[4px]">
+                  <span
+                    class="typography-ui-12m flex h-[20px] items-center rounded bg-gray-30 px-[4px] text-gray-500">이비인후과
+                    전문의</span>
+                </div>
+              </div>
+              <div class="relative pb-[8px]">
+                <div
+                  class="flex items-center justify-center bg-blue-100 rounded-full h-[120px] w-[120px] transition-transform hover:scale-105">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 의사 5 -->
+        <li class="hover:bg-blue-100 transition-colors duration-200">
+          <a href="#">
+            <div class="relative flex items-center justify-between pr-[16px] pl-[24px]">
+              <div class="flex w-full flex-col gap-[12px] pt-[20px] pb-[24px]">
+                <div class="flex flex-col gap-[2px]">
+                  <p class="typography-ui-13r text-gray-400">강남이비인후과의원</p>
+                  <div class="flex items-center gap-[8px]">
+                    <p class="typography-ui-19sb text-gray-900">김의동 의사</p>
+                    <div class="flex items-center">
+                      <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
+                      <span class="typography-ui-13m text-gray-700">5.0</span>
+                      <span class="typography-ui-13r text-gray-400">(2000+)</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-[5px]">
+                    <p class="typography-ui-13m text-green-700">오늘 예약</p>
+                    <div class="h-[10px] w-[1px] bg-gray-50"></div>
+                    <span class="typography-ui-13r text-gray-400">(목) 10:00~19:00</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-[4px]">
+                  <span
+                    class="typography-ui-12m flex h-[20px] items-center rounded bg-gray-30 px-[4px] text-gray-500">이비인후과
+                    전문의</span>
+                </div>
+              </div>
+              <div class="relative pb-[8px]">
+                <div
+                  class="flex items-center justify-center bg-blue-100 rounded-full h-[120px] w-[120px] transition-transform hover:scale-105">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 의사 6 -->
+        <li class="hover:bg-blue-100 transition-colors duration-200">
+          <a href="#">
+            <div class="relative flex items-center justify-between pr-[16px] pl-[24px]">
+              <div class="flex w-full flex-col gap-[12px] pt-[20px] pb-[24px]">
+                <div class="flex flex-col gap-[2px]">
+                  <p class="typography-ui-13r text-gray-400">강남이비인후과의원</p>
+                  <div class="flex items-center gap-[8px]">
+                    <p class="typography-ui-19sb text-gray-900">이의현 의사</p>
+                    <div class="flex items-center">
+                      <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
+                      <span class="typography-ui-13m text-gray-700">5.0</span>
+                      <span class="typography-ui-13r text-gray-400">(2000+)</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-[5px]">
+                    <p class="typography-ui-13m text-green-700">오늘 예약</p>
+                    <div class="h-[10px] w-[1px] bg-gray-50"></div>
+                    <span class="typography-ui-13r text-gray-400">(목) 10:00~19:00</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-[4px]">
+                  <span
+                    class="typography-ui-12m flex h-[20px] items-center rounded bg-gray-30 px-[4px] text-gray-500">이비인후과
+                    전문의</span>
+                </div>
+              </div>
+              <div class="relative pb-[8px]">
+                <div
+                  class="flex items-center justify-center bg-blue-100 rounded-full h-[120px] w-[120px] transition-transform hover:scale-105">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-500" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+
+      <div class="p-4 border-t border-gray-100 flex justify-center">
+        <a href="#" class="text-blue-600 font-medium text-sm">더 많은 의사 보기</a>
+      </div>
+    </section>
+
+    <section class="max-w-7xl px-4 py-24">
+      <!-- 헤더 -->
+      <div class="mb-8">
+        <h1 class="text-5xl font-light tracking-wide mb-2">Now</h1>
+        <p class="text-gray-500">건강하고 아름다운 삶의 동행 닥터퓨처와 함께하세요.</p>
       </div>
 
-      <!-- 건강매거진 -->
-      <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex items-center mb-4">
-          <span class="text-lg font-semibold mr-2">건강매거진</span>
-          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
+      <!-- 아래 카드 리스트 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 mb-10">
+        <!-- 공지사항 -->
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center mb-4">
+            <span class="text-lg font-semibold mr-2">공지사항</span>
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <ul class="text-sm space-y-1">
+            <li>2019 핑크리본 유방암 건강강좌 - <span class="text-gray-500">2019.10.23</span></li>
+            <li>개인정보 처리방침 변경안내 - <span class="text-gray-500">2019.09.30</span></li>
+            <li>임상시험종사자 연구자교육 - <span class="text-gray-500">2019.09.10</span></li>
+            <li>호스피스 완화의료 교육 - <span class="text-gray-500">2019.09.18</span></li>
+          </ul>
         </div>
-        <ul class="text-sm space-y-1">
-          <li>미나리의 건강 효능 6가지 - <span class="text-gray-500">2025.05.02</span></li>
-          <li>아프다면 닥터퓨처 비대면 진료! - <span class="text-gray-500">2025.04.29</span></li>
-          <li>비 오는 날 두통 심해지는 이유? - <span class="text-gray-500">2025.04.20</span></li>
-          <li>간헐적 단식, 정말 효과 있을까? - <span class="text-gray-500">2025.04.18</span></li>
-        </ul>
-      </div>
-    </div>
 
-    <!-- 슬라이드 + 카드 -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- 슬라이드 영역 (좌측) -->
-      <div class="md:col-span-2 bg-gray-100 rounded-lg overflow-hidden shadow">
-        <!-- Swiper 슬라이드 컨테이너 -->
-        <div class="swiper mySwiper">
-          <div class="swiper-wrapper">
-            <!-- 슬라이드 1 -->
-            <div class="swiper-slide">
-              <div class="flex flex-col md:flex-row h-full">
-                <img src="{{ url_for('static', filename='img/bear.jpg') }}" class="w-full md:w-1/2 object-cover"
-                  alt="로봇수술1">
-                <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
-                  <div>
-                    <p class="text-sm text-gray-500 mb-2">최신 로봇 수술 장비 도입</p>
-                    <h2 class="text-2xl font-semibold">정밀하고 안전한 수술</h2>
-                    <!-- 뉴스 헤드라인 추가 -->
-                    <div class="mt-4 pt-4 border-t border-gray-300">
-                      <h3 class="text-md font-semibold mb-2">최신 의료 뉴스</h3>
-                      <ul class="text-sm space-y-2">
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702159.html"
-                            class="text-blue-600 hover:underline">동물 학대 영상에 '싫어요' 눌렀는데, 학대범은 오히려 돈 번다?</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701532.html"
-                            class="text-blue-600 hover:underline">가톨릭중앙의료원, 한국인 디지털 분자지도 프로젝트 국책 과제 선정</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701528.html"
-                            class="text-blue-600 hover:underline">화순전남대병원, 창업기업·임상시험 지원 체계 구축</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702237.html"
-                            class="text-blue-600 hover:underline">레졸루트 저혈당 치료제 '에르소데투그', 美 FDA 혁신 치료제 지정</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702254.html"
-                            class="text-blue-600 hover:underline">HK이노엔 위식도역류질환 치료제 '케이캡', 북아프리카 6개국 진출</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701323.html"
-                            class="text-blue-600 hover:underline">한국아스텔라스, 신임 의학부 총괄에 강예림 전무 선임</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702226.html"
-                            class="text-blue-600 hover:underline">BTS 진, 서울아산병원에 1억 원 후원</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701382.html"
-                            class="text-blue-600 hover:underline">50세 김지호, 과식한 후 '이것' 100회… "살 덜 찌는 체질로 바뀐다"</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701326.html"
-                            class="text-blue-600 hover:underline">'넘사벽 비주얼' 제니, 멧 갈라 의상 화제… "준비 위해 '이것'까지 했다"</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201852.html"
-                            class="text-blue-600 hover:underline">[아미랑]"몸의 자명종 소리에 귀를 기울이세요"</a></li>
-                      </ul>
+        <!-- 자주묻는질문 -->
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center mb-4">
+            <span class="text-lg font-semibold mr-2">자주묻는질문</span>
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <ul class="text-sm space-y-1">
+            <li>기공식 열려 - <span class="text-gray-500">2020.02.14</span></li>
+            <li>간호사 채용공고 - <span class="text-gray-500">2020.02.11</span></li>
+            <li>감상선암 외과 이태욱 교수 - <span class="text-gray-500">2020.02.05</span></li>
+            <li>차량용 방사선 장비 도입 - <span class="text-gray-500">2020.02.03</span></li>
+          </ul>
+        </div>
+
+        <!-- 건강매거진 -->
+        <div class="bg-white rounded-lg shadow p-4">
+          <div class="flex items-center mb-4">
+            <span class="text-lg font-semibold mr-2">건강매거진</span>
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <ul class="text-sm space-y-1">
+            <li>미나리의 건강 효능 6가지 - <span class="text-gray-500">2025.05.02</span></li>
+            <li>아프다면 닥터퓨처 비대면 진료! - <span class="text-gray-500">2025.04.29</span></li>
+            <li>비 오는 날 두통 심해지는 이유? - <span class="text-gray-500">2025.04.20</span></li>
+            <li>간헐적 단식, 정말 효과 있을까? - <span class="text-gray-500">2025.04.18</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 슬라이드 + 카드 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 슬라이드 영역 (좌측) -->
+        <div class="md:col-span-2 bg-gray-100 rounded-lg overflow-hidden shadow">
+          <!-- Swiper 슬라이드 컨테이너 -->
+          <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+              <!-- 슬라이드 1 -->
+              <div class="swiper-slide">
+                <div class="flex flex-col md:flex-row h-full">
+                  <img src="{{ url_for('static', filename='img/bear.jpg') }}" class="w-full md:w-1/2 object-cover"
+                    alt="로봇수술1">
+                  <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
+                    <div>
+                      <p class="text-sm text-gray-500 mb-2">최신 로봇 수술 장비 도입</p>
+                      <h2 class="text-2xl font-semibold">정밀하고 안전한 수술</h2>
+                      <!-- 뉴스 헤드라인 추가 -->
+                      <div class="mt-4 pt-4 border-t border-gray-300">
+                        <h3 class="text-md font-semibold mb-2">최신 의료 뉴스</h3>
+                        <ul class="text-sm space-y-2">
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702159.html"
+                              class="text-blue-600 hover:underline">동물 학대 영상에 '싫어요' 눌렀는데, 학대범은 오히려 돈 번다?</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701532.html"
+                              class="text-blue-600 hover:underline">가톨릭중앙의료원, 한국인 디지털 분자지도 프로젝트 국책 과제 선정</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701528.html"
+                              class="text-blue-600 hover:underline">화순전남대병원, 창업기업·임상시험 지원 체계 구축</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702237.html"
+                              class="text-blue-600 hover:underline">레졸루트 저혈당 치료제 '에르소데투그', 美 FDA 혁신 치료제 지정</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702254.html"
+                              class="text-blue-600 hover:underline">HK이노엔 위식도역류질환 치료제 '케이캡', 북아프리카 6개국 진출</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701323.html"
+                              class="text-blue-600 hover:underline">한국아스텔라스, 신임 의학부 총괄에 강예림 전무 선임</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702226.html"
+                              class="text-blue-600 hover:underline">BTS 진, 서울아산병원에 1억 원 후원</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701382.html"
+                              class="text-blue-600 hover:underline">50세 김지호, 과식한 후 '이것' 100회… "살 덜 찌는 체질로 바뀐다"</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701326.html"
+                              class="text-blue-600 hover:underline">'넘사벽 비주얼' 제니, 멧 갈라 의상 화제… "준비 위해 '이것'까지 했다"</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201852.html"
+                              class="text-blue-600 hover:underline">[아미랑]"몸의 자명종 소리에 귀를 기울이세요"</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 슬라이드 2 -->
+              <div class="swiper-slide">
+                <div class="flex flex-col md:flex-row h-full">
+                  <img src="{{ url_for('static', filename='img/bear2.jpg') }}" class="w-full md:w-1/2 object-cover"
+                    alt="로봇수술2">
+                  <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
+                    <div>
+                      <p class="text-sm text-gray-500 mb-2">환자 맞춤 수술 솔루션 제공</p>
+                      <h2 class="text-2xl font-semibold">개인화된 치료계획</h2>
+                      <!-- 뉴스 헤드라인 추가 -->
+                      <div class="mt-4 pt-4 border-t border-gray-300">
+                        <h3 class="text-md font-semibold mb-2">최신 의료 뉴스</h3>
+                        <ul class="text-sm space-y-2">
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702248.html"
+                              class="text-blue-600 hover:underline">경제력에 좌우되는 발달장애 치료… "정부·의료계·보험사 힘 모아야"</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701542.html"
+                              class="text-blue-600 hover:underline">[식품업계 이모저모] 한우자조금, 5월부터 '2025 한우상생위크' 캠페인 전개 外</a>
+                          </li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701522.html"
+                              class="text-blue-600 hover:underline">이현이, "탄수화물 좋아하는데 살 안 쪄"… '이것' 한 덕분이라는데</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701551.html"
+                              class="text-blue-600 hover:underline">"다이어트 한약 먹고 6kg 빼"… 맹승지, 버거도 '이렇게' 먹던데</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701883.html"
+                              class="text-blue-600 hover:underline">"직장 스트레스로 살 쪄"… 70kg 감량한 30대 男, 비법 뭐였을까?</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201876.html"
+                              class="text-blue-600 hover:underline">[밀당365] 당뇨병 때문에 눈꺼풀 떨리기도 하나요?</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050202602.html"
+                              class="text-blue-600 hover:underline">'탈색 머리' 10년 송해나, "머리숱 위해 '이 음식' 챙겨 먹는다"… 뭘까?</a>
+                          </li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201211.html"
+                              class="text-blue-600 hover:underline">이영애, 의외로 '이 음식' 좋아한다는데… 알고 보면 열량 폭탄?</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/04/30/2025043001155.html"
+                              class="text-blue-600 hover:underline">황금연휴에 늘어난 체중… 빨리 되돌리는 '3가지' 방법은?</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702082.html"
+                              class="text-blue-600 hover:underline">"15명 출산, 아직도 낳고 싶다" 50대 여성… 사연 들어보니</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 슬라이드 3 -->
+              <div class="swiper-slide">
+                <div class="flex flex-col md:flex-row h-full">
+                  <img src="{{ url_for('static', filename='img/heart.jpg') }}" class="w-full md:w-1/2 object-cover"
+                    alt="로봇수술3">
+                  <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
+                    <div>
+                      <p class="text-sm text-gray-500 mb-2">숙련된 전문 의료진</p>
+                      <h2 class="text-2xl font-semibold">믿을 수 있는 시술</h2>
+                      <!-- 뉴스 헤드라인 추가 -->
+                      <div class="mt-4 pt-4 border-t border-gray-300">
+                        <h3 class="text-md font-semibold mb-2">최신 의료 뉴스</h3>
+                        <ul class="text-sm space-y-2">
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702237.html"
+                              class="text-blue-600 hover:underline">레졸루트 저혈당 치료제 '에르소데투그', 美 FDA 혁신 치료제 지정</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702254.html"
+                              class="text-blue-600 hover:underline">HK이노엔 위식도역류질환 치료제 '케이캡', 북아프리카 6개국 진출</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701323.html"
+                              class="text-blue-600 hover:underline">한국아스텔라스, 신임 의학부 총괄에 강예림 전무 선임</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702226.html"
+                              class="text-blue-600 hover:underline">BTS 진, 서울아산병원에 1억 원 후원</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701532.html"
+                              class="text-blue-600 hover:underline">가톨릭중앙의료원, 한국인 디지털 분자지도 프로젝트 국책 과제 선정</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701528.html"
+                              class="text-blue-600 hover:underline">화순전남대병원, 창업기업·임상시험 지원 체계 구축</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702248.html"
+                              class="text-blue-600 hover:underline">경제력에 좌우되는 발달장애 치료… "정부·의료계·보험사 힘 모아야"</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201876.html"
+                              class="text-blue-600 hover:underline">[밀당365] 당뇨병 때문에 눈꺼풀 떨리기도 하나요?</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201852.html"
+                              class="text-blue-600 hover:underline">[아미랑]"몸의 자명종 소리에 귀를 기울이세요"</a></li>
+                          <li><a href="https://health.chosun.com/site/data/html_dir/2025/04/30/2025043001155.html"
+                              class="text-blue-600 hover:underline">황금연휴에 늘어난 체중… 빨리 되돌리는 '3가지' 방법은?</a></li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- 슬라이드 2 -->
-            <div class="swiper-slide">
-              <div class="flex flex-col md:flex-row h-full">
-                <img src="{{ url_for('static', filename='img/bear2.jpg') }}" class="w-full md:w-1/2 object-cover"
-                  alt="로봇수술2">
-                <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
-                  <div>
-                    <p class="text-sm text-gray-500 mb-2">환자 맞춤 수술 솔루션 제공</p>
-                    <h2 class="text-2xl font-semibold">개인화된 치료계획</h2>
-                    <!-- 뉴스 헤드라인 추가 -->
-                    <div class="mt-4 pt-4 border-t border-gray-300">
-                      <h3 class="text-md font-semibold mb-2">최신 의료 뉴스</h3>
-                      <ul class="text-sm space-y-2">
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702248.html"
-                            class="text-blue-600 hover:underline">경제력에 좌우되는 발달장애 치료… "정부·의료계·보험사 힘 모아야"</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701542.html"
-                            class="text-blue-600 hover:underline">[식품업계 이모저모] 한우자조금, 5월부터 '2025 한우상생위크' 캠페인 전개 外</a>
-                        </li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701522.html"
-                            class="text-blue-600 hover:underline">이현이, "탄수화물 좋아하는데 살 안 쪄"… '이것' 한 덕분이라는데</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701551.html"
-                            class="text-blue-600 hover:underline">"다이어트 한약 먹고 6kg 빼"… 맹승지, 버거도 '이렇게' 먹던데</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701883.html"
-                            class="text-blue-600 hover:underline">"직장 스트레스로 살 쪄"… 70kg 감량한 30대 男, 비법 뭐였을까?</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201876.html"
-                            class="text-blue-600 hover:underline">[밀당365] 당뇨병 때문에 눈꺼풀 떨리기도 하나요?</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050202602.html"
-                            class="text-blue-600 hover:underline">'탈색 머리' 10년 송해나, "머리숱 위해 '이 음식' 챙겨 먹는다"… 뭘까?</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201211.html"
-                            class="text-blue-600 hover:underline">이영애, 의외로 '이 음식' 좋아한다는데… 알고 보면 열량 폭탄?</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/04/30/2025043001155.html"
-                            class="text-blue-600 hover:underline">황금연휴에 늘어난 체중… 빨리 되돌리는 '3가지' 방법은?</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702082.html"
-                            class="text-blue-600 hover:underline">"15명 출산, 아직도 낳고 싶다" 50대 여성… 사연 들어보니</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!-- 네비게이션 / 페이지네이션 -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
 
-            <!-- 슬라이드 3 -->
-            <div class="swiper-slide">
-              <div class="flex flex-col md:flex-row h-full">
-                <img src="{{ url_for('static', filename='img/heart.jpg') }}" class="w-full md:w-1/2 object-cover"
-                  alt="로봇수술3">
-                <div class="p-6 flex flex-col justify-between w-full md:w-1/2">
-                  <div>
-                    <p class="text-sm text-gray-500 mb-2">숙련된 전문 의료진</p>
-                    <h2 class="text-2xl font-semibold">믿을 수 있는 시술</h2>
-                    <!-- 뉴스 헤드라인 추가 -->
-                    <div class="mt-4 pt-4 border-t border-gray-300">
-                      <h3 class="text-md font-semibold mb-2">최신 의료 뉴스</h3>
-                      <ul class="text-sm space-y-2">
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702237.html"
-                            class="text-blue-600 hover:underline">레졸루트 저혈당 치료제 '에르소데투그', 美 FDA 혁신 치료제 지정</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702254.html"
-                            class="text-blue-600 hover:underline">HK이노엔 위식도역류질환 치료제 '케이캡', 북아프리카 6개국 진출</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701323.html"
-                            class="text-blue-600 hover:underline">한국아스텔라스, 신임 의학부 총괄에 강예림 전무 선임</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702226.html"
-                            class="text-blue-600 hover:underline">BTS 진, 서울아산병원에 1억 원 후원</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701532.html"
-                            class="text-blue-600 hover:underline">가톨릭중앙의료원, 한국인 디지털 분자지도 프로젝트 국책 과제 선정</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050701528.html"
-                            class="text-blue-600 hover:underline">화순전남대병원, 창업기업·임상시험 지원 체계 구축</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/07/2025050702248.html"
-                            class="text-blue-600 hover:underline">경제력에 좌우되는 발달장애 치료… "정부·의료계·보험사 힘 모아야"</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201876.html"
-                            class="text-blue-600 hover:underline">[밀당365] 당뇨병 때문에 눈꺼풀 떨리기도 하나요?</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/05/02/2025050201852.html"
-                            class="text-blue-600 hover:underline">[아미랑]"몸의 자명종 소리에 귀를 기울이세요"</a></li>
-                        <li><a href="https://health.chosun.com/site/data/html_dir/2025/04/30/2025043001155.html"
-                            class="text-blue-600 hover:underline">황금연휴에 늘어난 체중… 빨리 되돌리는 '3가지' 방법은?</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          </div>
+        </div>
+
+        <!-- 이미지 카드 (우측) -->
+        <div class="bg-gray-100 rounded-lg overflow-hidden shadow">
+          <img src="{{ url_for('static', filename='img/dashboard1.jpg') }}" alt="감상선암"
+            class="w-full object-cover h-[250px]">
+          <div class="p-4">
+            <p class="text-xs text-gray-500">닥터퓨처</p>
+            <h3 class="font-semibold">QR찍고 앱 다운로드 하기</h3>
+            <img src="{{ url_for('static', filename='img/qr.jpg') }}" alt="QR 코드"
+              class="w-[230px] h-[230px] mx-auto mt-2">
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- 풋터 -->
+  <footer class="bg-gray-800 text-gray-300 mt-8">
+    <div class="fixed-width-container py-6">
+      <!-- 주요 링크 영역 -->
+      <div class="foot-link mb-5">
+        <div class="flex flex-wrap gap-x-8 gap-y-2 justify-between max-w-5xl">
+          <a href="#"
+            class="text-gray-300 hover:text-white hover:underline text-sm relative pl-3 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-500 before:rounded-full">병원소개</a>
+          <a href="#"
+            class="text-gray-300 hover:text-white hover:underline text-sm relative pl-3 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-500 before:rounded-full">이용약관</a>
+          <a href="#"
+            class="text-white hover:underline text-sm font-bold relative pl-3 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-500 before:rounded-full">개인정보처리방침</a>
+          <a href="#"
+            class="text-gray-300 hover:text-white hover:underline text-sm relative pl-3 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-500 before:rounded-full">이용안내</a>
+          <a href="#"
+            class="text-gray-300 hover:text-white hover:underline text-sm relative pl-3 before:content-[''] before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:bg-blue-500 before:rounded-full">고객센터</a>
+        </div>
+      </div>
+
+      <!-- 센터 링크 영역 -->
+      <div class="mb-5 border-t border-gray-700 pt-4">
+        <h3 class="text-white text-sm mb-3 font-bold">진료과 안내</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-2 mb-4">
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>내과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>소아과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>이비인후과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>피부과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>신경과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>정형외과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>정신건강의학과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>안과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>비뇨기과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>산부인과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>재활의학과
+          </a>
+          <a href="#" class="text-gray-300 hover:text-white hover:underline flex items-center text-xs">
+            <span class="w-0.5 h-3 bg-blue-600 inline-block mr-1.5"></span>치과
+          </a>
+        </div>
+      </div>
+
+      <!-- 하단 정보 -->
+      <div class="flex flex-col md:flex-row justify-between items-start border-t border-gray-700 pt-4">
+        <div class="mb-4 md:mb-0">
+          <!-- 로고 -->
+          <div class="flex items-center mb-3">
+            <div class="text-white text-lg font-bold mr-2">닥터퓨처</div>
+            <div class="text-gray-400 text-xs">미래 의료의 시작</div>
           </div>
 
-          <!-- 네비게이션 / 페이지네이션 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-pagination"></div>
-
+          <!-- 주소 및 연락처 -->
+          <div class="flex items-center text-gray-400 text-xs mb-1.5">
+            <span
+              class="inline-block w-4 h-4 mr-1.5 bg-gray-600 rounded-full flex items-center justify-center text-white text-[10px]">✉</span>
+            경기도 성남시 분당구 판교로227번길 23, 닥터퓨처빌딩 8층
+          </div>
+          <div class="flex items-center text-gray-400 text-xs mb-1.5">
+            <span
+              class="inline-block w-4 h-4 mr-1.5 bg-gray-600 rounded-full flex items-center justify-center text-white text-[10px]">✆</span>
+            대표전화: 02-123-4567 | 응급실: 02-123-4568
+          </div>
+          <div class="flex items-center text-gray-400 text-xs mb-1.5">
+            <span
+              class="inline-block w-4 h-4 mr-1.5 bg-gray-600 rounded-full flex items-center justify-center text-white text-[10px]">⓵</span>
+            사업자등록번호: 123-45-67890 | 대표: 홍길동
+          </div>
+          <div class="flex items-center text-gray-400 text-xs">
+            <span
+              class="inline-block w-4 h-4 mr-1.5 bg-gray-600 rounded-full flex items-center justify-center text-white text-[10px]">©</span>
+            Copyright © 2025 닥터퓨처 의료재단. All rights reserved.
+          </div>
         </div>
-      </div>
 
-      <!-- 이미지 카드 (우측) -->
-      <div class="bg-gray-100 rounded-lg overflow-hidden shadow">
-        <img src="{{ url_for('static', filename='img/dashboard1.jpg') }}" alt="감상선암"
-          class="w-full object-cover h-[250px]">
-        <div class="p-4">
-          <p class="text-xs text-gray-500">닥터퓨처</p>
-          <h3 class="font-semibold">QR찍고 앱 다운로드 하기</h3>
-          <img src="{{ url_for('static', filename='img/qr.jpg') }}" alt="QR 코드"
-            class="w-[230px] h-[230px] mx-auto mt-2">
+        <!-- 연락처 및 SNS -->
+        <div class="md:text-right">
+          <div class="mb-2">
+            <h4 class="text-white text-xs mb-1">고객센터</h4>
+            <p class="text-gray-300 text-base font-bold">055-123-4567</p>
+            <p class="text-gray-400 text-xs">평일 09:00 - 18:00, 토요일 09:00 - 13:00</p>
+          </div>
+
+          <div class="flex gap-3 mt-3 md:justify-end">
+            <a href="#"
+              class="text-gray-400 hover:text-white bg-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">FB</a>
+            <a href="#"
+              class="text-gray-400 hover:text-white bg-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">TW</a>
+            <a href="#"
+              class="text-gray-400 hover:text-white bg-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">IG</a>
+            <a href="#"
+              class="text-gray-400 hover:text-white bg-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-xs">YT</a>
+          </div>
         </div>
       </div>
     </div>
-  </section>
+  </footer>
 
   <!-- Swiper 초기화 스크립트 -->
   <script>
