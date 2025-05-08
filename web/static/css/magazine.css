@@ -1,0 +1,116 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #fff;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .magazine-container {
+    max-width: 1000px;
+    margin-left: 250px;
+    padding: 0 20px;
+  }
+  
+  .magazine-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem
+  }
+  
+  .magazine-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+  }
+  
+  .magazine-text {
+    flex: 1;
+  }
+  
+  .magazine-text h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  .magazine-desc {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .magazine-date {
+    font-size: 13px;
+    color: #aaa;
+  }
+  
+  .magazine-img img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-left: 20px;
+  }
+    .qr-banner-blue {
+  width: 280px;
+  height: 600px;
+  background: linear-gradient(135deg, #007acc, #e0f7ff);
+  border-radius: 16px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  font-family: 'Noto Sans KR', sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin-top: 130px;
+}
+
+.qr-banner-text .headline {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.qr-banner-text .emphasis {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.blue-banner-image {
+  width: 150px;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.qr-download {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qr-download .download-text {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.qr-code {
+  width: 64px;
+  height: 64px;
+}
+
+/* 카드 스타일 */
+.magazine-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem; /* 둥근 모서리 */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  padding: 2rem;
+}
+

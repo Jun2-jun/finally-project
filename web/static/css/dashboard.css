@@ -1,0 +1,156 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url("../img/hoobo1.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #222;
+}
+
+/* 페이지네이션 도트 위치 */
+.swiper-pagination {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;
+}
+
+/* 도트 기본 스타일 */
+.swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  background: transparent !important;
+  border: 1px solid pink !important;
+  border-radius: 9999px !important;
+  display: inline-block !important;
+  margin: 0 4px !important;
+  opacity: 1 !important;
+  transition: all 0.5s ease !important;
+}
+
+/* 활성 도트 스타일 */
+.swiper-pagination-bullet-active {
+  width: 20px !important;
+  height: 12px !important;
+  background: pink !important;
+  border-radius: 6px !important;
+  border: 1px solid transparent !important;
+}
+
+/* 화살표 버튼 기본 배경 이미지 (개별 지정) */
+.swiper-button-next {
+  background: url(/godiva/img/common/next.png) no-repeat;
+  background-size: 50% auto;
+  background-position: center;
+}
+
+.swiper-button-prev {
+  background: url(/godiva/img/common/prev.png) no-repeat;
+}
+
+/* 화살표 공통 스타일 */
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: #fff;
+  opacity: 0.5;
+  padding: 15px 5px;
+  border-radius: 20px;
+  color: black !important;
+}
+
+/* Swiper 기본 화살표 아이콘 조정 */
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}
+
+/* Hover 효과 */
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: rgba(255, 192, 203, 0.9);
+  color: white;
+}
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  transition: all 0.3s ease;
+}
+
+.top-navbar-content {
+  max-height: 80px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.top-navbar:hover .top-navbar-content {
+  max-height: 300px;
+}
+
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.top-navbar:hover .submenu {
+  max-height: 240px;
+}
+
+/* 본문 여백 조정 */
+.main-content {
+  margin-top: 80px;
+  width: 100%;
+  padding: 0;
+}
+
+/* 고정 너비 컨테이너 */
+.fixed-width-container {
+  width: 1200px;
+  /* 고정 너비 */
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* 메인 메뉴 그리드 */
+.main-menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+}
+
+/* 서브메뉴 그리드 - 메인 메뉴와 정확히 같은 그리드 구조 */
+.submenu-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: left;
+}
+
+/* 서브메뉴 항목 간격 */
+.submenu-item {
+  padding: 10px;
+}
+
+.top-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 100%;
+}
+
+/* 서브메뉴 호버 효과 추가 */
+.submenu-item a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+  color: #2563EB;
+  /* 파란색 (blue-600) */
+}

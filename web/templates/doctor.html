@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>닥터퓨처 - 비대면 진료</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor.css') }}">
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/doctor.png') }}" alt="닥터퓨처 로고">
+    </div>
+    <nav class="nav">
+      <ul>
+        <li class="dropdown">
+          <a href="#" class="active">병원 찾기</a>
+          <div class="dropdown-content">
+            <a href="#" class="active">소아청소년과</a>
+            <a href="#">감기/독감</a>
+            <a href="#">인공눈물</a>
+            <a href="#">탈모</a>
+            <a href="#">여드름</a>
+            <a href="#">전체 보기</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#">건강 정보</a>
+          <div class="dropdown-content">
+            <a href="#">이비인후과</a>
+            <a href="#">피부과</a>
+            <a href="#">내과</a>
+            <a href="#">산부인과</a>
+            <a href="#">가정의학과</a>
+            <a href="#">전체 보기</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#">게시판</a>
+          <div class="dropdown-content">
+            <a href="#">개인정보수정</a>
+            <a href="#">병력입력</a>
+            <a href="#">회원탈퇴</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#">실시간 AI 상담</a>
+          <div class="dropdown-content">
+            <a href="#">건강 매거진</a>
+            <a href="#">1분 FAQ</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#">마이페이지</a>
+          <div class="dropdown-content">
+            <a href="#">실시간 질문</a>
+            <a href="#">질문하기</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <div class="download-button">
+      <button>앱 다운로드</button>
+    </div>
+  </div>
+</header>
+
+<!-- Main Visual -->
+<section class="main-visual">
+  <div class="main-text">
+    <h1>온다</h1>  <!-- 닥터나우처럼 큼지막한 텍스트 -->
+    <p>편리한 비대면 진료를 경험해보세요.</p>
+    <a href="#services" class="scroll-down">앱 다운로드</a>
+  </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="services">
+  <div class="card">
+    <h2>병원 찾기</h2>
+    <p>가까운 병원을 쉽고 빠르게 검색하세요.</p>
+  </div>
+  <div class="card">
+    <h2>가격 정보</h2>
+    <p>최저가 진료비와 약국 정보를 제공합니다.</p>
+  </div>
+  <div class="card">
+    <h2>실시간 상담</h2>
+    <p>전문의와 바로 상담이 가능합니다.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>© 2025 닥터퓨처. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

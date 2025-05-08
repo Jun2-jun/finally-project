@@ -1,0 +1,12 @@
+# Python 캐시 파일 무시
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VSCode 설정 무시
+.vscode/
+
+# 환경 변수 파일
+.env
+*.log
