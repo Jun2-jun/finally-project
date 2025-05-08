@@ -89,23 +89,11 @@ def qna_test():
 
 @app.route('/qna/')
 def qna_list():
-    try:
-        # 실제 API 서버 주소와 포트를 입력 (예: 5002)
-        api_url = 'http://localhost:5002/api/qna?page=1&per_page=100'
-        response = requests.get(api_url)
-        data = response.json()
-
-        if data['status'] == 'success':
-            qnas = data['data']['items']
-        else:
-            qnas = []
-
-    except Exception as e:
-        print("[ERROR] QnA API 호출 실패:", e)
-        qnas = []
-
-    return render_template('qna/qna.html', now=datetime.now(), qnas=qnas)
-
+    return render_template('qna/qna.html', now=datetime.now())
+    
+@app.route('/qna/write')
+def qna_write():
+    return render_template('qna/qna_write.html')
 
 @app.route('/doctor')
 def doctor():
@@ -113,22 +101,7 @@ def doctor():
 
 @app.route('/notice/')
 def notice():
-    try:
-        # 실제 API 서버 주소로 변경: 포트번호 주의!
-        api_url = 'http://localhost:5002/api/notices?page=1&per_page=100'
-        res = requests.get(api_url)
-        result = res.json()
-
-        if result['status'] == 'success':
-            notices = result['data']['items']
-        else:
-            notices = []
-
-    except Exception as e:
-        print("API 호출 실패:", e)
-        notices = []
-
-    return render_template("notice/notice.html", now=datetime.now(), notices=notices)
+    return render_template("notice/notice.html", now=datetime.now())
     
 @app.route('/notice/post/<int:post_id>')
 def notice_detail(post_id):
