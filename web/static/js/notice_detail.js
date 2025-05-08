@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // ✅ 사용자 정보 불러오기
-    fetch('http://192.168.219.248:5002/api/current-user', {
+    fetch('http://192.168.219.148:5002/api/current-user', {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const postId = window.location.pathname.split('/').pop();
   
     // ✅ 공지사항 상세 데이터 불러오기
-    fetch(`http://192.168.219.248:5002/api/notices/${postId}`, {
+    fetch(`http://192.168.219.148:5002/api/notices/${postId}`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -35,6 +35,23 @@ document.addEventListener('DOMContentLoaded', function () {
           document.getElementById('post-title').innerText = post.title;
           document.getElementById('post-created-at').innerText = `작성일: ${post.created_at}`;
           document.getElementById('post-content').innerHTML = post.comment; // HTML 포함 가능
+
+          // ✅ 첨부파일 다운로드 링크 추가
+          const downloadContainer = document.getElementById('download-links');
+          downloadContainer.innerHTML = ''; // 초기화
+
+          if (Array.isArray(post.image_urls)) {
+            post.image_urls.forEach((url, idx) => {
+              const filename = url.split('/').pop();  // 경로에서 파일명 추출
+              const link = document.createElement('a');
+              link.href = `http://192.168.219.148:5002/api/notices/download?file=${encodeURIComponent(filename)}`;
+              link.className = 'btn btn-outline-primary btn-sm';
+              const fileLabel = decodeURIComponent(filename);  // 혹시 한글/공백 있을 수도 있으니 decode
+              link.innerText = `첨부파일 다운로드 (${fileLabel})`;
+              link.setAttribute('download', filename);  // 다운로드 힌트 (브라우저 의존)
+              downloadContainer.appendChild(link);
+            });
+          }
         } else {
           document.getElementById('post-content').innerHTML = `<p class="text-danger">공지사항을 불러올 수 없습니다.</p>`;
         }
