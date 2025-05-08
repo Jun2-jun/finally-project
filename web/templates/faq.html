@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <title>자주 묻는 질문</title>
+
   <!-- CSS 불러오기 -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/faq.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
@@ -10,69 +12,90 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-  <style>
-  
-  </style>
 </head>
-<body>
 
+<body style="background-color: #f8f9fb;">
   {% include 'sidebar/sidebar.html' %}
 
-  <div class="faq-wrapper">
-    <div class="faq-container">
-      <h2 class="faq-title">자주 묻는 질문</h2>
+  <section class="content-area" style="padding:2rem;">
+    <div class="container-fluid px-0">
+      <div class="row gx-0">
 
-      <!-- ✅ 검색 바 -->
-      <div class="faq-search-wrapper d-flex justify-content-center mt-5 mb-4">
-        <div style="width: 100%; max-width: 700px;">
-          <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-search text-secondary fs-5"></i>
-            <input
-              type="text"
-              class="form-control border-0 border-bottom border-secondary-subtle rounded-0 shadow-none"
-              placeholder="검색어를 입력하세요"
-              style="background-color: transparent;"
-            />
+        <!-- ① 좌측: FAQ 박스 -->
+        <div class="col d-flex justify-content-center">
+          <div
+            class="faq-wrapper bg-white rounded shadow-sm p-4"
+            style="max-width:800px; width:100%; box-sizing:border-box;"
+          >
+            <h2 class="faq-title mb-4">자주 묻는 질문</h2>
+
+            <!-- 검색 바 -->
+            <div class="faq-search-wrapper mb-4">
+              <div style="width: 100%; max-width: 700px;">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-search text-secondary fs-5"></i>
+                  <input
+                    type="text"
+                    class="form-control border-0 border-bottom border-secondary-subtle rounded-0 shadow-none"
+                    placeholder="검색어를 입력하세요"
+                    style="background-color: transparent; width:100%;"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ 테이블 -->
+            <div class="table-responsive">
+              <table class="faq-table table mb-0">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>카테고리</th>
+                    <th>제목</th>
+                    <th>작성시간</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>6</td><td>교환반품</td><td>배송 및 반품 안내</td><td>2020-11-12</td></tr>
+                  <tr><td>5</td><td>이용방법</td><td>부재시가 불확실하거나 없는 경우 요청 방법</td><td>2017-11-22</td></tr>
+                  <tr><td>4</td><td>이용방법</td><td>묶음 배송 요청 방법</td><td>2017-11-03</td></tr>
+                  <tr><td>3</td><td>계정</td><td>비밀번호 찾는 방법</td><td>2017-11-22</td></tr>
+                  <tr><td>2</td><td>이용방법</td><td>LINDA 쇼핑몰 이용방법</td><td>2017-11-06</td></tr>
+                  <tr><td>1</td><td>계정</td><td>아이디 생성오류</td><td>2025-05-01</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- ✅ 자주 묻는 질문 테이블 -->
-      <table class="faq-table">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>카테고리</th>
-            <th>제목</th>
-            <th>작성시간</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>6</td><td>교환반품</td><td>배송 및 반품 안내</td><td>2020-11-12</td></tr>
-          <tr><td>5</td><td>이용방법</td><td>부재시가 불확실하거나 없는 경우 요청 방법</td><td>2017-11-22</td></tr>
-          <tr><td>4</td><td>이용방법</td><td>묶음 배송 요청 방법</td><td>2017-11-03</td></tr>
-          <tr><td>3</td><td>계정</td><td>비밀번호 찾는 방법</td><td>2017-11-22</td></tr>
-          <tr><td>2</td><td>이용방법</td><td>LINDA 쇼핑몰 이용방법</td><td>2017-11-06</td></tr>
-          <tr><td>1</td><td>계정</td><td>아이디 생성오류</td><td>2025-05-01</td></tr>
-        </tbody>
-      </table>
-    </div>
+        <!-- ② 우측: 배너 -->
+        <div class="col-auto d-flex align-items-start">
+          <div class="qr-banner-blue">
+            <div class="qr-banner-text">
+              <p class="headline">지금 당장 진료가 필요하다면?</p>
+              <p class="emphasis">
+                닥터퓨처는<br>
+                <strong>늦은밤, 주말에도<br>진료 가능해요!</strong>
+              </p>
+            </div>
+            <img
+              src="{{ url_for('static', filename='img/MobileHomeScreen.png') }}"
+              alt="닥터퓨처 진료 안내"
+              class="blue-banner-image"
+            />
+            <div class="qr-download">
+              <p class="download-text">QR찍고<br>앱 다운로드하기</p>
+              <img
+                src="{{ url_for('static', filename='img/QRcode.png') }}"
+                alt="QR 코드"
+                class="qr-code"
+              />
+            </div>
+          </div>
+        </div>
 
-    <div class="qr-banner-blue">
-      <div class="qr-banner-text">
-        <p class="headline">지금 당장 진료가 필요하다면?</p>
-        <p class="emphasis">닥터퓨처는<br><strong>늦은밤, 주말에도<br>진료 가능해요!</strong></p>
-      </div>
-    
-      <img src="{{ url_for('static', filename='img/MobileHomeScreen.png') }}" alt="닥터퓨처 진료 안내" class="blue-banner-image" />
-    
-      <div class="qr-download">
-        <p class="download-text">QR찍고<br>앱 다운로드하기</p>
-        <img src="{{ url_for('static', filename='img/QRcode.png') }}" alt="QR 코드" class="qr-code" />
       </div>
     </div>
-    
-
+  </section>
 </body>
 </html>
