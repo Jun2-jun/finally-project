@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
   // 사용자 정보 불러오기
-  fetch('http://192.168.219.248:5002/api/current-user', {
+  fetch('http://192.168.219.72:5002/api/current-user', {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     
       // JSON 방식으로 공지사항 전송
-      fetch('http://192.168.219.248:5002/api/qna/', {
+      fetch('http://192.168.219.72:5002/api/qna/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

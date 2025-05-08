@@ -1,87 +1,87 @@
 body {
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* 공지사항 테이블 wrapper */
-  .notice-wrapper {
-    border-radius: 12px;
-    overflow: hidden;
-    margin-top: 10px;
-  }
-  
-  /* 테이블 자체 */
-  table.notice-table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-  }
-  
-  .notice-table th,
-  .notice-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    word-break: break-word;
-  }
-  
-  .notice-table th {
-    background-color: #f5f5f5;
-  }
-  
-  /* 마지막 행 둥글게 처리 */
-  .notice-table tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 12px;
-  }
-  .notice-table tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 12px;
-  }
-  
-  /* 비어 있을 때 메시지 */
-  .no-notice {
-    text-align: center;
-    padding: 20px;
-    color: #666;
-  }
-  
-  /* 버튼 영역 */
-  .notice-buttons {
-    margin-top: 20px;
-    text-align: right;
-  }
-  
-  /* 작성 버튼 */
-  .notice-write-btn {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none;
-  }
-  
-  .notice-write-btn:hover {
-    background-color: #2c3e50;
-  }
-  
-  /* 행 hover 효과 */
-  .notice-table tbody tr:hover {
-    background-color: #f0f0f0;
-    cursor: pointer;
-  }
-  
-  table {
-    width: 100%;
-    table-layout: fixed;
-    border-collapse: separate; /* 둥글게 처리할 때 필수 */
-    border-spacing: 0;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-  }
+  margin: 0;
+  padding: 0;
+}
+
+/* 공지사항 테이블 wrapper */
+.notice-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+/* 테이블 자체 */
+table.notice-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.notice-table th,
+.notice-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  word-break: break-word;
+}
+
+.notice-table th {
+  background-color: #f5f5f5;
+}
+
+/* 마지막 행 둥글게 처리 */
+.notice-table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+.notice-table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+/* 비어 있을 때 메시지 */
+.no-notice {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* 버튼 영역 */
+.notice-buttons {
+  margin-top: 20px;
+  text-align: right;
+}
+
+/* 작성 버튼 */
+.notice-write-btn {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.notice-write-btn:hover {
+  background-color: #2c3e50;
+}
+
+/* 행 hover 효과 */
+.notice-table tbody tr:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate; /* 둥글게 처리할 때 필수 */
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
