@@ -61,7 +61,11 @@ def dashboard():
 
 @app.route('/find')
 def find():
-    return render_template("find/find.html", now=datetime.now())
+    # URL에서 keyword 파라미터 가져오기 (예: /find?keyword=치과)
+    keyword = request.args.get('keyword', '')
+    
+    # 템플릿에 keyword 파라미터 전달
+    return render_template("find/find.html", now=datetime.now(), keyword=keyword)
 
 @app.route('/admin')
 def admin():
