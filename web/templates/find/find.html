@@ -14,7 +14,7 @@
     }
     
     .container-fluid {
-      padding: 0;
+      padding: 50;
       overflow-x: hidden;
       max-width: 100vw;
     }
@@ -29,7 +29,7 @@
     .search-form-container {
       margin-bottom: 1.5rem;
       max-width: 600px;
-      margin-left: auto;
+      margin-left: 250px;
       margin-right: auto;
     }
 
@@ -47,7 +47,7 @@
       position: absolute;
       left: 0;
       bottom: 0;
-      height: 100%;
+      height: 300px;
       display: flex;
       align-items: flex-end;
       padding-bottom: 2px;
@@ -130,19 +130,20 @@
     }
     
     .map-container {
-      display: flex;
-      gap: 1rem;
-      height: calc(100vh - 10rem);
-      margin-top: 1rem;
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 1rem;
-      border-radius: 8px;
-      max-width: 1100px;
-      width: 92%;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
+    display: flex;
+    gap: 1rem;
+    height: calc(100vh - 10rem);
+    margin-top: 1rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 1100px;
+    width: 92%;
+    margin-left: 0;        /* 왼쪽 정렬로 변경 */
+    margin-right: auto;    /* 오른쪽 여백만 자동으로 */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+
     
     #map {
       flex: 3;
@@ -162,6 +163,56 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       max-width: 280px;
     }
+    .qr-banner-blue {
+    width: 280px;
+    height: 600px;
+    background: linear-gradient(135deg, #007acc, #e0f7ff);
+    border-radius: 16px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    margin-top: 130px;
+  }
+  
+  .qr-banner-text .headline {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .qr-banner-text .emphasis {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+  
+  .blue-banner-image {
+    width: 150px;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .qr-download {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .qr-download .download-text {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  
+  .qr-code {
+    width: 64px;
+    height: 64px;
+  }
     
     .list-container {
       background-color: rgba(255, 255, 255, 0.9);
@@ -382,6 +433,7 @@
   </style>
 </head>
 <body>
+  <div style="display: flex; justify-content: space-between; padding: 0 40px;">
   <div class="container-fluid">
     <div class="row g-0">
       <!-- Sidebar Include -->
@@ -726,5 +778,24 @@
       }
     }
   </script>
+
+   <!-- 우측: 배너 -->
+   <div style="width: 300px;">
+    <div class="qr-banner-blue">
+      <div class="qr-banner-text">
+        <p class="headline">지금 당장 진료가 필요하다면?</p>
+        <p class="emphasis">닥터퓨처는<br><strong>늦은밤, 주말에도<br>진료 가능해요!</strong></p>
+      </div>
+
+      <img src="{{ url_for('static', filename='img/MobileHomeScreen.png') }}" alt="닥터퓨처 진료 안내" class="blue-banner-image" />
+
+      <div class="qr-download">
+        <p class="download-text">QR찍고<br>앱 다운로드하기</p>
+        <img src="{{ url_for('static', filename='img/QRcode.png') }}" alt="QR 코드" class="qr-code" />
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

@@ -52,3 +52,53 @@
     font-weight: bold;
     color: #007bff;
   }
+  .qr-banner-blue {
+    width: 320px;
+    height: 600px;
+    background: linear-gradient(135deg, #007acc, #e0f7ff);
+    border-radius: 16px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    margin-top: 130px;
+  }
+  
+  .qr-banner-text .headline {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .qr-banner-text .emphasis {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+  
+  .blue-banner-image {
+    width: 150px;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .qr-download {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .qr-download .download-text {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  
+  .qr-code {
+    width: 64px;
+    height: 64px;
+  }

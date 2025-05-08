@@ -10,7 +10,8 @@
 <body>
   {% include 'sidebar/sidebar.html' %}
   {% include 'find/search.html' %}
-  <div class="container mt-5" style="padding-left: 260px; padding-right: 40px;">
+  <div style="display: flex; justify-content: space-between; padding: 0 40px;">s
+  <div class="container mt-5" style="padding-left: 50px; padding-right: 40px;">
 
     <!-- 병원 필터 영역 -->
     <div class="filter-bar d-flex align-items-center gap-2 mb-4 mt-3 flex-wrap">
@@ -98,5 +99,23 @@
       this.classList.toggle('active-filter');
     });
   </script>
+
+   <!-- 우측: 배너 -->
+   <div style="width: 200px;">
+    <div class="qr-banner-blue">
+      <div class="qr-banner-text">
+        <p class="headline">지금 당장 진료가 필요하다면?</p>
+        <p class="emphasis">닥터퓨처는<br><strong>늦은밤, 주말에도<br>진료 가능해요!</strong></p>
+      </div>
+
+      <img src="{{ url_for('static', filename='img/MobileHomeScreen.png') }}" alt="닥터퓨처 진료 안내" class="blue-banner-image" />
+
+      <div class="qr-download">
+        <p class="download-text">QR찍고<br>앱 다운로드하기</p>
+        <img src="{{ url_for('static', filename='img/QRcode.png') }}" alt="QR 코드" class="qr-code" />
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

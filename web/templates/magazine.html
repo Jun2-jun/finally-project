@@ -7,11 +7,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
-    {% include 'sidebar/sidebar.html' %}
-  <div class="magazine-container">
-    <h2 class="magazine-title">건강 매거진</h2>
+  {% include 'sidebar/sidebar.html' %}
 
-    <div class="magazine-item">
+  <div style="display: flex; justify-content: space-between; padding: 0 40px;">
+    <!-- 좌측: 매거진 영역 -->
+    <div class="magazine-container" style="flex: 1; margin-right: 40px;">
+      <h2 class="magazine-title">건강 매거진</h2>
+
+      <div class="magazine-item">
         <div class="magazine-text">
           <h3 class="magazine-title">봄철 보약 미나리, 알고 먹어야 더 건강해요! 미나리의 건강 효능 6가지</h3>
           <p class="magazine-desc">봄철 피로잡엔 미나리! 봄나물의 왕, 미나리의 건강 효과와 부작용 알아보기</p>
@@ -22,61 +25,78 @@
         </div>
       </div>
 
-    <div class="magazine-item">
+      <div class="magazine-item">
         <div class="magazine-text">
-        <h3 class="magazine-title">2025년 5월 연휴, 갑자기 아프다면 닥터퓨처 비대면 진료로 해결하세요!</h3>
-        <p class="magazine-desc">2025년 5월 연휴 진료 걱정NO! 닥터퓨처로 비대면 진료 이용하기</p>
-        <span class="magazine-date">2025.04.29</span>
+          <h3 class="magazine-title">2025년 5월 연휴, 갑자기 아프다면 닥터퓨처 비대면 진료로 해결하세요!</h3>
+          <p class="magazine-desc">2025년 5월 연휴 진료 걱정NO! 닥터퓨처로 비대면 진료 이용하기</p>
+          <span class="magazine-date">2025.04.29</span>
         </div>
         <div class="magazine-img">
-        <img src="{{ url_for('static', filename='img/doctor.svg') }}" alt="손목 저림 이미지">
+          <img src="{{ url_for('static', filename='img/doctor.svg') }}" alt="손목 저림 이미지">
         </div>
+      </div>
+
+      <div class="magazine-item">
+        <div class="magazine-text">
+          <h3 class="magazine-title">비 오는 날 두통 심해지는 이유? 기압과 편두통의 상관관계</h3>
+          <p class="magazine-desc">날씨 변화로 인한 기압 차이가 두통에 미치는 영향과 예방법을 소개합니다.</p>
+          <span class="magazine-date">2025.04.20</span>
+        </div>
+        <div class="magazine-img">
+          <img src="{{ url_for('static', filename='img/head.jpg') }}">
+        </div>
+      </div>
+
+      <div class="magazine-item">
+        <div class="magazine-text">
+          <h3 class="magazine-title">간헐적 단식, 정말 효과 있을까? 건강한 단식법 알아보기</h3>
+          <p class="magazine-desc">16:8, 5:2 등 다양한 간헐적 단식 방법과 주의사항을 정리했습니다.</p>
+          <span class="magazine-date">2025.04.18</span>
+        </div>
+        <div class="magazine-img">
+          <img src="{{ url_for('static', filename='img/fasting.jpg') }}">
+        </div>
+      </div>
+
+      <div class="magazine-item">
+        <div class="magazine-text">
+          <h3 class="magazine-title">잘 때 손이 저리다면? 수근관증후군 의심해보세요</h3>
+          <p class="magazine-desc">자면서 손이 저리거나 통증이 있다면 수근관 증후군의 초기 증상일 수 있어요.</p>
+          <span class="magazine-date">2025.04.15</span>
+        </div>
+        <div class="magazine-img">
+          <img src="{{ url_for('static', filename='img/hand.jpg') }}">
+        </div>
+      </div>
+
+      <div class="magazine-item">
+        <div class="magazine-text">
+          <h3 class="magazine-title">입 벌릴 때 '딱'소리? 턱이 보내는 이상신호, 턱관절 장애 원인, 증상, 치료법 알아보기</h3>
+          <p class="magazine-desc">입 벌릴 때 '딱딱' 소리, 방치하면 두통까지 발생할 수 있는 '턱관절 장애' 원인, 증상, 치료법에 대해 알아볼게요.</p>
+          <span class="magazine-date">2025.04.15</span>
+        </div>
+        <div class="magazine-img">
+          <img src="{{ url_for('static', filename='img/tuck.jpg') }}">
+        </div>
+      </div>
     </div>
 
-    <div class="magazine-item">
-        <div class="magazine-text">
-        <h3 class="magazine-title">비 오는 날 두통 심해지는 이유? 기압과 편두통의 상관관계</h3>
-        <p class="magazine-desc">날씨 변화로 인한 기압 차이가 두통에 미치는 영향과 예방법을 소개합니다.</p>
-        <span class="magazine-date">2025.04.20</span>
+    <!-- 우측: 배너 -->
+    <div style="width: 280px;">
+      <div class="qr-banner-blue">
+        <div class="qr-banner-text">
+          <p class="headline">지금 당장 진료가 필요하다면?</p>
+          <p class="emphasis">닥터퓨처는<br><strong>늦은밤, 주말에도<br>진료 가능해요!</strong></p>
         </div>
-        <div class="magazine-img">
-        <img src="{{ url_for('static', filename='img/head.jpg') }}">
-        </div>
-    </div>
-    
-    <div class="magazine-item">
-        <div class="magazine-text">
-        <h3 class="magazine-title">간헐적 단식, 정말 효과 있을까? 건강한 단식법 알아보기</h3>
-        <p class="magazine-desc">16:8, 5:2 등 다양한 간헐적 단식 방법과 주의사항을 정리했습니다.</p>
-        <span class="magazine-date">2025.04.18</span>
-        </div>
-        <div class="magazine-img">
-        <img src="{{ url_for('static', filename='img/fasting.jpg') }}">
-        </div>
-    </div>
-    
-    <div class="magazine-item">
-        <div class="magazine-text">
-        <h3 class="magazine-title">잘 때 손이 저리다면? 수근관증후군 의심해보세요</h3>
-        <p class="magazine-desc">자면서 손이 저리거나 통증이 있다면 수근관 증후군의 초기 증상일 수 있어요.</p>
-        <span class="magazine-date">2025.04.15</span>
-        </div>
-        <div class="magazine-img">
-        <img src="{{ url_for('static', filename='img/hand.jpg') }}">
-        </div>
-    </div>
 
-    <div class="magazine-item">
-        <div class="magazine-text">
-        <h3 class="magazine-title">입 벌릴 때 '딱'소리? 턱이 보내는 이상신호, 턱관절 장애 원인, 증상, 치료법 알아보기</h3>
-        <p class="magazine-desc">입 벌릴 때 '딱딱' 소리, 방치하면 두통까지 발생할 수 있는 '턱관절 장애' 원인, 증상, 치료법에 대해 알아볼게요.</p>
-        <span class="magazine-date">2025.04.15</span>
+        <img src="{{ url_for('static', filename='img/MobileHomeScreen.png') }}" alt="닥터퓨처 진료 안내" class="blue-banner-image" />
+
+        <div class="qr-download">
+          <p class="download-text">QR찍고<br>앱 다운로드하기</p>
+          <img src="{{ url_for('static', filename='img/QRcode.png') }}" alt="QR 코드" class="qr-code" />
         </div>
-        <div class="magazine-img">
-        <img src="{{ url_for('static', filename='img/tuck.jpg') }}">
-        </div>
+      </div>
     </div>
-  
   </div>
 </body>
 </html>

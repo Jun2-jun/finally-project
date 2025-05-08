@@ -9,7 +9,10 @@
   transition: transform 0.2s ease;
   height: 130px;
   overflow: hidden;
-  gap: 20px; /* 이미지와 텍스트 간격 추가 */
+  gap: 20px;
+  
+  margin-left: 0; /* 오른쪽 정렬 */
+  margin-right: auto;
 }
 
 .card-box:hover {
@@ -63,5 +66,56 @@
 
 .filter-bar .dropdown-menu {
   font-size: 14px;
+}
+
+.qr-banner-blue {
+  width: 280px;
+  height: 600px;
+  background: linear-gradient(135deg, #007acc, #e0f7ff);
+  border-radius: 16px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  font-family: 'Noto Sans KR', sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin-top: 110px;
+}
+
+.qr-banner-text .headline {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.qr-banner-text .emphasis {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.blue-banner-image {
+  width: 150px;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.qr-download {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qr-download .download-text {
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+.qr-code {
+  width: 64px;
+  height: 64px;
 }
 
