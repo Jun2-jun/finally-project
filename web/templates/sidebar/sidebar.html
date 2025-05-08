@@ -51,17 +51,26 @@
               <a href="#inquiry" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">내 문의사항</a>
             </div>
           </div>
-              <div class="absolute bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-700">
-              <div class="p-4">
-                  <div class="flex items-center">
-                      <img src="https://cdn.startupful.io/img/main_page/profile1.png" alt="Profile" class="w-10 h-10 rounded-full">
-                      <div class="ml-3">
-                          <p class="text-sm font-medium text-black dark:text-white">John Doe</p>
-                          <p class="text-xs text-gray-500 dark:text-gray-400">john@example.com</p>
-                      </div>
-                  </div>
+          <div class="absolute bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-700">
+            <div class="p-4 relative flex items-center">
+              <img src="https://cdn.startupful.io/img/main_page/profile1.png" alt="Profile" class="w-10 h-10 rounded-full">
+              <div class="ml-3 text-start">
+                <!-- 이름에만 클릭 이벤트 부여 -->
+                <p id="sidebar-username" class="text-sm font-medium text-black dark:text-white cursor-pointer">
+                  로그인 필요
+                </p>
+                <p id="sidebar-email" class="text-xs text-gray-500 dark:text-gray-400"></p>
               </div>
+          
+              <!-- 드롭다운 로그아웃 메뉴 -->
+              <div id="dropdown-menu" class="absolute z-50 bottom-14 left-4 w-36 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                <button onclick="logout()" class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
+                  로그아웃
+                </button>
+              </div>
+            </div>
           </div>
+          
   
               <!-- 병원찾기 Section -->
               <div class="mb-4">
@@ -99,9 +108,9 @@
                       </svg>
                   </button>
                   <div id="teamMenu" class="hidden mt-2 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
-                      <a href="#" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">공지사항</a>
+                      <a href="/notice" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">공지사항</a>
                       <a href="/faq" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">자주묻는질문</a>
-                      <a href="#" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">자유게시판</a>
+                      <a href="/qna" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">자유게시판</a>
                       <a href="/magazine" class="flex items-center h-8 text-sm text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400">건강매거진</a>
                   </div>
               </div>

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     reservationTbody.innerHTML = '<tr><td colspan="3" class="text-center">불러오는 중...</td></tr>';
   
     // 1. 현재 사용자 정보 가져오기
-    fetch('http://192.168.219.200:5002/api/current-user', {
+    fetch('http://192.168.219.248:5002/api/current-user', {
       method: 'GET',
       credentials: 'include'
     })
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
   
           // 2. 예약정보 가져오기
-          return fetch(`http://192.168.219.200:5002/api/reservations/user/${userId}`, {
+          return fetch(`http://192.168.219.248:5002/api/reservations/user/${userId}`, {
             method: 'GET',
             credentials: 'include'
           });
@@ -43,25 +43,72 @@ document.addEventListener('DOMContentLoaded', () => {
   
         if (reservationData.status === 'success' && reservationData.data.length > 0) {
           reservationData.data.forEach((r, i) => {
-            reservationTbody.insertAdjacentHTML('beforeend', `
-              <tr>
-                <td>${i + 1}</td>
-                <td>${r.hospital}</td>
-                <td>${r.created_at || `${r.date} ${r.time}`}</td>
-              </tr>
-            `);
+            const reservationTimeStr = r.reservation_time || `${r.date} ${r.time}`;
+            const reservationTime = new Date(reservationTimeStr);
+            const now = new Date();
+  
+            if (reservationTime < now) {
+              // 과거 예약 삭제
+              fetch(`http://192.168.219.248:5002/api/mypage/reservation/${r.id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+              })
+              .then(res => {
+                if (!res.ok) console.warn(`예약 ID ${r.id} 삭제 실패`);
+              })
+              .catch(err => {
+                console.error(`예약 ID ${r.id} 삭제 요청 중 오류 발생`, err);
+              });
+            } else {
+              // 미래 예약만 출력
+              reservationTbody.insertAdjacentHTML('beforeend', `
+                <tr data-id="${r.id}">
+                  <td>        ${i + 1}</td>
+                  <td>  ${r.hospital}</td>
+                  <td>${reservationTimeStr}</td>
+                  <td><button type="button" class="cancel-btn text-red-500 hover:text-red-700 text-xl">       ❌</button></td>
+                </tr>
+              `);
+            }
           });
+  
+          if (!reservationTbody.querySelector('tr')) {
+            reservationTbody.innerHTML = '<tr><td colspan="4" class="text-center">예약된 병원이 없습니다.</td></tr>';
+          }
         } else {
-          reservationTbody.innerHTML = '<tr><td colspan="3" class="text-center">예약된 병원이 없습니다.</td></tr>';
+          reservationTbody.innerHTML = '<tr><td colspan="4" class="text-center">예약된 병원이 없습니다.</td></tr>';
         }
+  
+        // 취소 버튼 이벤트 연결
+        document.querySelectorAll(".cancel-btn").forEach(button => {
+          button.addEventListener("click", event => {
+            const row = event.target.closest("tr");
+            const reservationId = row.getAttribute("data-id");
+  
+            if (confirm("정말 이 예약을 취소하시겠습니까?")) {
+              fetch(`http://192.168.219.248:5002/api/mypage/reservation/${reservationId}`, {
+                method: "DELETE",
+                credentials: "include"
+              })
+                .then(res => {
+                  if (res.ok) {
+                    alert("예약이 취소되었습니다.");
+                    row.remove();
+                  } else {
+                    alert("예약 취소 실패");
+                  }
+                });
+            }
+          });
+        });
       })
       .catch(err => {
         console.error('[mypage.js] 예약 정보 오류:', err);
-        reservationTbody.innerHTML = '<tr><td colspan="3" class="text-center text-red-500">예약 정보를 불러오는 데 실패했습니다.</td></tr>';
+        reservationTbody.innerHTML = '<tr><td colspan="4" class="text-center text-red-500">예약 정보를 불러오는 데 실패했습니다.</td></tr>';
       });
   
     // 3. 민감정보 조회
-    fetch('http://192.168.219.200:5002/api/patient/info', {
+    fetch('http://192.168.219.248:5002/api/patient/info', {
       method: 'GET',
       credentials: 'include'
     })
@@ -114,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log('[payload]', payload);
           
   
-        fetch('http://192.168.219.200:5002/api/patient/info', {
+        fetch('http://192.168.219.248:5002/api/patient/info', {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
@@ -134,5 +181,45 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       });
     }
+    // 수정 버튼 요소 가져오기
+  const button = document.getElementById('edit-btn');
+  if (!button) {
+    console.error('❌ 수정 버튼(#edit-btn)을 찾을 수 없습니다.');
+    return;
+  }
+
+  // 수정 버튼 클릭 처리
+  button.addEventListener('click', async () => {
+    console.log('수정하기 버튼 클릭됨');
+
+    const payload = {
+      email: document.querySelector('[name="email"]').value,
+      birthdate: document.querySelector('[name="birthdate"]').value,
+      phone: document.querySelector('[name="phone"]').value,
+      address: document.querySelector('[name="address"]').value,
+      address_detail: document.querySelector('[name="detail_address"]').value
+    };
+    console.log('전송할 데이터:', payload);
+
+    try {
+      const response = await fetch('http://192.168.219.248:5002/api/users/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      console.log('수정 응답:', result);
+
+      if (result.status === 'success') {
+        alert('정보가 성공적으로 수정되었습니다.');
+      } else {
+        alert(`수정 실패: ${result.message}`);
+      }
+    } catch (err) {
+      console.error('수정 요청 중 예외 발생:', err);
+      alert('서버 요청 중 오류가 발생했습니다.');
+    }
+  });
   });
   

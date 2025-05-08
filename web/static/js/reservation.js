@@ -1,7 +1,7 @@
 
 
 // API 서버 기본 URL
-const API_BASE_URL = 'http://192.168.219.200:5002/api';
+const API_BASE_URL = 'http://192.168.219.248:5002/api';
 
 /**
  * 예약 정보를 API 서버로 전송하는 함수

@@ -27,7 +27,7 @@ def get_qna_api():
         return jsonify({'status': 'fail', 'message': f'Q&A 목록 오류: {str(e)}'}), 500
 
 # 2. Q&A 상세 조회
-@qna_bp.route('/<path:post_id>', methods=['GET'])
+@qna_bp.route('/<int:post_id>', methods=['GET'])  # ✅ 정수형으로 수정
 def get_qna_detail_api(post_id):
     try:
         qna = get_qna_by_id(post_id)

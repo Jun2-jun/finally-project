@@ -32,8 +32,11 @@ def create_app(config_name='default'):
           resources={r"/api/*": {"origins": [
               "http://localhost:5000",
               "http://127.0.0.1:5000",
-              "http://192.168.219.131:5000"  # ✅ 내 현재 IP 자동 추가
-          ]}})
+              "http://192.168.219.248:5000"  # ✅ 내 현재 IP 자동 추가
+            ],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": "*"  # 모든 헤더 허용
+          }})
 
     mysql.init_app(app)
     mail.init_app(app)

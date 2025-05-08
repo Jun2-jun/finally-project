@@ -6,7 +6,7 @@
 // 즉시 실행 함수로 전역 네임스페이스 오염 방지
 const adminApp = (function() {
     // API 기본 URL
-    const API_BASE_URL = 'http://192.168.219.200:5002/api';
+    const API_BASE_URL = 'http://192.168.219.248:5002/api';
     
     // 초기화 함수
     function init() {
@@ -535,61 +535,80 @@ window.deleteQnA = function(qnaId) {
  * 공지사항 등록
  */
 function submitNotice() {
-    const title = document.getElementById('notice-title').value;
-    const content = document.getElementById('notice-content').value;
-    const imageFiles = document.getElementById('notice-images').files;
+  const title = document.getElementById('notice-title').value;
+  const content = document.getElementById('notice-content').value;
+  const imageFiles = document.getElementById('notice-images').files;
+  
+  if (!title.trim()) {
+    alert('제목을 입력해주세요.');
+    return;
+  }
+  
+  if (!content.trim()) {
+    alert('내용을 입력해주세요.');
+    return;
+  }
+  
+  // 파일 확장자 검사
+  const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+  for (let i = 0; i < imageFiles.length; i++) {
+    const fileName = imageFiles[i].name;
+    const fileExtension = fileName.split('.').pop().toLowerCase();
     
-    if (!title.trim()) {
-      alert('제목을 입력해주세요.');
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert('허용되지 않는 파일 형식입니다. jpg, jpeg, png, gif, bmp, webp 형식의 이미지만 업로드 가능합니다.');
       return;
     }
     
-    if (!content.trim()) {
-      alert('내용을 입력해주세요.');
+    // 파일 크기 제한 (10MB)
+    const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
+    if (imageFiles[i].size > maxSizeInBytes) {
+      alert(`파일 크기가 너무 큽니다. 최대 10MB까지 업로드 가능합니다. (${fileName})`);
       return;
     }
-    
-    // 로딩 표시
-    const noticeContainer = document.getElementById('notice-data');
-    noticeContainer.innerHTML = '<p class="loading">공지사항을 등록하는 중입니다...</p>';
-    
-    // 이미지 파일이 있든 없든 FormData를 사용 (일관된 방식)
-    const formData = new FormData();
-    formData.append('title', title.trim());
-    formData.append('comment', content.trim());
-    
-    // 여러 이미지 파일 추가 (있는 경우에만)
-    for (let i = 0; i < imageFiles.length; i++) {
-      formData.append('images', imageFiles[i]);
-    }
-    
-    // 이미지가 없는 경우에도 FormData를 사용하여 요청
-    fetch(`${API_BASE_URL}/notices`, {
-      method: 'POST',
-      mode: 'cors',
-      credentials: 'include', // 쿠키를 포함시킴
-      body: formData
+  }
+  
+  // 로딩 표시
+  const noticeContainer = document.getElementById('notice-data');
+  noticeContainer.innerHTML = '<p class="loading">공지사항을 등록하는 중입니다...</p>';
+  
+  // 이미지 파일이 있든 없든 FormData를 사용 (일관된 방식)
+  const formData = new FormData();
+  formData.append('title', title.trim());
+  formData.append('comment', content.trim());
+  
+  // 여러 이미지 파일 추가 (있는 경우에만)
+  for (let i = 0; i < imageFiles.length; i++) {
+    formData.append('images', imageFiles[i]);
+  }
+  
+  // 이미지가 없는 경우에도 FormData를 사용하여 요청
+  fetch(`${API_BASE_URL}/notices`, {
+    method: 'POST',
+    mode: 'cors',
+    credentials: 'include', // 쿠키를 포함시킴
+    body: formData
+  })
+    .then(response => {
+      if (!response.ok) {
+        console.error('서버 응답 에러:', response.status, response.statusText);
+        throw new Error(`공지사항 등록에 실패했습니다. 상태 코드: ${response.status}`);
+      }
+      return response.json();
     })
-      .then(response => {
-        if (!response.ok) {
-          console.error('서버 응답 에러:', response.status, response.statusText);
-          throw new Error(`공지사항 등록에 실패했습니다. 상태 코드: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.status === 'success') {
-          alert('공지사항이 성공적으로 등록되었습니다.');
-          loadNotices(); // 목록으로 돌아가기
-        } else {
-          throw new Error(data.message || '공지사항 등록에 실패했습니다.');
-        }
-      })
-      .catch(error => {
-        alert(`오류가 발생했습니다: ${error.message}`);
-        console.error('공지사항 등록 오류:', error);
-        loadNotices(); // 오류 발생 시 목록으로 돌아가기
-      });
+    .then(data => {
+      if (data.status === 'success') {
+        alert('공지사항이 성공적으로 등록되었습니다.');
+        loadNotices(); // 목록으로 돌아가기
+      } else {
+        throw new Error(data.message || '공지사항 등록에 실패했습니다.');
+      }
+    })
+    .catch(error => {
+      alert(`오류가 발생했습니다: ${error.message}`);
+      console.error('공지사항 등록 오류:', error);
+      loadNotices(); // 오류 발생 시 목록으로 돌아가기
+    });
 }
   
   /**

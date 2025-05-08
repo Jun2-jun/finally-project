@@ -9,7 +9,7 @@ class Config:
     # MySQL 설정
     MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost')
     MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'doctor123!')
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '1234')
     MYSQL_DB = os.environ.get('MYSQL_DB', 'doctor_future')
     MYSQL_CURSORCLASS = 'DictCursor'
 
@@ -20,7 +20,8 @@ class Config:
     SESSION_COOKIE_SECURE = True
 
     # 파일 업로드 설정
-    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static', 'uploads')
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB 최대 업로드 크기
 
     # Flask-Mail 설정
@@ -40,7 +41,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False  # ✅ 로컬에선 False!
     SESSION_COOKIE_SAMESITE = 'Lax'  # ✅ 또는 'None' (CORS 환경이면)
-    SESSION_COOKIE_DOMAIN = '192.168.219.62'
+    SESSION_COOKIE_DOMAIN = '192.168.219.248'
     
 
 class ProductionConfig(Config):

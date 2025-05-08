@@ -452,7 +452,8 @@
               </button>
             </div>
             <div class="input-container">
-              <input type="text" id="keyword" class="search-input" value="내과" placeholder="지역, 진료과, 병원명 검색">
+              <!-- 취약한코드 리플렉티드 XSS-->
+              <input type="text" id="keyword" class="search-input" value="{{keyword|safe}}" placeholder="지역, 진료과, 병원명 검색">
             </div>
           </form>
         </div>
@@ -574,8 +575,8 @@
       document.getElementById('mapView').style.display = 'none';
       document.getElementById('listView').style.display = 'block';
       
-      // 카테고리 제목 업데이트
-      document.getElementById('categoryTitle').textContent = category + ' 검색 결과';
+      // 카테고리 제목 업데이트(취약한버전 DOM based XSS)
+      document.getElementById('categoryTitle').innerHTML = category + ' 검색 결과';
       
       // 콘솔에 로그 추가
       console.log('카테고리 검색 시작:', category);

@@ -54,14 +54,14 @@ def api_register():
 @cross_origin(origins=[
     "http://localhost:5000",
     "http://127.0.0.1:5000",
-    "http://192.168.219.62:5000"
+    "http://192.168.219.248:5000"
 ], supports_credentials=True)
 def api_login():
     if request.method == 'OPTIONS':
         return '', 204
 
     try:
-        data = request._decrypted_json
+        data = request.get_json() or {}
         username = data.get('username', '').strip()
         password = data.get('password')
 
@@ -105,7 +105,7 @@ def api_logout():
 
 # 5. 회원 탈퇴
 @users_bp.route('/withdraw', methods=['POST', 'OPTIONS'])
-@cross_origin(origins=["http://192.168.219.131:5000"], supports_credentials=True)
+@cross_origin(origins=["http://192.168.219.248:5000"], supports_credentials=True)
 @login_required
 def withdraw_account():
     if request.method == 'OPTIONS':

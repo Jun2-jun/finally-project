@@ -1,8 +1,9 @@
 import hashlib
 from functools import wraps
 from flask import session, jsonify, request
-#import mysql.connector
-#from config import Config
+import mysql.connector
+from config import Config
+import os
 
 # 비밀번호 해싱 함수 (SHA-256)
 def hash_password(password):

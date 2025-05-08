@@ -221,3 +221,8 @@ body {
     font-size: 16px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   }
+  /* static/css/patient.css 또는 연결된 CSS에 추가 */
+.qr-image {
+  width: 60px !important;
+  height: 60px !important;
+}
