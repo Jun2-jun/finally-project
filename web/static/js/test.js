@@ -181,5 +181,45 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       });
     }
+    // 수정 버튼 요소 가져오기
+  const button = document.getElementById('edit-btn');
+  if (!button) {
+    console.error('❌ 수정 버튼(#edit-btn)을 찾을 수 없습니다.');
+    return;
+  }
+
+  // 수정 버튼 클릭 처리
+  button.addEventListener('click', async () => {
+    console.log('수정하기 버튼 클릭됨');
+
+    const payload = {
+      email: document.querySelector('[name="email"]').value,
+      birthdate: document.querySelector('[name="birthdate"]').value,
+      phone: document.querySelector('[name="phone"]').value,
+      address: document.querySelector('[name="address"]').value,
+      address_detail: document.querySelector('[name="detail_address"]').value
+    };
+    console.log('전송할 데이터:', payload);
+
+    try {
+      const response = await fetch('http://192.168.219.50:5002/api/users/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      console.log('수정 응답:', result);
+
+      if (result.status === 'success') {
+        alert('정보가 성공적으로 수정되었습니다.');
+      } else {
+        alert(`수정 실패: ${result.message}`);
+      }
+    } catch (err) {
+      console.error('수정 요청 중 예외 발생:', err);
+      alert('서버 요청 중 오류가 발생했습니다.');
+    }
+  });
   });
   
