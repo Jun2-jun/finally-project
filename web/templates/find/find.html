@@ -434,190 +434,177 @@
 </head>
 <body>
   <div style="display: flex; justify-content: space-between; padding: 0 40px;">
-  <div class="container-fluid">
-    <div class="row g-0">
-      <!-- Sidebar Include -->
-      {% include 'sidebar/sidebar.html' %}
-      
-      <!-- Main Content -->
-      <div class="main-content">
-        <div class="search-form-container">
-          <form class="search-form" onsubmit="searchPlaces(); return false;">
-            <div class="icon-container">
-              <button class="search-button" type="submit">
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
+    <div class="container-fluid">
+      <div class="row g-0">
+        {% include 'sidebar/sidebar.html' %}
+
+        <div class="main-content">
+          <div class="search-form-container">
+            <form class="search-form" onsubmit="searchPlaces(); return false;">
+              <div class="icon-container">
+                <button class="search-button" type="submit">
+                  <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#aaaaaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </button>
+              </div>
+              <div class="input-container">
+                <input type="text" id="keyword" class="search-input" value="{{keyword|safe}}" placeholder="지역, 진료과, 병원명 검색">
+              </div>
+            </form>
+          </div>
+
+          <!-- 지도와 목록 표시 영역 -->
+          <div id="mapView" class="map-container">
+            <div id="map"></div>
+            <div id="menu_wrap">
+              <ul id="placesList"></ul>
+              <div id="pagination"></div>
             </div>
-            <div class="input-container">
-              <!-- 취약한코드 리플렉티드 XSS-->
-              <input type="text" id="keyword" class="search-input" value="{{keyword|safe}}" placeholder="지역, 진료과, 병원명 검색">
-            </div>
-          </form>
-        </div>
-        
-        <!-- 지도와 목록 표시 영역 -->
-        <div id="mapView" class="map-container">
-          <div id="map"></div>
-          <div id="menu_wrap">
-            <ul id="placesList"></ul>
-            <div id="pagination"></div>
+          </div>
+
+          <!-- 목록만 표시 영역 -->
+          <div id="listView" class="list-container" style="display: none;">
+            <h2 id="categoryTitle" class="category-title">검색 결과</h2>
+            <div id="categoryList" class="hospital-cards"></div>
           </div>
         </div>
-        
-        <!-- 목록만 표시 영역 (처음에는 숨김) -->
-        <div id="listView" class="list-container" style="display: none;">
-          <h2 id="categoryTitle" class="category-title">검색 결과</h2>
-          <div id="categoryList" class="hospital-cards"></div>
+      </div>
+    </div>
+
+    <!-- 오른쪽: 배너 -->
+    <div style="width: 300px; margin-left: 20px;">
+      <div class="qr-banner-blue">
+        <div class="qr-banner-text">
+          <p class="headline">지금 당장 진료가 필요하다면?</p>
+          <p class="emphasis">닥터퓨처는<br><strong>늦은밤, 주말에도<br>진료 가능해요!</strong></p>
+        </div>
+
+        <img src="{{ url_for('static', filename='img/MobileHomeScreen.png') }}" alt="닥터퓨처 진료 안내" class="blue-banner-image" />
+
+        <div class="qr-download">
+          <p class="download-text">QR찍고<br>앱 다운로드하기</p>
+          <img src="{{ url_for('static', filename='img/QRcode.png') }}" alt="QR 코드" class="qr-code" />
         </div>
       </div>
     </div>
   </div>
+  </div>
 
-  <!-- 외부 JS 연결 -->
   <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6be88c9794d7e1f9095b709637776b77&libraries=services"></script>
   <script>
-    // 초기 변수 설정
     let map;
     let markers = [];
     let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     let currentCategory = '';
-    
-    // URL에서 쿼리 파라미터 가져오기
+    let currentPosition = null;
+
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
-    
-    // 페이지 로드 시 실행
-    window.onload = function() {
-      // URL에 카테고리 파라미터가 있으면 목록 뷰로 표시
+
+    window.onload = function () {
       if (categoryParam) {
         currentCategory = decodeURIComponent(categoryParam);
         document.getElementById('keyword').value = currentCategory;
-        showCategoryResults(currentCategory);
-      } else {
-        // 카테고리 파라미터가 없으면 기본 지도 표시
         navigator.geolocation.getCurrentPosition(
-          function(pos) {
+          function (pos) {
+            initMap(pos.coords.latitude, pos.coords.longitude);
+            showCategoryResults(currentCategory);
+          },
+          function () {
+            initMap(37.5665, 126.9780);
+            showCategoryResults(currentCategory);
+          }
+        );
+      } else {
+        navigator.geolocation.getCurrentPosition(
+          function (pos) {
             initMap(pos.coords.latitude, pos.coords.longitude);
             searchPlaces();
           },
-          function() {
-            // 위치 접근 실패 시 서울 좌표로 기본값 설정
+          function () {
             initMap(37.5665, 126.9780);
             searchPlaces();
           }
         );
       }
-      
-      // 사이드바 링크에 이벤트 추가 (페이지 로드 후)
+
       setTimeout(setupSidebarLinks, 500);
     };
-    
-    // 지도 초기화
+
     function initMap(lat, lng) {
+      currentPosition = new kakao.maps.LatLng(lat, lng);
       map = new kakao.maps.Map(document.getElementById('map'), {
-        center: new kakao.maps.LatLng(lat, lng),
+        center: currentPosition,
         level: 5
       });
     }
-    
-    // 사이드바 링크에 이벤트 리스너 추가
+
     function setupSidebarLinks() {
       try {
-        // 이비인후과 링크
-        const entLink = document.querySelector('a[href="/ent"]');
-        if (entLink) {
-          entLink.href = "javascript:void(0)";
-          entLink.onclick = function() {
-            showCategoryResults('이비인후과');
-          };
-        }
-        
-        // 소아과 링크
-        const pediatricsLink = document.querySelector('a[href="/recommend"]');
-        if (pediatricsLink && pediatricsLink.textContent.includes('소아과')) {
-          pediatricsLink.href = "javascript:void(0)";
-          pediatricsLink.onclick = function() {
-            showCategoryResults('소아과');
-          };
-        }
-        
-        // 내과 링크
-        const internalLink = document.querySelector('a[href="/recommend"]');
-        if (internalLink && internalLink.textContent.includes('내과')) {
-          internalLink.href = "javascript:void(0)";
-          internalLink.onclick = function() {
-            showCategoryResults('내과');
-          };
-        }
-        
-        // 피부과 링크
-        const dermatologyLink = document.querySelector('a[href="/recommend"]');
-        if (dermatologyLink && dermatologyLink.textContent.includes('피부과')) {
-          dermatologyLink.href = "javascript:void(0)";
-          dermatologyLink.onclick = function() {
-            showCategoryResults('피부과');
-          };
-        }
+        const links = document.querySelectorAll('a[href="/recommend"], a[href="/ent"]');
+        links.forEach(link => {
+          if (link.textContent.includes('소아과')) {
+            link.href = "javascript:void(0)";
+            link.onclick = () => showCategoryResults('소아과');
+          }
+          if (link.textContent.includes('내과')) {
+            link.href = "javascript:void(0)";
+            link.onclick = () => showCategoryResults('내과');
+          }
+          if (link.textContent.includes('피부과')) {
+            link.href = "javascript:void(0)";
+            link.onclick = () => showCategoryResults('피부과');
+          }
+          if (link.textContent.includes('이비인후과')) {
+            link.href = "javascript:void(0)";
+            link.onclick = () => showCategoryResults('이비인후과');
+          }
+        });
       } catch (error) {
         console.error("사이드바 링크 설정 오류:", error);
       }
     }
-    
-    // 카테고리 결과 표시 함수
+
     function showCategoryResults(category) {
       currentCategory = category;
       document.getElementById('keyword').value = category;
-      
-      // 지도 뷰 숨기고 목록 뷰 보이기
+
       document.getElementById('mapView').style.display = 'none';
       document.getElementById('listView').style.display = 'block';
-      
-      // 카테고리 제목 업데이트(취약한버전 DOM based XSS)
-      document.getElementById('categoryTitle').innerHTML = category + ' 검색 결과';
-      
-      // 콘솔에 로그 추가
-      console.log('카테고리 검색 시작:', category);
-      
-      // 카테고리 검색 수행
+      document.getElementById('categoryTitle').textContent = category + ' 검색 결과';
+
       const ps = new kakao.maps.services.Places();
-      ps.keywordSearch(category, function(data, status) {
-        console.log('검색 상태:', status);
-        console.log('검색 결과:', data);
-        
+      ps.keywordSearch(category, function (data, status) {
         if (status === kakao.maps.services.Status.OK) {
-          displayCategoryList(data.slice(0, 9)); // 상위 9개 표시
+          displayCategoryList(data.slice(0, 9));
         } else {
           document.getElementById('categoryList').innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
-          console.error('검색 실패:', status);
         }
+      }, {
+        location: currentPosition
       });
     }
-    
-    // 지도 뷰로 전환하는 함수
+
     function switchToMapView() {
       document.getElementById('mapView').style.display = 'flex';
       document.getElementById('listView').style.display = 'none';
     }
-    
-    // 일반 검색 함수
+
     function searchPlaces() {
       const keyword = document.getElementById('keyword').value.trim();
       if (!keyword) {
         alert('검색어를 입력해주세요.');
         return;
       }
-      
-      // 검색 시 지도 뷰로 전환
+
       switchToMapView();
-      
+
       const ps = new kakao.maps.services.Places();
-      ps.keywordSearch(keyword, placesSearchCB, { location: map.getCenter() });
+      ps.keywordSearch(keyword, placesSearchCB, { location: currentPosition });
     }
-    
-    // 일반 검색 콜백
+
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         displayPlaces(data);
@@ -626,26 +613,25 @@
         alert('검색 결과가 없습니다.');
       }
     }
-    
-    // 지도와 목록에 검색 결과 표시
+
     function displayPlaces(places) {
       const listEl = document.getElementById('placesList');
       listEl.innerHTML = '';
       removeMarkers();
       const bounds = new kakao.maps.LatLngBounds();
-      
+
       places.forEach((place) => {
         const position = new kakao.maps.LatLng(place.y, place.x);
         const marker = new kakao.maps.Marker({ position, map });
-        
+
         kakao.maps.event.addListener(marker, 'click', () => {
           infowindow.setContent(`<div style="padding:5px;font-size:12px;"><strong>${place.place_name}</strong></div>`);
           infowindow.open(map, marker);
         });
-        
+
         markers.push(marker);
         bounds.extend(position);
-        
+
         const itemEl = document.createElement('li');
         itemEl.innerHTML = `
           <strong>${place.place_name}</strong>
@@ -653,64 +639,59 @@
           <span style="color:#4285F4">${place.phone || '전화번호 없음'}</span>
           <button class="reserve-btn">예약하기</button>
         `;
-        
+
         itemEl.onclick = () => {
           map.setCenter(position);
           infowindow.setContent(`<div style="padding:5px;font-size:12px;"><strong>${place.place_name}</strong></div>`);
           infowindow.open(map, marker);
         };
-        
+
         const reserveBtn = itemEl.querySelector('.reserve-btn');
         reserveBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           const form = document.createElement('form');
           form.method = 'POST';
           form.action = '/reserve';
-          
+
           const nameInput = document.createElement('input');
           nameInput.type = 'hidden';
           nameInput.name = 'hospital_name';
           nameInput.value = place.place_name;
-          
+
           const addressInput = document.createElement('input');
           addressInput.type = 'hidden';
           addressInput.name = 'hospital_address';
           addressInput.value = place.road_address_name || place.address_name;
-          
+
           form.appendChild(nameInput);
           form.appendChild(addressInput);
           document.body.appendChild(form);
           form.submit();
         });
-        
+
         listEl.appendChild(itemEl);
       });
-      
+
       if (places.length > 0) {
         map.setBounds(bounds);
       }
     }
-    
-    // 카테고리 목록만 표시 (지도 없이)
+
     function displayCategoryList(places) {
       const listEl = document.getElementById('categoryList');
-      
-      // 목록 비우기
       listEl.innerHTML = '';
-      
-      // 검색 결과가 없는 경우 처리
+
       if (!places || places.length === 0) {
         listEl.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
         return;
       }
-      
+
       places.forEach((place, index) => {
-        // 이미지 번호 계산 (1~9)
         const imgNumber = (index % 9) + 1;
-        
+
         const cardEl = document.createElement('div');
         cardEl.className = 'hospital-card';
-        
+
         cardEl.innerHTML = `
           <div class="hospital-info">
             <div class="hospital-name">${place.place_name}</div>
@@ -720,83 +701,58 @@
           </div>
           <div class="hospital-image" style="background-image: url('/static/img/b${imgNumber}.png');"></div>
         `;
-        
+
         const reserveBtn = cardEl.querySelector('.reserve-btn');
         reserveBtn.addEventListener('click', () => {
           const form = document.createElement('form');
           form.method = 'POST';
           form.action = '/reserve';
-          
+
           const nameInput = document.createElement('input');
           nameInput.type = 'hidden';
           nameInput.name = 'hospital_name';
           nameInput.value = place.place_name;
-          
+
           const addressInput = document.createElement('input');
           addressInput.type = 'hidden';
           addressInput.name = 'hospital_address';
           addressInput.value = place.road_address_name || place.address_name;
-          
+
           form.appendChild(nameInput);
           form.appendChild(addressInput);
           document.body.appendChild(form);
           form.submit();
         });
-        
+
         listEl.appendChild(cardEl);
-        
-        // 개발자 도구에서 확인하기 위한 로그
-        console.log('카드 추가:', place.place_name, index);
       });
-      
-      // 카드가 추가되었는지 확인
-      console.log('총 카드 수:', places.length);
     }
-    
-    // 마커 제거 함수
+
     function removeMarkers() {
       markers.forEach(marker => marker.setMap(null));
       markers = [];
     }
-    
-    // 페이지네이션 표시
+
     function displayPagination(pagination) {
       const paginationEl = document.getElementById('pagination');
       paginationEl.innerHTML = '';
-      
+
       for (let i = 1; i <= pagination.last; i++) {
         const a = document.createElement('a');
         a.href = '#';
         a.innerText = i;
-        
+
         if (i === pagination.current) {
           a.className = 'on';
         } else {
           a.onclick = () => pagination.gotoPage(i);
         }
-        
+
         paginationEl.appendChild(a);
       }
     }
   </script>
-
-   <!-- 우측: 배너 -->
-   <div style="width: 300px;">
-    <div class="qr-banner-blue">
-      <div class="qr-banner-text">
-        <p class="headline">지금 당장 진료가 필요하다면?</p>
-        <p class="emphasis">닥터퓨처는<br><strong>늦은밤, 주말에도<br>진료 가능해요!</strong></p>
-      </div>
-
-      <img src="{{ url_for('static', filename='img/MobileHomeScreen.png') }}" alt="닥터퓨처 진료 안내" class="blue-banner-image" />
-
-      <div class="qr-download">
-        <p class="download-text">QR찍고<br>앱 다운로드하기</p>
-        <img src="{{ url_for('static', filename='img/QRcode.png') }}" alt="QR 코드" class="qr-code" />
-      </div>
-    </div>
-  </div>
 </div>
-
+</div>
 </body>
 </html>
