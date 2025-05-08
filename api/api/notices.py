@@ -1,9 +1,10 @@
 # api/notices.py
 
-from flask import Blueprint, request, jsonify, session, current_app
+from flask import Blueprint, request, jsonify, session, current_app, send_file
 from models.notice import get_all_notices, get_notice_by_id, create_notice, delete_notice
 from utils.helpers import save_uploaded_files, paginate_results
 from utils.auth import admin_required
+import os
 
 # Blueprint 정의
 notices_bp = Blueprint('notices', __name__, url_prefix='/api/notices')
