@@ -8,8 +8,82 @@
     <!-- 🧩 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
   
-    <!-- 🖌️ dashboard.css -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <!-- 상단바 스타일 -->
+    <style>
+      /* 상단바 스타일 */
+      .top-navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 50;
+        transition: all 0.3s ease;
+      }
+      
+      .top-navbar-content {
+        max-height: 80px;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+      
+      .top-navbar:hover .top-navbar-content {
+        max-height: 300px;
+      }
+      
+      .submenu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+      
+      .top-navbar:hover .submenu {
+        max-height: 240px;
+      }
+      
+      /* 본문 여백 조정 */
+      .main-content {
+        margin-top: 80px;
+        width: 100%;
+        padding: 0;
+      }
+      
+      /* 고정 너비 컨테이너 */
+      .fixed-width-container {
+        width: 1200px; /* 고정 너비 */
+        max-width: 100%;
+        margin: 0 auto;
+        position: relative;
+      }
+      
+      /* 메인 메뉴 그리드 */
+      .main-menu {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        text-align: center;
+      }
+      
+      /* 서브메뉴 그리드 - 메인 메뉴와 정확히 같은 그리드 구조 */
+      .submenu-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        text-align: left;
+      }
+      
+      /* 서브메뉴 항목 간격 */
+      .submenu-item {
+        padding: 10px;
+      }
+
+      .top-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80px;
+        width: 100%;
+      }
+    </style>
   
     <!-- 🎞️ Swiper 스타일 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -18,9 +92,141 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </head>
   <body class="bg-white text-gray-800">
-    {% include 'sidebar/sidebar.html' %}
+    <!-- 상단바 메뉴 -->
+    <nav class="top-navbar">
+      <div class="top-navbar-content">
+        <!-- 상단바 메인 메뉴 - 고정 너비 컨테이너 적용 -->
+        <div class="py-0">
+          <div class="fixed-width-container">
+            <!-- 로고 및 메인 메뉴 컨테이너 -->
+            <div class="flex items-center">
+              <!-- 로고 (좌측) -->
+              <div class="w-[200px] mr-6">
+                <a href="{{ url_for('dashboard') }}" class="text-2xl font-semibold text-blue-600 flex items-center h-[80px]">
+                  <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="w-8 h-8 mr-2">
+                  닥터퓨처
+                </a>
+              </div>
+              
+              <!-- 메인 메뉴 (중앙) -->
+              <div class="flex-grow">
+                <div class="main-menu">
+                  <div class="top-item">
+                    <div class="typography-ui-17sb flex h-full items-center hover:text-blue-600 font-bold">마이페이지</div>
+                  </div>
+                  <div class="top-item">
+                    <div class="typography-ui-17sb flex h-full items-center hover:text-blue-600 font-bold">병원찾기</div>
+                  </div>
+                  <div class="top-item">
+                    <div class="typography-ui-17sb flex h-full items-center hover:text-blue-600 font-bold">게시판</div>
+                  </div>
+                  <div class="top-item">
+                    <div class="typography-ui-17sb flex h-full items-center hover:text-blue-600 font-bold">AI비서</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 우측 버튼 - 진료예약 -->
+              <div class="w-[200px] flex justify-end">
+                <button class="typography-ui-17sb h-[48px] rounded-[12px] bg-blue-600 px-[16px] text-white">진료예약</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <section class="max-w-7xl ml-[400px] px-4 py-10 ">
+        <!-- 서브 메뉴 (마우스 오버시 표시) -->
+        <div class="submenu pt-[0px] pb-[40px] bg-gray-50">
+          <div class="fixed-width-container">
+            <!-- 서브메뉴 컨테이너 - 메인 메뉴와 정확히 같은 위치에 정렬 -->
+            <div class="flex">
+              <div class="w-[200px] mr-6">
+                <!-- 로고 아래 빈 공간 -->
+              </div>
+              
+              <div class="flex-grow ml-12">
+                <div class="submenu-container pt-[20px]">
+                  <!-- 마이페이지 서브메뉴 -->
+                  <div class="submenu-item">
+                    <ul class="flex flex-col gap-[12px]">
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/mypage">내정보</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/mypage#reservation-check">예약확인</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/mypage#health-history">나의 건강 이력</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/mypage#inquiry">내 문의사항</a>
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  <!-- 병원찾기 서브메뉴 -->
+                  <div class="submenu-item">
+                    <ul class="flex flex-col gap-[12px]">
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/find">직접예약</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/ent">이비인후과</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/recommend">소아과</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/recommend">내과</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/recommend">피부과</a>
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  <!-- 게시판 서브메뉴 -->
+                  <div class="submenu-item">
+                    <ul class="flex flex-col gap-[12px]">
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/notice">공지사항</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/faq">자주묻는질문</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/qna">자유게시판</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/magazine">건강매거진</a>
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  <!-- AI비서 서브메뉴 -->
+                  <div class="submenu-item ml-12">
+                    <ul class="flex flex-col gap-[12px]">
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/ai">AI비서</a>
+                      </li>
+                      <li>
+                        <a class="typography-ui-17r flex h-[36px] items-center rounded-[4px] px-[8px] py-[6px] text-gray-600 hover:typography-ui-17m hover:bg-gray-30 hover:text-gray-700" href="/telemedicine">비대면진료</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="w-[200px]">
+                <!-- 우측 여백 -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+ <!-- 메인 콘텐츠 -->
+   <section class="max-w-7xl ml-[400px] px-4 py-24 ">
       <!-- 헤더 -->
       <div class="mb-8">
         <h1 class="text-5xl font-light tracking-wide mb-2">Now</h1>
@@ -192,22 +398,9 @@
         </div>
       </div>
     </section>
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-    <script>
-      var swiper = new Swiper(".mySwiper", {
-        cssMode: true,
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-        mousewheel: true,
-        keyboard: true,
-      });
-    </script>
 
+    <script>
+      // 필요한 경우 JavaScript를 추가하세요
+    </script>
   </body>
 </html>
