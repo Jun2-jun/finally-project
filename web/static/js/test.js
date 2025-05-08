@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('전송할 데이터:', payload);
 
     try {
-      const response = await fetch('http://192.168.219.50:5002/api/users/update', {
+      const response = await fetch('http://192.168.219.248:5002/api/users/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

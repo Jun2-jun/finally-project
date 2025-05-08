@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ✅ 댓글 불러오기
 function loadComments(postId) {
-  fetch(`http://192.168.29.134:5002/api/qna/${postId}/comments`, {
+  fetch(`http://192.168.219.248:5002/api/qna/${postId}/comments`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -88,7 +88,7 @@ function submitComment() {
   const formData = new FormData();
   formData.append('comment', comment);
 
-  fetch(`http://192.168.29.134:5002/api/qna/${postId}/comments`, {
+  fetch(`http://192.168.219.248:5002/api/qna/${postId}/comments`, {
     method: 'POST',
     body: formData,
     credentials: 'include'
@@ -144,7 +144,7 @@ function submitComment() {
   const formData = new FormData();
   formData.append('comment', comment);
 
-  fetch(`http://192.168.219.50:5002/api/qna/${postId}/comments`, {
+  fetch(`http://192.168.219.248:5002/api/qna/${postId}/comments`, {
     method: 'POST',
     body: formData,
     credentials: 'include'
@@ -174,7 +174,7 @@ function submitReply(parentId) {
   formData.append('comment', replyComment);
   formData.append('parent_id', parentId);
 
-  fetch(`http://192.168.219.50:5002/api/qna/${postId}/comments`, {
+  fetch(`http://192.168.219.248:5002/api/qna/${postId}/comments`, {
     method: 'POST',
     body: formData,
     credentials: 'include'
@@ -198,7 +198,7 @@ function showReplyInput(commentId) {
 }
 
 function loadComments(postId) {
-  fetch(`http://192.168.219.50:5002/api/qna/${postId}/comments`, {
+  fetch(`http://192.168.219.248:5002/api/qna/${postId}/comments`, {
     method: 'GET',
     credentials: 'include'
   })
