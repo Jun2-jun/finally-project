@@ -7,7 +7,7 @@
 const adminApp = (function() {
     // API 기본 URL
     const serverIP = document.body.dataset.serverIp;
-    const API_BASE_URL = `http://${serverIP}:5002/api/`;
+    const API_BASE_URL = `http://${serverIP}:5002/api`;
     
     // 초기화 함수
     function init() {
