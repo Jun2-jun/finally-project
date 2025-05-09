@@ -10,22 +10,19 @@
   <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 
 </head>
-<body data-server-ip="{{ SERVER_IP }}" class="h-screen w-full bg-white dark:bg-[#1E2028]">
+<body class="h-screen w-full bg-white dark:bg-[#1E2028]">
 
-  <!-- 그대로 붙여넣기 해도 문제 없음 -->
-  
-  <!-- ✅ 아래에 당신이 준 코드 전체 붙여넣기 -->
-  <div class="fixed left-0 top-0 h-full w-64 bg-gray-50 dark:bg-[#252731] border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
-    <div class="h-screen w-full bg-white dark:bg-[#1E2028]">
-      <!-- Sidebar Container -->
-      <div class="fixed left-0 top-0 h-full w-64 bg-gray-50 dark:bg-[#252731] border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
-      <!-- Logo Section -->
-      <div class="flex items-center h-16 px-4 border-b border-gray-200 dark:border-gray-700">
-        <img src="/static/img/logo.png" alt="Logo" class="w-8 h-8">
-        <a href="{{ url_for('dashboard') }}" class="ml-3 text-lg font-semibold text-black dark:text-white hover:underline">
-          닥터퓨처
-        </a>
-      </div>
+<!-- Sidebar Container with 2cm top/bottom/left margin -->
+<div class="fixed left-[2cm] top-[2cm] h-[calc(100vh-6cm)] w-64 bg-gray-50 dark:bg-[#252731] border border-gray-200 dark:border-gray-700 overflow-y-auto rounded-xl shadow-md z-10">
+  <div class="h-full w-full bg-white dark:bg-[#1E2028] rounded-xl">
+
+    <!-- Logo Section -->
+    <div class="flex items-center h-16 px-4 border-b border-gray-200 dark:border-gray-700">
+      <img src="/static/img/logo.png" alt="Logo" class="w-8 h-8">
+      <a href="{{ url_for('dashboard') }}" class="ml-3 text-lg font-semibold text-black dark:text-white hover:underline">
+        닥터퓨처
+      </a>
+    </div>
   
           <!-- Navigation Menu -->
           <nav class="p-4">       
