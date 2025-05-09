@@ -10,7 +10,8 @@
 </head>
 <body data-server-ip="{{ SERVER_IP }}">
   {% include 'sidebar/sidebar.html' %}
-  <div class="container-fluid with-sidebar pt-5 px-5">
+  <!-- 너비를 약 3cm 줄인 콘텐츠 영역 -->
+  <div class="container-fluid with-sidebar pt-5 px-5" style="max-width: calc(100% - 113px);">
     <div class="bg-white p-4 rounded shadow-sm">
 
     <!-- 상단 정보 -->
