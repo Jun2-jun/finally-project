@@ -218,8 +218,10 @@ def change_password():
 
 # 7-1. 2차인증메일
 @users_bp.route('/send_verification_code', methods=['POST'])
+@users_bp.route('/send_code', methods=['POST'])  # 프론트와 호환 위해 추가
 def send_verification_code():
-    email = request.form.get("email")
+    data = request.get_json()
+    email = data.get("email") if data else None
 
     if not email:
         return jsonify({"success": False, "message": "이메일 주소가 필요합니다."}), 400
@@ -243,13 +245,10 @@ def verify_code():
     input_code = request.form.get('code')
     saved_code = session.get('verification_code')
 
-    print("[DEBUG] 입력된 인증번호:", input_code)
-    print("[DEBUG] 세션에 저장된 인증번호:", saved_code)
-
     if not saved_code or input_code != saved_code:
         return jsonify({'success': False, 'message': '인증번호가 일치하지 않습니다.'})
 
-    # 검증 성공 → 인증 표시
+    # ✅ 서버 세션에 인증 완료 상태 저장
     session['email_verified'] = True
     session.pop('verification_code', None)
 

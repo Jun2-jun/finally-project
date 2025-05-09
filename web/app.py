@@ -29,7 +29,7 @@ app.register_blueprint(notice_bp, url_prefix='/api/notice')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
 
 # IP 주소 중앙 관리 (환경 변수에서 가져오거나 기본값 사용)
-app.config['SERVER_IP'] = os.environ.get('SERVER_IP', '192.168.219.122')
+app.config['SERVER_IP'] = os.environ.get('SERVER_IP', '192.168.219.123')
 
 # 세션 Redis 설정 추가
 app.config['SESSION_TYPE'] = 'redis'
