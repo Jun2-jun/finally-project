@@ -9,8 +9,15 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/submit_reservation.css') }}">
 
   <script>
-    // 페이지 로드 시 API 서버에 예약 정보 전송
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+      // 새로고침 감지 → /find로 리디렉션
+      const navEntries = performance.getEntriesByType('navigation');
+      const navType = navEntries.length > 0 ? navEntries[0].type : null;
+
+      if (navType === 'reload') {
+        window.location.href = "http://192.168.219.130:5000/find";
+        return;
+      }
       // 예약 정보 객체 생성
       const reservationData = {
         name: "{{ name }}",
