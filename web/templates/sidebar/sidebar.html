@@ -137,21 +137,26 @@
       </div>
   
       <script>
-          function toggleMenu(menuId) {
-              const menu = document.getElementById(menuId);
-              const icon = document.getElementById(menuId + 'Icon');
-              
-              // Toggle menu visibility
-              menu.classList.toggle('hidden');
-              
-              // Rotate icon
-              if (menu.classList.contains('hidden')) {
-                  icon.style.transform = 'rotate(0deg)';
-              } else {
-                  icon.style.transform = 'rotate(180deg)';
-              }
-          }
-      </script>
+        function toggleMenu(menuId) {
+            const allMenus = ['mypageMenu', 'projectsMenu', 'teamMenu', 'settingsMenu'];
+            const allIcons = ['mypageMenuIcon', 'projectsMenuIcon', 'teamMenuIcon', 'settingsMenuIcon'];
+    
+            allMenus.forEach((id, index) => {
+                const menu = document.getElementById(id);
+                const icon = document.getElementById(allIcons[index]);
+    
+                if (id === menuId) {
+                    const isHidden = menu.classList.contains('hidden');
+                    // 열려있으면 닫기, 닫혀있으면 열기
+                    menu.classList.toggle('hidden');
+                    icon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+                } else {
+                    menu.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+    </script>
   </div>
   </div>
 
