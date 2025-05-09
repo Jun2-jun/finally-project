@@ -8,7 +8,7 @@ body {
   
   .magazine-container {
     max-width: 1000px;
-    margin-left: 250px;
+    margin-left: 22vw;
     padding: 0 20px;
     flex: 1;
   }
@@ -56,6 +56,13 @@ body {
     border-radius: 8px;
     margin-left: 20px;
   }
+
+  /* 전체 레이아웃: 좌우 flex 배치, 양쪽 40px 패딩 */
+.layout-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+}
     .qr-banner-blue {
   width: 280px;
   height: 600px;

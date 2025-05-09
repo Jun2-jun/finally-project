@@ -2,7 +2,7 @@
 
 // API 서버 기본 URL
 const serverIP = document.body.dataset.serverIp;
-const API_BASE_URL = `http://${serverIP}:5002/api`;
+const API_BASE_URL = `${serverIP}/api`;
 
 /**
  * 예약 정보를 API 서버로 전송하는 함수

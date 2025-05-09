@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify, session
 from models.user import get_all_users, create_user, verify_user, delete_user, update_user_info, get_user_by_id, change_user_password
 from utils.auth import login_required, admin_required
-from flask_cors import cross_origin
 from utils.auth import hash_password
 from utils.auth import check_password
 from utils.decrypt_util import decrypt_request_json
@@ -51,12 +50,6 @@ def api_register():
         return jsonify({'status': 'fail', 'message': f'회원가입 중 오류: {str(e)}'}), 500
 #3. 로그인
 @users_bp.route('/login', methods=['POST', 'OPTIONS'])
-@cross_origin(origins=[
-    "http://localhost:5000",
-    "http://127.0.0.1:5000",
-    "http://192.168.219.248:5000",
-    "http://192.168.219.248:5000"
-], supports_credentials=True)
 def api_login():
     if request.method == 'OPTIONS':
         return '', 204
@@ -106,7 +99,6 @@ def api_logout():
 
 # 5. 회원 탈퇴
 @users_bp.route('/withdraw', methods=['POST', 'OPTIONS'])
-@cross_origin(origins=["http://192.168.219.248:5000"], supports_credentials=True)
 @login_required
 def withdraw_account():
     if request.method == 'OPTIONS':
@@ -145,7 +137,6 @@ def withdraw_account():
 
 # 5-1. 회원 탈퇴 전 비밀번호 확인용 API
 @users_bp.route('/check-password', methods=['POST'])
-@cross_origin(origins=["http://192.168.219.248:5000"], supports_credentials=True)
 @login_required
 def check_user_password():
     try:

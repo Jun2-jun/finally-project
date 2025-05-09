@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
   // 원래 URL을 다시 사용 (하드코딩)
   const serverIP = document.body.dataset.serverIp;
-  const API_URL = `http://${serverIP}:5002/api/ai`;
+  const API_URL = `${serverIP}/api/ai`;
   
   // 초기 추천 메시지 설정
   const suggestions = [

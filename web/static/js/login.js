@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
       password: password
     };
     const serverIP = document.body.dataset.serverIp;
-    const apiUrl = `http://${serverIP}:5002/api/users/login`;
+    const apiUrl = `${serverIP}/api/users/login`;
 
     fetch(apiUrl, {
       method: 'POST',
