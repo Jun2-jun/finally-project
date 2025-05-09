@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const editBtn = document.getElementById('edit-btn');
   const editables = document.querySelectorAll('.editable');
   const serverIP = document.body.dataset.serverIp;
+  let isEmailVerified = false;
 
   // 로딩 상태 표시
   if (reservationTbody) {
@@ -291,5 +292,171 @@ function submitWithdraw() {
     console.error('에러:', err);
     errorMsg.textContent = '서버 오류가 발생했습니다.';
     errorMsg.classList.remove('hidden');
+  });
+}
+
+const passwordChangeBtn = document.getElementById('submit-password-change');
+
+if (passwordChangeBtn) {
+  passwordChangeBtn.addEventListener('click', () => {
+    const currentPassword = document.querySelector('#password-modal input[placeholder="현재 비밀번호"]').value.trim();
+    const newPassword = document.querySelector('#password-modal input[placeholder="새 비밀번호"]').value.trim();
+    const confirmPassword = document.querySelector('#password-modal input[placeholder="비밀번호 확인"]').value.trim();
+    const serverIP = document.body.dataset.serverIp;
+
+    // ✅ 이메일 인증 체크
+    if (!isEmailVerified) {
+      alert('이메일 인증 후 비밀번호를 변경할 수 있습니다.');
+      return;
+    }
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      alert('새 비밀번호와 확인이 일치하지 않습니다.');
+      return;
+    }
+
+    // 서버에 비밀번호 변경 요청
+    fetch(`http://${serverIP}:5002/api/users/change-password`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        current_password: currentPassword,
+        new_password: newPassword
+      })
+    })
+    .then(res => res.json())
+    .then(result => {
+      if (result.status === 'success') {
+        alert('비밀번호가 성공적으로 변경되었습니다.');
+        document.getElementById('password-modal').classList.add('hidden');
+        isEmailVerified = false;  // ✅ 이후 변경 시 재인증 요구
+      } else {
+        alert('비밀번호 변경 실패: ' + result.message);
+      }
+    })
+    .catch(err => {
+      console.error('[mypage.js] 비밀번호 변경 오류:', err);
+      alert('비밀번호 변경 중 오류가 발생했습니다.');
+    });
+  });
+}
+
+
+let isEmailVerified = false;
+
+// 📌 비밀번호 변경 버튼 클릭 시 이메일 인증 모달만 표시
+const openBtn = document.getElementById('change-password-btn');
+if (openBtn) {
+  openBtn.addEventListener('click', () => {
+    isEmailVerified = false;  // 초기화
+    openEmailVerificationModal();
+  });
+}
+
+// 📌 이메일 인증 모달 열기
+function openEmailVerificationModal() {
+  document.getElementById('email-verification-modal').classList.remove('hidden');
+  document.getElementById('email-verification-modal').classList.add('flex');
+}
+
+// 📌 인증코드 전송
+function sendVerificationCode() {
+  const email = document.getElementById('verificationEmail').value.trim();
+  const serverIP = document.body.dataset.serverIp;
+
+  if (!email) {
+    alert('이메일을 입력해주세요.');
+    return;
+  }
+
+  fetch(`http://${serverIP}:5002/api/users/send_code`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ email })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('인증코드가 전송되었습니다.');
+    } else {
+      alert('코드 전송 실패: ' + data.message);
+    }
+  })
+  .catch(err => {
+    console.error('[mypage.js] 인증코드 전송 실패:', err);
+    alert('인증코드 전송 중 오류 발생');
+  });
+}
+
+// 📌 인증 확인 → 성공 시 비밀번호 변경 모달 열기
+function submitVerificationCode() {
+  const code = document.getElementById('verificationCode').value.trim();
+  const serverIP = document.body.dataset.serverIp;
+
+  if (!code) {
+    alert('인증번호를 입력해주세요.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('code', code);
+
+  fetch(`http://${serverIP}:5002/api/users/verify_code`, {
+    method: 'POST',
+    credentials: 'include',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('이메일 인증이 완료되었습니다.');
+      isEmailVerified = true;
+
+      // 이메일 인증 모달 닫기
+      document.getElementById('email-verification-modal').classList.add('hidden');
+      document.getElementById('email-verification-modal').classList.remove('flex');
+
+      // 비밀번호 변경 모달 열기
+      document.getElementById('password-modal').classList.remove('hidden');
+    } else {
+      alert('인증 실패: ' + data.message);
+    }
+  });
+}
+
+
+function submitVerificationCode() {
+  const code = document.getElementById('verificationCode').value.trim();
+  const serverIP = document.body.dataset.serverIp;
+
+  if (!code) {
+    alert('인증번호를 입력해주세요.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('code', code);
+
+  fetch(`http://${serverIP}:5002/api/users/verify_code`, {
+    method: 'POST',
+    credentials: 'include',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('이메일 인증이 완료되었습니다.');
+      document.getElementById('email-verification-modal').classList.add('hidden');
+      isEmailVerified = true;  // ✅ 프론트는 확인용만
+    } else {
+      alert('인증 실패: ' + data.message);
+    }
   });
 }
