@@ -20,51 +20,53 @@
     <div class="faq-container flex-grow-1">
       <h2 class="faq-title">자유게시판</h2>
 
-    <!-- ✅ 검색 바 -->
-    <div class="faq-search-wrapper d-flex justify-content-center mt-5 mb-4">
-      <div style="width: 100%; max-width: 700px;">
-        <div class="d-flex align-items-center gap-2">
-          <i class="bi bi-search text-secondary fs-5"></i>
-          <input
-            id="search-input"
-            type="text"
-            class="form-control border-0 border-bottom border-secondary-subtle rounded-0 shadow-none"
-            placeholder="검색어를 입력하세요"
-            style="background-color: transparent;"
-          />
-          <button id="search-button" class="btn btn-outline-secondary btn-sm">검색</button>
+      <!-- ✅ 검색 바 -->
+      <div class="faq-search-wrapper d-flex justify-content-center mt-5 mb-4">
+        <div style="width: 100%; max-width: 700px;">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-search text-secondary fs-5"></i>
+            <input
+              id="search-input"
+              type="text"
+              class="form-control border-0 border-bottom border-secondary-subtle rounded-0 shadow-none"
+              placeholder="검색어를 입력하세요"
+              style="background-color: transparent;"
+            />
+            <button id="search-button" class="btn btn-outline-secondary btn-sm">검색</button>
+          </div>
         </div>
+      </div>
+
+      <!-- ✅ 자유게시판 테이블 -->
+      <table class="faq-table">
+        <thead>
+          <tr>
+            <th class="delete-checkbox-column" style="display: none;"></th>
+            <th>No</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성시간</th>
+          </tr>
+        </thead>
+        <tbody id="qnaTableBody">
+          <!-- JS가 데이터로 채움 -->
+        </tbody>
+      </table>
+
+      <!-- ✅ 페이지네이션 -->
+      <nav class="mt-4">
+        <ul id="pagination" class="pagination justify-content-center">
+          <!-- JS가 생성 -->
+        </ul>
+      </nav>
+
+      <!-- ✅ 글쓰기 버튼 -->
+      <div class="d-flex justify-content-end mb-3 me-3">
+        <a href="/qna/write" class="btn btn-primary btn-sm">글쓰기</a>
       </div>
     </div>
 
-    <!-- ✅ 자유게시판 테이블 -->
-    <table class="faq-table">
-      <thead>
-        <tr>
-          <th class="delete-checkbox-column" style="display: none;"></th>
-          <th>No</th>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>작성시간</th>
-        </tr>
-      </thead>
-      <tbody id="qnaTableBody">
-        <!-- JS가 데이터로 채움 -->
-      </tbody>
-    </table>
-
-    <!-- ✅ 페이지네이션 -->
-    <nav class="mt-4">
-      <ul id="pagination" class="pagination justify-content-center">
-        <!-- JS가 생성 -->
-      </ul>
-    </nav>
-  </div>
-  <div class="d-flex justify-content-end mb-3 me-3">
-    <a href="/qna/write" class="btn btn-primary btn-sm">글쓰기</a>
-  </div>
-
-  <!-- ✅ 오른쪽 배너 -->
+    <!-- ✅ 오른쪽 배너 -->
     <div style="width: 280px;">
       <div class="qr-banner-blue">
         <div class="qr-banner-text">
@@ -81,6 +83,8 @@
         </div>
       </div>
     </div>
+
+  </div>
     
   <script src="{{ url_for('static', filename='js/qna.js') }}"></script>
 </body>
