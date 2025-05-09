@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // 1. 사용자 정보 가져오기
-  fetch(`http://${serverIP}:5002/api/current-user`, {
+  fetch(`${serverIP}/api/current-user`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // 2. 예약정보 가져오기
-      return fetch(`http://${serverIP}:5002/api/reservations/user/${userId}`, {
+      return fetch(`${serverIP}/api/reservations/user/${userId}`, {
         method: 'GET',
         credentials: 'include'
       });
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (reservationTime < now) {
           // 과거 예약 자동 삭제
-          fetch(`http://${serverIP}:5002/api/mypage/reservation/${r.id}`, {
+          fetch(`${serverIP}/api/mypage/reservation/${r.id}`, {
             method: 'DELETE',
             credentials: 'include'
           })
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const reservationId = row.getAttribute("data-id");
 
         if (confirm("정말 이 예약을 취소하시겠습니까?")) {
-          fetch(`http://${serverIP}:5002/api/mypage/reservation/${reservationId}`, {
+          fetch(`${serverIP}/api/mypage/reservation/${reservationId}`, {
             method: "DELETE",
             credentials: "include"
           })
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. 민감정보 조회
   if (healthForm) {
-    fetch(`http://${serverIP}:5002/api/patient/info`, {
+    fetch(`${serverIP}/api/patient/info`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       console.log('[payload]', payload);
       
-      fetch(`http://${serverIP}:5002/api/patient/info`, {
+      fetch(`${serverIP}/api/patient/info`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -219,7 +219,7 @@ if (editBtn) {
       
       console.log('전송할 데이터:', payload);
       
-      const response = await fetch(`http://${serverIP}:5002/api/users/update`, {
+      const response = await fetch(`${serverIP}/api/users/update`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -254,7 +254,7 @@ function submitWithdraw() {
   }
 
   // 1단계: 비밀번호 확인
-  fetch(`http://${serverIP}:5002/api/users/check-password`, {
+  fetch(`${serverIP}/api/users/check-password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -266,7 +266,7 @@ function submitWithdraw() {
       errorMsg.classList.add('hidden');
 
       // 2단계: 실제 탈퇴 처리
-      fetch(`http://${serverIP}:5002/api/users/withdraw`, {
+      fetch(`${serverIP}/api/users/withdraw`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

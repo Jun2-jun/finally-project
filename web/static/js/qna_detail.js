@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let postAuthor = null;
   const serverIP = document.body.dataset.serverIp;
   // 1. 로그인 사용자 정보 확인
-  fetch(`http://${serverIP}:5002/api/current-user`, {
+  fetch(`${serverIP}/api/current-user`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
   // 2. 게시글 상세 정보 가져오기
-  fetch(`http://${serverIP}:5002/api/qna/${postId}`, {
+  fetch(`${serverIP}/api/qna/${postId}`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ✅ 댓글 불러오기
 function loadComments(postId) {
-  fetch(`http://${serverIP}:5002/api/qna/${postId}/comments`, {
+  fetch(`${serverIP}/api/qna/${postId}/comments`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -88,7 +88,7 @@ function submitComment() {
   const formData = new FormData();
   formData.append('comment', comment);
 
-  fetch(`http://${serverIP}:5002/api/qna/${postId}/comments`, {
+  fetch(`${serverIP}/api/qna/${postId}/comments`, {
     method: 'POST',
     body: formData,
     credentials: 'include'
@@ -114,7 +114,7 @@ function deletePost() {
 
   const postId = window.location.pathname.split('/').pop();
 
-  fetch(`http://${serverIP}:5002/api/qna/${postId}/delete`, {
+  fetch(`${serverIP}/api/qna/${postId}/delete`, {
     method: 'POST',
     credentials: 'include'
   })
@@ -144,7 +144,7 @@ function submitComment() {
   const formData = new FormData();
   formData.append('comment', comment);
 
-  fetch(`http://${serverIP}:5002/api/qna/${postId}/comments`, {
+  fetch(`${serverIP}/api/qna/${postId}/comments`, {
     method: 'POST',
     body: formData,
     credentials: 'include'
@@ -174,7 +174,7 @@ function submitReply(parentId) {
   formData.append('comment', replyComment);
   formData.append('parent_id', parentId);
 
-  fetch(`http://${serverIP}:5002/api/qna/${postId}/comments`, {
+  fetch(`${serverIP}/api/qna/${postId}/comments`, {
     method: 'POST',
     body: formData,
     credentials: 'include'
@@ -198,7 +198,7 @@ function showReplyInput(commentId) {
 }
 
 function loadComments(postId) {
-  fetch(`http://${serverIP}:5002/api/qna/${postId}/comments`, {
+  fetch(`${serverIP}/api/qna/${postId}/comments`, {
     method: 'GET',
     credentials: 'include'
   })

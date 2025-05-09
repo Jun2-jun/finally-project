@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const serverIP = document.body.dataset.serverIp; // 서버 IP를 HTML에서 가져옴
-            const response = await fetch(`http://${serverIP}:5002/api/users/change-password`, {
+            const response = await fetch(`${serverIP}/api/users/change-password`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

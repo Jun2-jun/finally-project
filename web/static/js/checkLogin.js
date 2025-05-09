@@ -1,7 +1,7 @@
 // checkLogin.js
 document.addEventListener('DOMContentLoaded', () => {
   const serverIP = document.body.dataset.serverIp;
-    fetch(`http://${serverIP}:5002/api/users/check-login`, {
+    fetch(`${serverIP}/api/users/check-login`, {
       method: "GET",
       credentials: "include"
     })

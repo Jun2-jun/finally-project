@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const serverIP = document.body.dataset.serverIp;
   // 사용자 정보 불러오기
-  fetch(`http://${serverIP}:5002/api/current-user`, {
+  fetch(`${serverIP}/api/current-user`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     
       // JSON 방식으로 공지사항 전송
-      fetch(`http://${serverIP}:5002/api/qna/`, {
+      fetch(`${serverIP}/api/qna/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

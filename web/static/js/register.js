@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // ✅ API 주소 자동 설정 (현재 호스트에 맞춰서)
       const serverIP = document.body.dataset.serverIp;
   
-      fetch(`http://${serverIP}:5002/api/users/register`, {
+      fetch(`${serverIP}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

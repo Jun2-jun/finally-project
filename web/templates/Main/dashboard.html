@@ -913,7 +913,7 @@
       async function fetchCurrentUser() {
         try {
           const serverIP = document.body.dataset.serverIp;
-          const response = await fetch(`http://${serverIP}:5002/api/current-user`, {
+          const response = await fetch(`${serverIP}/api/current-user`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -945,7 +945,7 @@
       async function handleLogout() {
         try {
           const serverIP = document.body.dataset.serverIp;
-          const response = await fetch(`http://${serverIP}:5002/api/users/logout`, {
+          const response = await fetch(`${serverIP}/api/users/logout`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

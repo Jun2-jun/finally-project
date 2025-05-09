@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const serverIP = document.body.dataset.serverIp;
   // 1. 로그인된 사용자 정보 가져오기
   
-  fetch(`http://${serverIP}:5002/api/current-user`, {
+  fetch(`${serverIP}/api/current-user`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('welcome-name').innerText = `${user.username || 'Test Name'}님!`;
 
         // 2. 사용자별 예약 목록 가져오기
-        return fetch(`http://${serverIP}:5002/api/reservations/user/${userId}`, {
+        return fetch(`${serverIP}/api/reservations/user/${userId}`, {
           method: 'GET',
           credentials: 'include'
         });
