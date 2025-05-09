@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app
+from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app, make_response
 from modules.connection import mysql, init_db
 from routes.auth import auth_bp
 from datetime import datetime
@@ -14,6 +14,7 @@ import requests
 from flask_cors import CORS
 from flask_session import Session
 from redis import Redis
+import uuid
 
 app = Flask(__name__)
 app.secret_key = 'yougayoung123'
@@ -117,15 +118,39 @@ def notice_detail(post_id):
 
 @app.route('/reserve', methods=['GET', 'POST'])
 def reserve():
+    csrf_token = str(uuid.uuid4())
+    session['csrf_token'] = csrf_token
+
     if request.method == 'POST':
         hospital_name = request.form.get('hospital_name', '')
         hospital_address = request.form.get('hospital_address', '')
-        return render_template("reserve.html", hospital_name=hospital_name, hospital_address=hospital_address)
     else:
-        return render_template("reserve.html", hospital_name='', hospital_address='')
+        hospital_name = ''
+        hospital_address = ''
+
+    response = make_response(render_template(
+        "reserve.html",
+        hospital_name=hospital_name,
+        hospital_address=hospital_address,
+        csrf_token=csrf_token
+    ))
+    # 브라우저 캐시 방지
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '-1'
+    return response
 
 @app.route('/submit_reservation', methods=['POST'])
 def submit_reservation():
+    # CSRF 토큰 검증
+    form_token = request.form.get('csrf_token')
+    session_token = session.pop('csrf_token', None)  # 사용 후 제거 (1회성)
+
+    if not form_token or form_token != session_token:
+        flash("이미 예약이 제출되었거나 유효하지 않은 접근입니다.")
+        return redirect(url_for('reserve'))
+
+    # 예약 정보 추출
     hospital = request.form.get('hospital')
     address = request.form.get('address')
     name = request.form.get('name')
@@ -141,7 +166,6 @@ def submit_reservation():
                            phone=phone,
                            message=message,
                            email=email)
-
 
 # Flask-Mail 설정
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # 예시로 Gmail SMTP 서버 사용
