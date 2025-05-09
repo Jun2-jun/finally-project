@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             past_illnesses: healthForm.past_diseases.value.trim(),
             chronic_diseases: healthForm.chronic_diseases.value.trim(),
             medications: healthForm.medications?.value.trim() || '',
-            smoking: healthForm.querySelector('input[name="smoking"]:checked')?.value || ''
+            smoking_status: healthForm.querySelector('input[name="smoking"]:checked')?.value || ''
           };
           
           console.log('[payload]', payload);

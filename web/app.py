@@ -1,15 +1,10 @@
 from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app, make_response
 from modules.connection import mysql, init_db
-from routes.auth import auth_bp
 from datetime import datetime
-from routes.reserve import reserve_bp
-from routes.api import api_bp
 from flask_mail import Mail, Message
 from routes.submit_reservation import submit_bp
 import os
 from werkzeug.utils import secure_filename
-from routes.qna import qna_bp
-from routes.notice import notice_bp
 import requests
 from flask_cors import CORS
 from flask_session import Session
@@ -20,12 +15,9 @@ app = Flask(__name__)
 app.secret_key = 'yougayoung123'
 init_db(app)
 
-app.register_blueprint(auth_bp, url_prefix="/auth")
-app.register_blueprint(reserve_bp, url_prefix="/api")
-app.register_blueprint(api_bp)
+
+
 app.register_blueprint(submit_bp)   
-app.register_blueprint(qna_bp, url_prefix='/api/qna')
-app.register_blueprint(notice_bp, url_prefix='/api/notice')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
 
 # IP 주소 중앙 관리 (환경 변수에서 가져오거나 기본값 사용)
