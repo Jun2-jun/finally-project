@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/noticedetail.css') }}">
 </head>
-<body>
+<body data-server-ip="{{ SERVER_IP }}">
   {% include 'sidebar/sidebar.html' %}
   <div class="container-fluid with-sidebar pt-5 px-5">
     <div class="bg-white p-4 rounded shadow-sm">

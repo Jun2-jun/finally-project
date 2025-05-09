@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/ent.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}">
 </head>
-<body>
+<body data-server-ip="{{ SERVER_IP }}">
   {% include 'sidebar/sidebar.html' %}
   {% include 'find/search.html' %}
   <div style="display: flex; justify-content: space-between; padding: 0 40px;">s

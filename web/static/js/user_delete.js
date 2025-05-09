@@ -2,9 +2,9 @@ async function submitWithdraw() {
     const password = document.getElementById("withdrawPassword").value;
     const errorMsg = document.getElementById("withdrawError");
     const modal = document.getElementById("withdrawModal");
-
+    const serverIP = document.body.dataset.serverIp;
     try {
-        const response = await fetch("http://192.168.219.72:5002/api/users/withdraw", {
+        const response = await fetch(`http://${serverIP}:5002/api/users/withdraw`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

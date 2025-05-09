@@ -4,7 +4,7 @@ const tbody = document.getElementById('noticeTableBody');
 const pagination = document.getElementById('pagination');
 const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
-
+const serverIP = document.body.dataset.serverIp;
 // 🔍 검색 이벤트
 if (searchButton) {
   searchButton.addEventListener('click', () => {
@@ -26,7 +26,7 @@ if (searchInput) {
 
 // 📥 공지사항 목록 불러오기
 function loadNoticeList(page = 1, keyword = '') {
-  const url = new URL(`${apiServerUrl}/api/notices`);
+  const url = new URL(`http://${serverIP}:5002/api/notices`);
   url.searchParams.set('page', page);
   url.searchParams.set('per_page', 10);
   if (keyword) url.searchParams.set('keyword', keyword);

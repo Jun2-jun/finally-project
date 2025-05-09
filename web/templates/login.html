@@ -8,7 +8,7 @@
   <link rel="icon" href="{{ url_for('static', filename='img/logo4.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
-<body>
+<body data-server-ip="{{ SERVER_IP }}">
   <div class="container">
     <div class="login-form">
       <h2 class="header-text">

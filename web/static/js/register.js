@@ -46,10 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
       };
   
       // ✅ API 주소 자동 설정 (현재 호스트에 맞춰서)
-      const apiHost = window.location.hostname;
-      const apiBaseUrl = 'http://192.168.219.72:5002';
+      const serverIP = document.body.dataset.serverIp;
   
-      fetch('http://192.168.219.72:5002/api/users/register', {
+      fetch(`http://${serverIP}:5002/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

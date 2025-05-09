@@ -12,7 +12,7 @@
   <script src="{{ url_for('static', filename='js/qna_load.js') }}"></script>
   <script src="{{ url_for('static', filename='js/qna.js') }}"></script>
 </head>
-<body>
+<body data-server-ip="{{ SERVER_IP }}">
   <div class="container-fluid">
     <div class="row">
       {% include 'sidebar/sidebar.html' %}

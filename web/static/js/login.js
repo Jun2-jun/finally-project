@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
       username: username,
       password: password
     };
-
-    const apiUrl = 'http://192.168.219.72:5002/api/users/login';
+    const serverIP = document.body.dataset.serverIp;
+    const apiUrl = `http://${serverIP}:5002/api/users/login`;
 
     fetch(apiUrl, {
       method: 'POST',

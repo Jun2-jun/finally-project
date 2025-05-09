@@ -8,13 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const welcomeNameEl = document.getElementById('welcome-name');
   const userNameEl = document.getElementById('user-name');
   const userEmailEl = document.getElementById('user-email');
-
+  const serverIP = document.body.dataset.serverIp;
+  
   let selectingMode = false;
   let currentPage = 1;
   let currentKeyword = "";
 
   // ✅ 사용자 정보 불러오기
-  fetch(`본인 경로로/api/current-user`, {
+  fetch(`http://${serverIP}:5002/api/current-user`, {
     method: 'GET',
     credentials: 'include'
   })
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const deleteIds = Array.from(checkedBoxes).map(box => box.value);
 
-        fetch(`본인 경로로/qna/delete`, {
+        fetch(`http://${serverIP}:5002/qna/delete`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ delete_ids: deleteIds })
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const formData = new FormData(form);
 
-      fetch(`본인 경로로/api/qna`, {
+      fetch(`http://${serverIP}:5002/api/qna`, {
         method: 'POST',
         credentials: 'include',
         body: formData
@@ -160,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ✅ QnA 목록 불러오기
   function loadQnaList(page = 1, keyword = '') {
-    const url = new URL(`본인 경로로/api/qna/`);
+    const url = new URL(`http://${serverIP}:5002/api/qna/`);
     url.searchParams.set('page', page);
     url.searchParams.set('per_page', 10);
     if (keyword) {

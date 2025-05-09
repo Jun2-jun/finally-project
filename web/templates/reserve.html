@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/reserve.css') }}">
   <script src="{{ url_for('static', filename='js/reservation.js') }}" defer></script>
 </head>
-<body>
+<body data-server-ip="{{ SERVER_IP }}">
   <div class="container">
     <h2>병원 예약하기</h2>
     <form method="POST" action="/submit_reservation">

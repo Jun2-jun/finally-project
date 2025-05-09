@@ -102,7 +102,7 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </head>
 
-<body class="bg-white text-gray-800">
+<body data-server-ip="{{ SERVER_IP }}" class="bg-white text-gray-800">
   <!-- 상단바 메뉴 -->
   <nav class="top-navbar">
     <div class="top-navbar-content">
@@ -910,7 +910,8 @@
 
       async function fetchCurrentUser() {
         try {
-          const response = await fetch('http://192.168.219.102:5002/api/current-user', {
+          const serverIP = document.body.dataset.serverIp;
+          const response = await fetch(`http://${serverIP}:5002/api/current-user`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -941,7 +942,8 @@
       // 로그아웃 처리 함수
       async function handleLogout() {
         try {
-          const response = await fetch('http://192.168.219.102:5002/api/users/logout', {
+          const serverIP = document.body.dataset.serverIp;
+          const response = await fetch(`http://${serverIP}:5002/api/users/logout`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
