@@ -26,7 +26,7 @@ if (searchInput) {
 
 // 📥 공지사항 목록 불러오기
 function loadNoticeList(page = 1, keyword = '') {
-  const url = new URL(`http://${serverIP}:5002/api/notices`);
+  const url = new URL(`${serverIP}/api/notices`);
   url.searchParams.set('page', page);
   url.searchParams.set('per_page', 10);
   if (keyword) url.searchParams.set('keyword', keyword);

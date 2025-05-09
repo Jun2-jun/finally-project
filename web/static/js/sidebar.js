@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebarEmail = document.getElementById('sidebar-email');
   const dropdownMenu = document.getElementById('dropdown-menu');
   const serverIP = document.body.dataset.serverIp;
-  const API_BASE = `http://${serverIP}:5002`;
+  const API_BASE = `${serverIP}`;
 
   if (tbody) {
     tbody.innerHTML = '<tr><td colspan="3" class="text-center">불러오는 중...</td></tr>';
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ✅ 로그아웃 요청 함수
 function logout() {
-  fetch(`http://${serverIP}:5002/api/users/logout`, {
+  fetch(`${serverIP}/api/users/logout`, {
     method: 'POST',
     credentials: 'include'
   }).then(() => {

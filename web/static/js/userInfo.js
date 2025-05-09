@@ -3,7 +3,7 @@ const serverIP = document.body.dataset.serverIp;
 document.addEventListener('DOMContentLoaded', () => {
     console.log("👤 [userinfo.js] 사용자 정보 가져오기 시작");
   
-    fetch(`http://${serverIP}:5002/api/current-user`, {
+    fetch(`${serverIP}/api/current-user`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
   function logout() {
-  fetch(`http://${serverIP}:5002/api/users/logout`, {
+  fetch(`${serverIP}/api/users/logout`, {
     method: 'POST',
     credentials: 'include'
   })
