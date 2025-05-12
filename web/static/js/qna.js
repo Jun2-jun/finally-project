@@ -159,59 +159,58 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   
 
-  // ✅ QnA 목록 불러오기
-  function loadQnaList(page = 1, keyword = '') {
-    const url = new URL(`${serverIP}/api/qna/`);
-    url.searchParams.set('page', page);
-    url.searchParams.set('per_page', 10);
-    if (keyword) {
-      url.searchParams.set('keyword', keyword);
-    }
-
-    fetch(url.toString(), {
-      method: 'GET',
-      credentials: 'include'
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      if (data.status === 'success' && data.data?.items && data.data.items.length > 0) {
-        data.data.items.forEach((post, idx) => {
-          const row = document.createElement('tr');
-          row.classList.add('clickable-row');
-          row.setAttribute('data-no', post.id);
-
-          row.innerHTML = `
-            <td class="delete-checkbox-column" style="display: none;">
-              <input type="checkbox" class="delete-checkbox" value="${post.id}">
-            </td>
-            <td>${idx + 1 + (page - 1) * 10}</td>
-            <td>
-              <a href="/qna/post/${post.id}" style="text-decoration: none; color: inherit;">
-                ${post.title}
-              </a>
-            </td>
-            <td>${post.writer || '알 수 없음'}</td>
-            <td>${post.created_at}</td>
-          `;
-          tbody.appendChild(row);
-        });
-        renderPagination(data.data.page, data.data.total_pages);
-      } else {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-muted py-4">질문이 없습니다.</td></tr>';
-        if (pagination) pagination.innerHTML = '';
-      }
-    })
-    .catch(err => {
-      console.error('❌ Q&A 목록 로딩 실패:', err);
-      if (tbody) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-danger py-4">목록을 불러오는 데 실패했습니다.</td></tr>';
-      }
-    });
+ // ✅ QnA 목록 불러오기
+function loadQnaList(page = 1, keyword = '') {
+  const url = new URL(`${serverIP}/api/qna/`);
+  url.searchParams.set('page', page);
+  url.searchParams.set('per_page', 10);
+  if (keyword) {
+    url.searchParams.set('keyword', keyword);
   }
 
+  fetch(url.toString(), {
+    method: 'GET',
+    credentials: 'include'
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    if (data.status === 'success' && data.data?.items && data.data.items.length > 0) {
+      data.data.items.forEach((post, idx) => {
+        const row = document.createElement('tr');
+        row.classList.add('clickable-row');
+        row.setAttribute('data-no', post.id);
+
+        row.innerHTML = `
+          <td class="delete-checkbox-column" style="display: none;">
+            <input type="checkbox" class="delete-checkbox" value="${post.id}">
+          </td>
+          <td class="text-center">${idx + 1 + (page - 1) * 10}</td>
+          <td class="text-center">
+            <a href="/qna/post/${post.id}" style="text-decoration: none; color: inherit;">
+              ${post.title}
+            </a>
+          </td>
+          <td>${post.writer || '알 수 없음'}</td>
+          <td>${post.created_at}</td>
+        `;
+        tbody.appendChild(row);
+      });
+      renderPagination(data.data.page, data.data.total_pages);
+    } else {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-muted py-4">질문이 없습니다.</td></tr>';
+      if (pagination) pagination.innerHTML = '';
+    }
+  })
+  .catch(err => {
+    console.error('❌ Q&A 목록 로딩 실패:', err);
+    if (tbody) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-danger py-4">목록을 불러오는 데 실패했습니다.</td></tr>';
+    }
+  });
+}
   // ✅ 페이지네이션 그리기
   function renderPagination(current, total) {
     if (!pagination) return;
