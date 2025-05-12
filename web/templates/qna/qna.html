@@ -38,20 +38,24 @@
       </div>
 
       <!-- ✅ 자유게시판 테이블 -->
-      <table class="faq-table">
-        <thead>
-          <tr>
-            <th class="delete-checkbox-column" style="display: none;"></th>
-            <th>No</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성시간</th>
-          </tr>
-        </thead>
-        <tbody id="qnaTableBody">
-          <!-- JS가 데이터로 채움 -->
-        </tbody>
-      </table>
+      <div class="faq-wrapper bg-white rounded shadow-sm p-4 mx-auto w-100">
+        <div class="table-responsive">
+          <table class="faq-table table mb-0">
+            <thead>
+              <tr>
+                <th class="delete-checkbox-column" style="display: none;"></th>
+                <th>No</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성시간</th>
+              </tr>
+            </thead>
+            <tbody id="qnaTableBody">
+              <!-- JS가 데이터로 채움 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <!-- ✅ 페이지네이션 -->
       <nav class="mt-4">
