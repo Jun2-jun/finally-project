@@ -31,7 +31,7 @@
     .search-form-container {
       margin-bottom: 1.5rem;
       max-width: 600px;
-      margin-left: 250px;
+      margin-left: 90px;
       margin-right: auto;
     }
 
@@ -224,7 +224,7 @@
       margin-top: 1rem;
       max-width: 1100px;
       width: 92%;
-      margin-left: auto;
+      margin-left: 0;
       margin-right: auto;
       height: calc(100vh - 10rem);
       overflow-y: auto;
@@ -239,7 +239,7 @@
     
     .hospital-cards {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
       max-width: 100%;
     }
@@ -580,7 +580,7 @@
       const ps = new kakao.maps.services.Places();
       ps.keywordSearch(category, function (data, status) {
         if (status === kakao.maps.services.Status.OK) {
-          displayCategoryList(data.slice(0, 9));
+          displayCategoryList(data.slice(0, 10));
         } else {
           document.getElementById('categoryList').innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
         }
