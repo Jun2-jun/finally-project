@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, session
 from extensions import mysql
 from utils.xor import xor_encrypt, xor_decrypt, encode_base64, decode_base64
 from jinja2 import Template
-from utils.ai import call_gemini_api, build_medical_prompt, get_patient_info, get_reservations
+from utils.ai import call_local_ai_api, build_medical_prompt, get_patient_info, get_reservations
 from utils.auth import login_required
 ai_bp = Blueprint('ai', __name__, url_prefix='/api/ai')
 
@@ -67,7 +67,7 @@ def gemini_api():
                 )
 
                 # 🔥 Gemini API 호출
-                result = call_gemini_api(personalized_prompt)
+                result = call_local_ai_api(personalized_prompt)
 
                 if 'error' in result:
                     return jsonify({'status': 'fail', 'message': f'Gemini API 호출 중 오류: {result["error"]}'}), 500
@@ -88,7 +88,7 @@ def gemini_api():
         else:
             # 🔥 "/"로 안 시작하면 일반 의료 상담 질문 → Gemini API 호출
             medical_prompt = build_medical_prompt(prompt)
-            result = call_gemini_api(medical_prompt)
+            result = call_local_ai_api(medical_prompt)
 
             if 'error' in result:
                 return jsonify({'status': 'fail', 'message': f'Gemini API 호출 중 오류: {result["error"]}'}), 500

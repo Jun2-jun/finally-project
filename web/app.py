@@ -21,14 +21,14 @@ app.register_blueprint(submit_bp)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 최대 16MB 업로드 허용
 
 # IP 주소 중앙 관리 (환경 변수에서 가져오거나 기본값 사용)
-app.config['SERVER_IP'] = os.environ.get('SERVER_IP', 'http://192.168.219.122:5002')
+app.config['SERVER_IP'] = os.environ.get('SERVER_IP', 'https://api.doctor-future.com')
 
 # 세션 Redis 설정 추가
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
 app.config['SESSION_COOKIE_DOMAIN'] = app.config['SERVER_IP']  # IP 중앙 관리 사용
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # 또는 'None'
-app.config['SESSION_COOKIE_SECURE'] = False    # 로컬이라면 False
+app.config['SESSION_COOKIE_SECURE'] = True    # 로컬이라면 False
 Session(app)  # 세션 객체 초기화
 
 # 모든 템플릿에 전역 변수로 IP 주소 제공하는 컨텍스트 프로세서 추가

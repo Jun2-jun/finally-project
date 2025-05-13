@@ -1,6 +1,7 @@
 /* 데스크탑 기준: 사이드바 여백 확보 */
 body {
   padding-left: 260px; /* Sidebar width에 맞춤 */
+  padding-top: 30px;
   background-color: #fff;
   box-sizing: border-box; /* ✅ 패딩 포함한 전체 너비 관리 */
 }

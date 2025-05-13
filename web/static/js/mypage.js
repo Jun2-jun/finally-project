@@ -321,7 +321,7 @@ if (passwordChangeBtn) {
     }
 
     // 서버에 비밀번호 변경 요청
-    fetch(`http://${serverIP}:5002/api/users/change-password`, {
+    fetch(`${serverIP}/api/users/change-password`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -375,7 +375,7 @@ function sendVerificationCode() {
     return;
   }
 
-  fetch(`http://${serverIP}:5002/api/users/send_code`, {
+  fetch(`${serverIP}/api/users/send_code`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -408,7 +408,7 @@ function submitVerificationCode() {
   const formData = new FormData();
   formData.append('code', code);
 
-  fetch(`http://${serverIP}:5002/api/users/verify_code`, {
+  fetch(`${serverIP}/api/users/verify_code`, {
     method: 'POST',
     credentials: 'include',
     body: formData
@@ -444,7 +444,7 @@ function submitVerificationCode() {
   const formData = new FormData();
   formData.append('code', code);
 
-  fetch(`http://${serverIP}:5002/api/users/verify_code`, {
+  fetch(`${serverIP}/api/users/verify_code`, {
     method: 'POST',
     credentials: 'include',
     body: formData

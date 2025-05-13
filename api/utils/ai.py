@@ -49,26 +49,14 @@ def build_medical_prompt(prompt):
         f"사용자 질문: {prompt}"
     )
 
-
-# 🔥 Gemini API 호출
-def call_gemini_api(prompt):
-    api_key = os.environ.get('GEMINI_API_KEY', 'AIzaSyCNNvCkXPWQGKghFa7gMNVF1FPZm5-0V00')  # 기본 키 사용
-    api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
-    url = f"{api_url}?key={api_key}"
-
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
-    data = {
-        "contents": [{
-            "parts": [{"text": prompt}]
-        }]
-    }
-
+def call_local_ai_api(prompt: str) -> str | dict:
     try:
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(
+            "http://10.1.30.61:8001/generate",  # ← 실제 AI 서버 IP 또는 localhost
+            json={"question": prompt},
+            timeout=15
+        )
         response.raise_for_status()
-        return response.json()
+        return response.json().get("answer", "AI 응답이 비어 있습니다.")
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}

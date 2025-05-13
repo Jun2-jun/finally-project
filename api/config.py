@@ -7,9 +7,9 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key')
 
     # MySQL 설정
-    MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost')
+    MYSQL_HOST = os.environ.get('MYSQL_HOST', 'database-2.c0dhrhlgpc1j.ap-northeast-2.rds.amazonaws.com')
     MYSQL_USER = os.environ.get('MYSQL_USER', 'root')
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '1234')
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'doctor123!')
     MYSQL_DB = os.environ.get('MYSQL_DB', 'doctor_future')
     MYSQL_CURSORCLASS = 'DictCursor'
 

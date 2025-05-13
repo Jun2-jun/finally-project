@@ -39,7 +39,7 @@ function loadMembers() {
     console.log('회원 목록 불러오기 시작...');
     console.log('API URL:', `${API_BASE_URL}/users`);
     
-    fetch(`${API_BASE_URL}/users`, {
+    fetch(`${API_BASE_URL}/users/`, {
       method: 'GET',
       mode: 'cors', // CORS 모드 설정
       credentials: 'include' // 쿠키를 포함시킴
@@ -133,7 +133,7 @@ function loadReservations() {
     const reservationsContainer = document.getElementById('reservations-data');
     reservationsContainer.innerHTML = '<p class="loading">예약 정보를 불러오는 중입니다...</p>';
     
-    fetch(`${API_BASE_URL}/reservations`, {
+    fetch(`${API_BASE_URL}/reservations/`, {
       method: 'GET',
       mode: 'cors',
         credentials: 'include', // 쿠키를 포함시킴
@@ -218,7 +218,7 @@ function loadNoticesPage(page) {
     const noticeContainer = document.getElementById('notice-data');
     noticeContainer.innerHTML = '<p class="loading">공지사항을 불러오는 중입니다...</p>';
     
-    fetch(`${API_BASE_URL}/notices?page=${page}&per_page=10`, {
+    fetch(`${API_BASE_URL}/notices/?page=${page}&per_page=10`, {
       method: 'GET',
       mode: 'cors',
       headers: {
@@ -340,7 +340,7 @@ window.loadQnAPage = function(page) {
     const qnaContainer = document.getElementById('qna-data');
     qnaContainer.innerHTML = '<p class="loading">QnA를 불러오는 중입니다...</p>';
     
-    fetch(`${API_BASE_URL}/qna?page=${page}&per_page=10`, {
+    fetch(`${API_BASE_URL}/qna/?page=${page}&per_page=10`, {
       method: 'GET',
       mode: 'cors',
       headers: {
