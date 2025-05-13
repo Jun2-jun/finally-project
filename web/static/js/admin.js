@@ -75,13 +75,11 @@ function loadMembers() {
               <tr>
                 <th>ID</th>
                 <th>사용자명</th>
-                <th>비밀번호</th>
                 <th>이메일</th>
                 <th>생년월일</th>
                 <th>전화번호</th>
                 <th>주소</th>
                 <th>상세주소</th>
-                <th>가입일</th>
               </tr>
             </thead>
             <tbody>
@@ -99,13 +97,11 @@ function loadMembers() {
               <tr>
                 <td>${member.id || ''}</td>
                 <td>${member.username || ''}</td>
-                <td>${member.password || ''}</td>
                 <td>${member.email || ''}</td>
                 <td>${member.birthdate || ''}</td>
                 <td>${member.phone || ''}</td>
                 <td>${member.address || ''}</td>
                 <td>${member.address_detail || ''}</td>
-                <td>${member.created_at || ''}</td>
               </tr>
             `;
           });
