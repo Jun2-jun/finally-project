@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108"
+    android:tint="#000000">
+
+    <!-- 단색 아이콘 버전 -->
+    <group
+        android:scaleX="0.67"
+        android:scaleY="0.67"
+        android:translateX="17.82"
+        android:translateY="17.82">
+
+        <!-- 의료 심볼 십자가 -->
+        <path
+            android:fillColor="#000000"
+            android:pathData="M54,34L54,74"
+            android:strokeWidth="12"
+            android:strokeColor="#000000"
+            android:strokeLineCap="round"/>
+
+        <path
+            android:fillColor="#000000"
+            android:pathData="M34,54L74,54"
+            android:strokeWidth="12"
+            android:strokeColor="#000000"
+            android:strokeLineCap="round"/>
+    </group>
+</vector>
