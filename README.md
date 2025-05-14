@@ -231,22 +231,4 @@ finally-project-api/
 12. **GET /api/notices/**	: 공지사항 목록 조회
 13. **POST /api/reservations/** :	예약 등록
 
-## 실행 방법
 
-1. 필요한 패키지 설치:
-```bash
-pip install flask flask-mysqldb flask-cors flask-mail flask-session redis bcrypt requests
-```
-
-2. 서버 실행:
-```bash
-python app.py
-```
-
-## 이점
-
-1. **모듈화된 구조**: 각 기능이 분리되어 있어 유지보수가 용이합니다.
-2. **확장성**: 새로운 기능을 추가할 때 해당 모듈만 수정하면 됩니다.
-3. **가독성**: 코드가 목적별로 분리되어 있어 이해하기 쉽습니다.
-4. **테스트 용이성**: 각 모듈을 독립적으로 테스트할 수 있습니다.
-5. **협업 향상**: 여러 개발자가 동시에 다른 모듈을 작업할 수 있습니다.
