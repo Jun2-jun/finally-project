@@ -147,6 +147,7 @@ git clone https://github.com/Avox-dev/hospitalAPP.git
 
 ## 🔌 API 연동
 - **기본 URL**: `http://192.168.219.105:5002/api`
+- **경로 수정** `data/ApiServiceCommon.kt`
 - 다음 API 엔드포인트 사용:
   - 회원 관리: `/users/*`
   - 예약 관리: `/reservations/*`
