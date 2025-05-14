@@ -1,3 +1,155 @@
+
+# Doctor Future 프로젝트 환경설정
+
+## 1. 필수 프로그램 설치
+
+### Redis 설치
+- [Redis 다운로드 (Microsoft Archive)](https://github.com/microsoftarchive/redis/releases)
+- 설치 시 **환경변수 등록** 체크
+
+### MySQL 설치
+- [MySQL 다운로드](https://dev.mysql.com/downloads/installer/)
+- 설치 시 루트 비밀번호를 **doctor123!** 으로 설정
+
+---
+
+## 2. 데이터베이스 설정
+
+### 2-1. 데이터베이스 생성
+
+```sql
+CREATE DATABASE doctor_future;
+```
+
+### 2-2. 테이블 생성
+
+```sql
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  birthdate DATE,
+  phone VARCHAR(255),
+  address VARCHAR(255),
+  address_detail VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  admin TINYINT(1) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE notice (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  comment TEXT NOT NULL,
+  image_urls JSON,
+  user_id INT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  views INT DEFAULT 0,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE qna (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  title VARCHAR(255) NOT NULL,
+  comment TEXT NOT NULL,
+  image_urls JSON,
+  writer VARCHAR(100) NOT NULL DEFAULT '익명',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE qna_comments (
+  id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  qna_id INT(11) NOT NULL,
+  user_id INT(11) NOT NULL,
+  comment TEXT NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  parent_id INT(11) DEFAULT NULL,
+  FOREIGN KEY (qna_id) REFERENCES qna(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE reservations (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(255) NOT NULL,
+  hospital VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  message TEXT,
+  email VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  reservation_time DATETIME,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE PatientSensitiveInfo (
+  user_id INT NOT NULL PRIMARY KEY,
+  blood_type VARCHAR(10),
+  height_cm TEXT,
+  weight_kg TEXT,
+  allergy_info TEXT,
+  past_illnesses TEXT,
+  chronic_diseases TEXT,
+  medications TEXT,
+  smoking_status VARCHAR(20),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
+---
+
+## 3. 파이썬 가상환경 설정 및 패키지 설치
+
+### 3-1. 가상환경 생성 및 활성화
+
+```bash
+python -m venv venv
+./venv/Scripts/activate
+```
+
+### 3-2. 필수 패키지 설치
+
+```bash
+pip install flask flask_cors pycryptodome flask_mail redis requests flask_mysqldb flask_session mysql mysql-connector-python
+```
+
+---
+
+## 4. 서버 설정
+
+### 4-1. IP 수정
+- `web/app.py` 및 `api/app.py` 파일 내의 `yourIp` 부분을 실제 서버 IP로 수정합니다.
+
+### 4-2. 병원 예약 기능 관련
+- 병원 예약 기능에 대한 API 연동을 원할 경우 **서버 IP**를 알려주시면 등록해드립니다.
+
+---
+
+## 5. 서버 실행 방법
+
+### 5-1. 웹 서버 실행
+
+```bash
+cd web
+python app.py
+```
+
+### 5-2. API 서버 실행
+
+```bash
+cd api
+python app.py
+```
+
+---
+
+> 🔔 참고사항
+> 
+> - MySQL과 Redis가 정상적으로 실행되고 있어야 서버가 정상 작동합니다.
+> - 서버 실행 후, 웹과 API가 각각 분리되어 운영됩니다.
+
 # finally-project
 # 모듈화된 API 서버 구조 설명
 
