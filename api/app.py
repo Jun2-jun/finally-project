@@ -13,7 +13,7 @@ def create_app(config_name='default'):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
 
-    CORS(app, origins=["https://doctor-future.com"], supports_credentials=True)
+    CORS(app, origins=["http://yourIP:5000"], supports_credentials=True)
     # CORS 설정: 모든 도메인 허용 (개발 시에만 사용, 배포 시에는 특정 도메인으로 제한해야 함)
 
     mysql.init_app(app)
