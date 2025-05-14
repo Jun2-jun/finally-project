@@ -1,5 +1,4 @@
 from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app, make_response
-from modules.connection import mysql, init_db
 from datetime import datetime
 from flask_mail import Mail, Message
 from routes.submit_reservation import submit_bp
@@ -13,8 +12,6 @@ import uuid
 
 app = Flask(__name__)
 app.secret_key = 'yougayoung123'
-init_db(app)
-
 
 
 app.register_blueprint(submit_bp)   
