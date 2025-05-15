@@ -8,7 +8,7 @@ def get_all_users():
     모든 사용자 가져오기 (관리자 기능)
     """
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, username, email FROM users")
+    cur.execute("SELECT id, username, email, password, birthdate, phone, address, address_detail FROM users")
     users = cur.fetchall()
     cur.close()
     return users
