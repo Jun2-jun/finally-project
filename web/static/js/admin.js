@@ -547,13 +547,13 @@ function submitNotice() {
   }
   
   // 파일 확장자 검사
-  const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+  const allowedExtensions = ['jpg', 'jpeg', 'pdf'];
   for (let i = 0; i < imageFiles.length; i++) {
     const fileName = imageFiles[i].name;
     const fileExtension = fileName.split('.').pop().toLowerCase();
     
     if (!allowedExtensions.includes(fileExtension)) {
-      alert('허용되지 않는 파일 형식입니다. jpg, jpeg, png, gif, bmp, webp 형식의 이미지만 업로드 가능합니다.');
+      alert('허용되지 않는 파일 형식입니다. jpg, jpeg, pdf 형식의 이미지만 업로드 가능합니다.');
       return;
     }
     
