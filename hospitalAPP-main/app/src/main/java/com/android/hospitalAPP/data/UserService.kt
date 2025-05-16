@@ -192,11 +192,13 @@ class UserService {
     suspend fun sendVerificationCode(
         email: String
     ): ApiResult<JSONObject> = withContext(Dispatchers.IO) {
-        val formBody = FormBody.Builder()
-            .add("email", email)
-            .build()
+        // JSON 요청 본문 생성
+        val jsonBody = JSONObject().apply {
+            put("email", email)
+        }
 
-        ApiServiceCommon.postFormRequest(ApiConstants.SEND_EMAIL_CODE_URL, formBody)
+        // API 요청 실행
+        ApiServiceCommon.postRequest(ApiConstants.SEND_EMAIL_CODE_URL, jsonBody, false)
     }
 
     /**
