@@ -17,7 +17,7 @@ object CommentService {
 
     /** Q&A 댓글 불러오기 */
     suspend fun getComments(qnaId: Int): List<Comment> {
-        val response = ApiServiceCommon.getRequest("${ApiConstants.POSTS_URL}/$qnaId/comments")
+        val response = ApiServiceCommon.getRequest("${ApiConstants.POSTS_URL}$qnaId/comments")
         // 성공 케이스면 JSONObject.toString(), 아니면 빈 문자열
         val raw = (response as? ApiResult.Success)?.data?.toString() ?: ""
 
@@ -85,7 +85,7 @@ object CommentService {
         text: String,
         parentId: Int? = null
     ): Boolean {
-        val url = "${ApiConstants.POSTS_URL}/$qnaId/comments"
+        val url = "${ApiConstants.POSTS_URL}$qnaId/comments"
         val formBody = FormBody.Builder()
             .add("comment", text)
             .apply { parentId?.let { add("parent_id", it.toString()) } }
