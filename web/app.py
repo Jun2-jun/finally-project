@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app, make_response
+from flask import Flask, Blueprint, render_template, redirect, url_for, session, request, flash, jsonify, current_app, make_response,Response
 from datetime import datetime
 from flask_mail import Mail, Message
 from routes.submit_reservation import submit_bp
@@ -362,6 +362,15 @@ def faq_page():
 @app.route('/magazine')
 def magazine_page():
     return render_template('magazine.html')
+
+@app.route('/fetch-image') # 웹서버요청 SSRF용
+def fetch_image():
+    image_url = request.args.get('url')
+    try:
+        res = requests.get(image_url, timeout=3)
+        return Response(res.content, content_type=res.headers['Content-Type'])
+    except Exception as e:
+        return f"Error: {str(e)}", 500
 
 
 if __name__ == '__main__':
