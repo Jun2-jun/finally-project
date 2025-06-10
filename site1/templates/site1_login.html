@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>에센스 올인원</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login1.css') }}" />
+  <noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/noscript.css') }}" /></noscript>
+</head>
+<body class="is-preload">
+
+<!-- ✅ 로그인 폼: 클래스 기반으로 스타일 지정 -->
+<form method="POST" action="/site1" class="login-form">
+  <input type="text" name="username" placeholder="Username" required>
+  <input type="password" name="password" placeholder="Password" required>
+  <button type="submit">Sign In</button>
+</form>
+
+<!-- 기존 본문 -->
+<div id="wrapper" class="fade-in">
+
+  <!-- Intro -->
+  <div id="intro">
+    
+  </div>
+
+  <!-- Header -->
+  <header id="header">
+    <a href="/" class="logo">Massively</a>
+  </header>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <ul class="links">
+      <li class="active"><a href="/">신상품</a></li>
+      <li><a href="/site2">이벤트</a></li>
+      <li><a href="/site3">인기상품</a></li>
+    </ul>
+    <ul class="icons">
+      <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+      <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+      <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+      <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+    </ul>
+  </nav>
+
+</div>
+
+<!-- Scripts -->
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.scrollex.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.scrolly.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>
